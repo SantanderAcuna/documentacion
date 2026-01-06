@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portal VPS - Página de Inicio</title>
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <style>
+      :root {
+        --primary-dark: #1a365d;
+        --primary-blue: #2b6cb0;
+        --primary-light-blue: #4299e1;
+        --primary-light: #f7fafc;
+        --accent-orange: #ed8936;
+        --sidebar-bg: #1a202c;
+        --sidebar-text: #e2e8f0;
+        --sidebar-hover: #2d3748;
+        --card-bg: #ffffff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        background-color: var(--primary-light);
+        color: #2d3748;
+        line-height: 1.6;
+        overflow-x: hidden;
+        min-height: 100vh;
+      }
+
+      /* Layout Principal */
+      .layout-container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* Sidebar/Navbar Vertical */
+      .sidebar {
+        width: 280px;
+        background-color: var(--sidebar-bg);
+        color: var(--sidebar-text);
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        overflow-y: auto;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar-header {
+        padding: 1.5rem 1.5rem 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 1rem;
+      }
+
+      .sidebar-header h3 {
+        color: white;
+        font-weight: 600;
+        font-size: 1.3rem;
+        margin: 0;
+      }
+
+      .sidebar-header h3 i {
+        color: var(--accent-orange);
+        margin-right: 10px;
+      }
+
+      /* Menú de navegación */
+      .nav-menu {
+        padding: 0 1rem;
+      }
+
+      .nav-section {
+        margin-bottom: 1.5rem;
+      }
+
+      .nav-title {
+        color: var(--accent-orange);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+        padding-left: 0.5rem;
+        font-weight: 600;
+      }
+
+      .nav-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .nav-item {
+        margin-bottom: 0.3rem;
+      }
+
+      .nav-link {
+        color: var(--sidebar-text);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        border-left: 3px solid transparent;
+      }
+
+      .nav-link:hover,
+      .nav-link.active {
+        background-color: var(--sidebar-hover);
+        color: white;
+        border-left: 3px solid var(--accent-orange);
+      }
+
+      .nav-icon {
+        width: 24px;
+        margin-right: 12px;
+        font-size: 1.1rem;
+        text-align: center;
+      }
+
+      .nav-text {
+        flex: 1;
+      }
+
+      /* Contenido Principal */
+      .main-content {
+        flex: 1;
+        margin-left: 280px;
+        padding: 2rem;
+        transition: all 0.3s ease;
+        min-height: 100vh;
+      }
+
+      /* Header del contenido */
+      .content-header {
+        background: linear-gradient(
+          135deg,
+          var(--primary-dark) 0%,
+          var(--primary-blue) 100%
+        );
+        color: white;
+        border-radius: 12px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .content-header h1 {
+        color: white;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        font-size: 2.2rem;
+      }
+
+      .content-header p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        max-width: 800px;
+      }
+
+      /* Tarjetas de inicio */
+      .dashboard-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .dashboard-card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-top: 4px solid var(--primary-blue);
+      }
+
+      .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .dashboard-card.orange {
+        border-top-color: var(--accent-orange);
+      }
+
+      .dashboard-card.light-blue {
+        border-top-color: var(--primary-light-blue);
+      }
+
+      .card-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(
+          135deg,
+          var(--primary-blue) 0%,
+          var(--primary-light-blue) 100%
+        );
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        color: white;
+        font-size: 1.5rem;
+      }
+
+      .dashboard-card.orange .card-icon {
+        background: linear-gradient(
+          135deg,
+          var(--accent-orange) 0%,
+          #f6ad55 100%
+        );
+      }
+
+      .dashboard-card.light-blue .card-icon {
+        background: linear-gradient(
+          135deg,
+          var(--primary-light-blue) 0%,
+          #63b3ed 100%
+        );
+      }
+
+      .card-title {
+        font-weight: 600;
+        color: var(--primary-dark);
+        margin-bottom: 0.5rem;
+        font-size: 1.2rem;
+      }
+
+      .card-description {
+        color: #718096;
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+      }
+
+      /* Sección de enlaces rápidos */
+      .quick-links {
+        margin-top: 3rem;
+      }
+
+      .section-title {
+        color: var(--primary-dark);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid rgba(66, 153, 225, 0.2);
+      }
+
+      .links-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+      }
+
+      .link-item {
+        background-color: var(--card-bg);
+        border-radius: 10px;
+        padding: 1.25rem;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        border-left: 3px solid var(--primary-blue);
+      }
+
+      .link-item:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        color: var(--primary-blue);
+      }
+
+      .link-icon {
+        width: 40px;
+        height: 40px;
+        background-color: rgba(66, 153, 225, 0.1);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        color: var(--primary-blue);
+        font-size: 1.2rem;
+      }
+
+      .link-text {
+        flex: 1;
+        font-weight: 500;
+      }
+
+      /* Botón de toggle sidebar para móviles */
+      .toggle-sidebar {
+        display: none;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 1100;
+        background: var(--primary-dark);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        width: 45px;
+        height: 45px;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Scrollbar personalizado para sidebar */
+      .sidebar::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .sidebar::-webkit-scrollbar-track {
+        background: #2d3748;
+      }
+
+      .sidebar::-webkit-scrollbar-thumb {
+        background: var(--primary-blue);
+        border-radius: 3px;
+      }
+
+      .sidebar::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-light-blue);
+      }
+
+      /* Responsive */
+      @media (max-width: 992px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+
+        .sidebar.active {
+          transform: translateX(0);
+        }
+
+        .main-content {
+          margin-left: 0;
+          width: 100%;
+        }
+
+        .toggle-sidebar {
+          display: flex;
+        }
+
+        .content-header {
+          padding: 1.5rem;
+          margin-top: 1rem;
+        }
+
+        .content-header h1 {
+          font-size: 1.8rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .dashboard-cards {
+          grid-template-columns: 1fr;
+        }
+
+        .links-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .main-content {
+          padding: 1.5rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .content-header {
+          padding: 1.25rem;
+        }
+
+        .content-header h1 {
+          font-size: 1.5rem;
+        }
+
+        .dashboard-card {
+          padding: 1.25rem;
+        }
+      }
+
+      /* Footer */
+      .footer {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid #e2e8f0;
+        color: #718096;
+        font-size: 0.9rem;
+      }
+
+      .footer a {
+        color: var(--primary-blue);
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Botón para toggle sidebar en móviles -->
+    <button class="toggle-sidebar" id="toggleSidebar">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <div class="layout-container">
+      <!-- Sidebar / Navbar Vertical -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <h3><i class="bi bi-server"></i>Configuración VPS</h3>
+        </div>
+
+        <nav class="nav-menu">
+          <!-- Sección Principal -->
+          <div class="nav-section">
+            <div class="nav-title">Principal</div>
+            <ul class="nav-list">
+              <li class="nav-item">
+                <a href="index.html" class="nav-link active">
+                  <i class="bi bi-house-door nav-icon"></i>
+                  <span class="nav-text">Inicio</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="vps-digital-ocean/docuemntacion.html" class="nav-link">
+                  <i class="bi bi-book nav-icon"></i>
+                  <span class="nav-text">Documentación</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Sección Categorías -->
+          <div class="nav-section">
+            <div class="nav-title">Categorías</div>
+            <ul class="nav-list">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="bi bi-hdd-stack nav-icon"></i>
+                  <span class="nav-text">Servidores</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="bi bi-shield-check nav-icon"></i>
+                  <span class="nav-text">Seguridad</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="bi bi-database nav-icon"></i>
+                  <span class="nav-text">Bases de Datos</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="bi bi-globe nav-icon"></i>
+                  <span class="nav-text">Web Server</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Sección Herramientas -->
+          <div class="nav-section">
+            <div class="nav-title">Herramientas</div>
+            <ul class="nav-list">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="bi bi-search nav-icon"></i>
+                  <span class="nav-text">Buscar</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="bi bi-star nav-icon"></i>
+                  <span class="nav-text">Favoritos</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="bi bi-gear nav-icon"></i>
+                  <span class="nav-text">Configuración</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Sección Ayuda -->
+          <div class="nav-section">
+            <div class="nav-title">Ayuda</div>
+            <ul class="nav-list">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="bi bi-question-circle nav-icon"></i>
+                  <span class="nav-text">Soporte</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="bi bi-info-circle nav-icon"></i>
+                  <span class="nav-text">Acerca de</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Contenido Principal -->
+      <main class="main-content">
+        <!-- Header -->
+        <div class="content-header">
+          <h1>Portal de Configuración VPS</h1>
+          <p>
+            Acceso centralizado a documentación, guías y recursos para la
+            administración y configuración de servidores VPS.
+          </p>
+          <a href="vps-digital-ocean/docuemntacion.html" class="btn btn-light">
+            <i class="bi bi-book me-2"></i>Ir a la Documentación
+          </a>
+        </div>
+
+        <!-- Dashboard Cards -->
+        <div class="dashboard-cards">
+          <div class="dashboard-card">
+            <div class="card-icon">
+              <i class="bi bi-key"></i>
+            </div>
+            <h3 class="card-title">Configuración SSH</h3>
+            <p class="card-description">
+              Gestión de claves SSH, configuración de acceso seguro y conexiones
+              simplificadas a servidores.
+            </p>
+            <a
+              href="documentacion.html#ssh-key"
+              class="btn btn-outline-primary btn-sm"
+              >Ver más</a
+            >
+          </div>
+
+          <div class="dashboard-card orange">
+            <div class="card-icon">
+              <i class="bi bi-shield-lock"></i>
+            </div>
+            <h3 class="card-title">Seguridad del Servidor</h3>
+            <p class="card-description">
+              Configuración de firewall, Fail2Ban, seguridad SSH y protección
+              contra ataques.
+            </p>
+            <a
+              href="documentacion.html#ssh-security"
+              class="btn btn-outline-warning btn-sm"
+              >Ver más</a
+            >
+          </div>
+
+          <div class="dashboard-card light-blue">
+            <div class="card-icon">
+              <i class="bi bi-hdd-stack"></i>
+            </div>
+            <h3 class="card-title">Servicios Web</h3>
+            <p class="card-description">
+              Instalación y configuración de Nginx, MySQL, certificados SSL y
+              optimización.
+            </p>
+            <a
+              href="documentacion.html#nginx-config"
+              class="btn btn-outline-info btn-sm"
+              >Ver más</a
+            >
+          </div>
+        </div>
+
+        <!-- Enlaces Rápidos -->
+        <div class="quick-links">
+          <h2 class="section-title">Accesos Directos</h2>
+          <div class="links-grid">
+            <a href="documentacion.html#ssh-config" class="link-item">
+              <div class="link-icon">
+                <i class="bi bi-gear"></i>
+              </div>
+              <span class="link-text">Configuración SSH Avanzada</span>
+            </a>
+
+            <a href="documentacion.html#firewall" class="link-item">
+              <div class="link-icon">
+                <i class="bi bi-fire"></i>
+              </div>
+              <span class="link-text">Configurar Firewall UFW</span>
+            </a>
+
+            <a href="documentacion.html#nginx-security" class="link-item">
+              <div class="link-icon">
+                <i class="bi bi-shield-check"></i>
+              </div>
+              <span class="link-text">Seguridad en Nginx</span>
+            </a>
+
+            <a href="documentacion.html#letsencrypt" class="link-item">
+              <div class="link-icon">
+                <i class="bi bi-lock"></i>
+              </div>
+              <span class="link-text">Certificados SSL Let's Encrypt</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Información adicional -->
+        <div class="quick-links">
+          <h2 class="section-title">Recursos Adicionales</h2>
+          <div class="links-grid">
+            <a href="#" class="link-item">
+              <div class="link-icon">
+                <i class="bi bi-terminal"></i>
+              </div>
+              <span class="link-text">Comandos Esenciales</span>
+            </a>
+
+            <a href="#" class="link-item">
+              <div class="link-icon">
+                <i class="bi bi-diagram-3"></i>
+              </div>
+              <span class="link-text">Gestión de Procesos</span>
+            </a>
+
+            <a href="#" class="link-item">
+              <div class="link-icon">
+                <i class="bi bi-clock-history"></i>
+              </div>
+              <span class="link-text">Cron Jobs y Automatización</span>
+            </a>
+
+            <a href="#" class="link-item">
+              <div class="link-icon">
+                <i class="bi bi-people"></i>
+              </div>
+              <span class="link-text">Gestión de Usuarios</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+          <div class="row">
+            <div class="col-md-6">
+              <h5>
+                <i class="bi bi-server me-2"></i>Portal de Configuración VPS
+              </h5>
+              <p class="mb-2">
+                Herramienta de documentación y gestión para administradores de
+                sistemas.
+              </p>
+              <p class="small mb-0">© 2023 - Todos los derechos reservados</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+              <p class="mb-1">
+                <a href="index.html" class="me-3">Inicio</a>
+                <a href="documentacion.html" class="me-3">Documentación</a>
+                <a href="#">Contacto</a>
+              </p>
+              <p class="small text-muted">v1.0.0</p>
+            </div>
+          </div>
+        </footer>
+      </main>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Toggle sidebar en móviles
+      const toggleSidebarBtn = document.getElementById("toggleSidebar");
+      const sidebar = document.getElementById("sidebar");
+
+      toggleSidebarBtn.addEventListener("click", function () {
+        sidebar.classList.toggle("active");
+      });
+
+      // Cerrar sidebar al hacer clic en un enlace en móviles
+      if (window.innerWidth < 992) {
+        const navLinks = document.querySelectorAll(".nav-link");
+        navLinks.forEach((link) => {
+          link.addEventListener("click", function () {
+            if (sidebar.classList.contains("active")) {
+              sidebar.classList.remove("active");
+            }
+          });
+        });
+      }
+
+      // Cerrar sidebar al hacer clic fuera en móviles
+      document.addEventListener("click", function (event) {
+        if (
+          window.innerWidth < 992 &&
+          !sidebar.contains(event.target) &&
+          !toggleSidebarBtn.contains(event.target)
+        ) {
+          sidebar.classList.remove("active");
+        }
+      });
+
+      // Actualizar año en footer
+      document.addEventListener("DOMContentLoaded", function () {
+        const yearElement = document.querySelector(".footer .small");
+        if (yearElement) {
+          const currentYear = new Date().getFullYear();
+          yearElement.textContent = yearElement.textContent.replace(
+            "2023",
+            currentYear
+          );
+        }
+      });
+
+      // Efecto hover en tarjetas
+      const dashboardCards = document.querySelectorAll(".dashboard-card");
+      dashboardCards.forEach((card) => {
+        card.addEventListener("mouseenter", function () {
+          this.style.transform = "translateY(-5px)";
+        });
+
+        card.addEventListener("mouseleave", function () {
+          this.style.transform = "translateY(0)";
+        });
+      });
+
+      // Detectar cambios de tamaño de ventana
+      window.addEventListener("resize", function () {
+        if (window.innerWidth > 992) {
+          sidebar.classList.remove("active");
+        }
+      });
+    </script>
+  </body>
+</html>
