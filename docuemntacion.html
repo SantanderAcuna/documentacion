@@ -19,7 +19,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-   
+
     <style>
       :root {
         --primary-dark: #1a365d;
@@ -323,6 +323,15 @@
         .toggle-sidebar-btn {
           display: block !important;
         }
+
+        .footer {
+          margin-left: 0 !important;
+          width: 100%;
+        }
+
+        .sidebar.collapsed + .main-content-wrapper .footer {
+          margin-left: 0 !important;
+        }
       }
 
       /* Footer */
@@ -467,6 +476,11 @@
                 <i class="bi bi-hdd-stack me-1"></i> Nginx
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#scp-transfer">
+                <i class="bi bi-arrow-left-right me-1"></i> SCP
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -515,6 +529,16 @@
         <li><a href="#nginx-hijacking">21. Evitar Secuestro Nginx</a></li>
         <li><a href="#letsencrypt">22. Let's Encrypt</a></li>
         <li><a href="#cloudflare">23. Cloudflare</a></li>
+      </ul>
+
+      <!-- NUEVA SECCIÓN SCP -->
+      <h5>
+        <i class="bi bi-arrow-left-right me-2"></i>Transferencia de Archivos
+      </h5>
+      <ul>
+        <li>
+          <a href="#scp-transfer">24. Transferencia de Archivos con SCP</a>
+        </li>
       </ul>
     </div>
 
@@ -1204,6 +1228,535 @@
                 </div>
               </section>
 
+              <!-- NUEVA SECCIÓN SCP -->
+              <section id="scp-transfer" class="mt-5">
+                <h2>
+                  <i class="bi bi-arrow-left-right me-2"></i>24. Transferencia
+                  de Archivos con SCP
+                </h2>
+
+                <div class="alert alert-custom">
+                  <strong
+                    ><i class="bi bi-info-circle me-2"></i>Importante:</strong
+                  >
+                  Todos los comandos SCP deben ejecutarse desde
+                  <strong>Git Bash</strong> en Windows. No usar CMD ni
+                  PowerShell. Git Bash proporciona el entorno Unix necesario.
+                </div>
+
+                <!-- PARTE 1: PC LOCAL → VPS -->
+                <div class="card card-custom mb-4">
+                  <div class="card-header card-header-custom">
+                    <i class="bi bi-arrow-up-right me-2"></i>PARTE 1: Copiar del
+                    <strong>PC LOCAL → VPS</strong>
+                  </div>
+                  <div class="card-body">
+                    <div class="step">
+                      <h3>Paso 1: Abrir Git Bash</h3>
+                      <p>
+                        Para transferir archivos, necesitas usar Git Bash en
+                        Windows:
+                      </p>
+                      <ul>
+                        <li>Menú Inicio → Buscar "Git Bash" y abrirlo</li>
+                        <li>
+                          O hacer clic derecho en cualquier carpeta → "Git Bash
+                          Here"
+                        </li>
+                      </ul>
+                      <div class="alert alert-custom warning-custom mt-2">
+                        <strong
+                          ><i class="bi bi-exclamation-triangle me-2"></i
+                          >Nota:</strong
+                        >
+                        No uses CMD, PowerShell o la terminal integrada de VS
+                        Code. Solo Git Bash funciona correctamente.
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 2: Ir a la carpeta local en Git Bash</h3>
+                      <p>
+                        Navegar a la carpeta donde tienes los archivos que
+                        quieres transferir:
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >cd /c/laragon/www/docuemntacion/documentacion</span
+                        >
+                        <span class="command">ls -la</span>
+                      </div>
+                      <p>
+                        Esto te mostrará todos los archivos en esa carpeta, por
+                        ejemplo:
+                      </p>
+                      <ul>
+                        <li><code>index.html</code></li>
+                        <li><code>documentacion.html</code></li>
+                        <li><code>README.md</code></li>
+                      </ul>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 3: Sintaxis básica de SCP (PC → VPS)</h3>
+                      <p>La estructura básica del comando es:</p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp [opciones] archivo_local
+                          usuario@servidor:ruta_remota</span
+                        >
+                      </div>
+                      <p>Opciones más usadas:</p>
+                      <table class="table table-bordered mt-2">
+                        <thead>
+                          <tr>
+                            <th>Opción</th>
+                            <th>Descripción</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><code>-r</code></td>
+                            <td>Copia carpetas completas (recursivo)</td>
+                          </tr>
+                          <tr>
+                            <td><code>-P 2222</code></td>
+                            <td>Especifica puerto SSH diferente (no 22)</td>
+                          </tr>
+                          <tr>
+                            <td><code>-v</code></td>
+                            <td>Modo verboso (muestra detalles)</td>
+                          </tr>
+                          <tr>
+                            <td><code>-i clave.pem</code></td>
+                            <td>Usa una clave SSH específica</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 4: Copiar archivos individuales (PC → VPS)</h3>
+                      <p><strong>4.1 Copiar un solo archivo:</strong></p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp index.html sacunapolo:/home/sacunapolo/</span
+                        >
+                      </div>
+
+                      <p>
+                        <strong>4.2 Copiar varios archivos específicos:</strong>
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp index.html documentacion.html
+                          sacunapolo:/home/sacunapolo/</span
+                        >
+                      </div>
+
+                      <p>
+                        <strong>4.3 Copiar todos los archivos HTML:</strong>
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp *.html sacunapolo:/home/sacunapolo/</span
+                        >
+                      </div>
+
+                      <p>
+                        <strong>4.4 Copiar y cambiar nombre en destino:</strong>
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp index.html
+                          sacunapolo:/home/sacunapolo/index-backup.html</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 5: Copiar carpetas completas (PC → VPS)</h3>
+                      <p>
+                        <strong
+                          >5.1 Copiar carpeta completa con todo su
+                          contenido:</strong
+                        >
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >cd /c/laragon/www/docuemntacion</span
+                        >
+                        <span class="command"
+                          >scp -r documentacion
+                          sacunapolo:/home/sacunapolo/</span
+                        >
+                      </div>
+
+                      <p>
+                        <strong
+                          >5.2 Copiar solo el contenido de la carpeta (sin la
+                          carpeta misma):</strong
+                        >
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >cd /c/laragon/www/docuemntacion/documentacion</span
+                        >
+                        <span class="command"
+                          >scp -r * sacunapolo:/home/sacunapolo/</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>
+                        Paso 6: Verificar que los archivos llegaron al VPS
+                      </h3>
+                      <div class="code-block">
+                        <span class="command">ssh sacunapolo</span>
+                        <span class="command">cd /home/sacunapolo/</span>
+                        <span class="command">ls -la</span>
+                        <span class="command">exit</span>
+                      </div>
+                      <p>
+                        Esto te conectará al VPS, listará los archivos en tu
+                        carpeta home, y luego cerrará la conexión.
+                      </p>
+                    </div>
+
+                    <div class="step">
+                      <h3>
+                        Paso 7: Mover archivos a la ruta web (si es necesario)
+                      </h3>
+                      <p>
+                        Si necesitas mover los archivos al directorio web de
+                        Nginx:
+                      </p>
+                      <div class="code-block">
+                        <span class="command">ssh sacunapolo</span>
+                        <span class="command"
+                          >sudo mv /home/sacunapolo/*.html
+                          /var/www/desarrollo.labsoftware.xyz/</span
+                        >
+                        <span class="command">exit</span>
+                      </div>
+                      <div class="alert alert-custom mt-2">
+                        <strong
+                          ><i class="bi bi-lightbulb me-2"></i>Consejo:</strong
+                        >
+                        Puedes usar <code>scp</code> directamente a la carpeta
+                        web si tienes permisos:
+                        <div class="code-block mt-2">
+                          <span class="command"
+                            >scp index.html
+                            sacunapolo:/var/www/desarrollo.labsoftware.xyz/</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- PARTE 2: VPS → PC LOCAL -->
+                <div class="card card-custom mb-4">
+                  <div class="card-header card-header-custom">
+                    <i class="bi bi-arrow-down-left me-2"></i>PARTE 2: Copiar
+                    del <strong>VPS → PC LOCAL</strong>
+                  </div>
+                  <div class="card-body">
+                    <div class="step">
+                      <h3>Paso 1: Ir a la carpeta destino en tu PC</h3>
+                      <p>
+                        Abrir Git Bash y navegar a donde quieres guardar los
+                        archivos:
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >cd /c/Users/"Jose acuña"/Desktop</span
+                        >
+                      </div>
+                      <p>O si quieres crear una carpeta nueva:</p>
+                      <div class="code-block">
+                        <span class="command">mkdir backup_vps</span>
+                        <span class="command">cd backup_vps</span>
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 2: Sintaxis básica de SCP (VPS → PC)</h3>
+                      <p>La estructura es similar pero invertida:</p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp usuario@servidor:ruta_remota ruta_local</span
+                        >
+                      </div>
+                      <p>El punto <code>.</code> significa "carpeta actual".</p>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 3: Copiar archivos individuales (VPS → PC)</h3>
+                      <p><strong>3.1 Copiar un archivo específico:</strong></p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp sacunapolo:/home/sacunapolo/index.html .</span
+                        >
+                      </div>
+
+                      <p>
+                        <strong>3.2 Copiar varios archivos por patrón:</strong>
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp sacunapolo:/home/sacunapolo/*.html .</span
+                        >
+                      </div>
+
+                      <p>
+                        <strong
+                          >3.3 Copiar desde el directorio web del
+                          servidor:</strong
+                        >
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp
+                          sacunapolo:/var/www/desarrollo.labsoftware.xyz/index.html
+                          .</span
+                        >
+                      </div>
+
+                      <p><strong>3.4 Copiar a una ruta específica:</strong></p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp sacunapolo:/home/sacunapolo/config.txt
+                          /c/laragon/www/backups/</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 4: Copiar carpetas completas (VPS → PC)</h3>
+                      <p>
+                        <strong
+                          >4.1 Copiar carpeta completa con todo su
+                          contenido:</strong
+                        >
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp -r sacunapolo:/home/sacunapolo/documentacion
+                          /c/laragon/www/backups/</span
+                        >
+                      </div>
+
+                      <p>
+                        <strong
+                          >4.2 Copiar el contenido a una carpeta local:</strong
+                        >
+                      </p>
+                      <div class="code-block">
+                        <span class="command">mkdir backup_servidor</span>
+                        <span class="command"
+                          >scp -r sacunapolo:/home/sacunapolo/*
+                          backup_servidor/</span
+                        >
+                      </div>
+
+                      <p><strong>4.3 Copiar configuración de Nginx:</strong></p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp -r sacunapolo:/etc/nginx/sites-available
+                          /c/backups/nginx/</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 5: Verificar la copia local</h3>
+                      <div class="code-block">
+                        <span class="command">ls -la</span>
+                        <span class="command">du -sh *</span>
+                      </div>
+                      <p>
+                        El primer comando lista los archivos, el segundo muestra
+                        el tamaño de cada uno.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- TABLA RESUMEN -->
+                <div class="card card-custom mb-4">
+                  <div class="card-header card-header-custom">
+                    <i class="bi bi-card-checklist me-2"></i>Resumen Rápido de
+                    Comandos SCP
+                  </div>
+                  <div class="card-body">
+                    <table class="table table-hover">
+                      <thead class="table-dark">
+                        <tr>
+                          <th>Acción</th>
+                          <th>Comando</th>
+                          <th>Ejemplo</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>PC → VPS (archivo)</td>
+                          <td><code>scp archivo usuario@host:ruta</code></td>
+                          <td><code>scp index.html sacunapolo:/home/</code></td>
+                        </tr>
+                        <tr>
+                          <td>VPS → PC (archivo)</td>
+                          <td><code>scp usuario@host:archivo .</code></td>
+                          <td>
+                            <code>scp sacunapolo:/home/index.html .</code>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>PC → VPS (carpeta)</td>
+                          <td><code>scp -r carpeta usuario@host:ruta</code></td>
+                          <td><code>scp -r docs sacunapolo:/var/www/</code></td>
+                        </tr>
+                        <tr>
+                          <td>VPS → PC (carpeta)</td>
+                          <td><code>scp -r usuario@host:carpeta .</code></td>
+                          <td>
+                            <code>scp -r sacunapolo:/var/www/html .</code>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Puerto diferente</td>
+                          <td><code>scp -P puerto ...</code></td>
+                          <td>
+                            <code
+                              >scp -P 2222 index.html sacunapolo:/home/</code
+                            >
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Con clave SSH</td>
+                          <td><code>scp -i clave ...</code></td>
+                          <td>
+                            <code
+                              >scp -i ~/.ssh/vps_portal index.html
+                              sacunapolo:/home/</code
+                            >
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- SOLUCIÓN DE PROBLEMAS -->
+                <div class="card card-custom">
+                  <div class="card-header card-header-custom">
+                    <i class="bi bi-exclamation-triangle me-2"></i>Solución de
+                    Problemas Comunes
+                  </div>
+                  <div class="card-body">
+                    <div class="step">
+                      <h3>❌ Error: "No such file or directory"</h3>
+                      <p>
+                        <strong>Solución:</strong> Verifica que el archivo
+                        existe y la ruta es correcta:
+                      </p>
+                      <div class="code-block">
+                        <span class="command">ls -la archivo.html</span>
+                        <span class="command"
+                          >scp ./archivo.html sacunapolo:/home/sacunapolo/</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>❌ Error: "Permission denied"</h3>
+                      <p>
+                        <strong>Solución 1:</strong> Copiar a /tmp y luego mover
+                        con sudo:
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp archivo.html sacunapolo:/tmp/</span
+                        >
+                        <span class="command">ssh sacunapolo</span>
+                        <span class="command"
+                          >sudo mv /tmp/archivo.html /var/www/html/</span
+                        >
+                      </div>
+
+                      <p>
+                        <strong>Solución 2:</strong> Usar usuario con permisos:
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp archivo.html sacunapolo:/home/sacunapolo/</span
+                        >
+                        <span class="command">ssh sacunapolo</span>
+                        <span class="command"
+                          >sudo chown www-data:www-data
+                          /home/sacunapolo/archivo.html</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>❌ Error: Problemas de conexión SSH</h3>
+                      <p>
+                        <strong>Solución:</strong> Primero prueba la conexión
+                        SSH básica:
+                      </p>
+                      <div class="code-block">
+                        <span class="command">ssh sacunapolo</span>
+                      </div>
+                      <p>Si SSH funciona, SCP también debería funcionar.</p>
+                    </div>
+
+                    <div class="step">
+                      <h3>❌ Error: Carpetas con espacios en nombres</h3>
+                      <p>
+                        <strong>Solución:</strong> Usar comillas o escape con
+                        barra invertida:
+                      </p>
+                      <div class="code-block">
+                        <span class="comment"># Con comillas</span>
+                        <span class="command"
+                          >scp "mi archivo.txt" sacunapolo:/home/</span
+                        >
+                        <span class="comment"># Con escape</span>
+                        <span class="command"
+                          >scp mi\ archivo.txt sacunapolo:/home/</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CONSEJO FINAL -->
+                <div class="alert alert-custom mt-4">
+                  <h4>
+                    <i class="bi bi-lightbulb-fill me-2"></i>Consejo Final para
+                    Transferencias Frecuentes
+                  </h4>
+                  <p>
+                    Si necesitas transferir archivos con frecuencia o mantener
+                    sincronizadas carpetas, usa <strong>rsync</strong> en lugar
+                    de scp:
+                  </p>
+                  <div class="code-block">
+                    <span class="command"
+                      >rsync -avz *.html sacunapolo:/home/sacunapolo/</span
+                    >
+                  </div>
+                  <p class="mb-0 mt-2">
+                    <strong>Ventajas de rsync:</strong> Solo transfiere cambios,
+                    mantiene permisos y es más rápido en transferencias
+                    posteriores.
+                  </p>
+                </div>
+              </section>
+
               <!-- Final Notes -->
               <div class="alert alert-custom mt-5">
                 <h4>
@@ -1222,8 +1775,8 @@
                   La documentación cubre desde la creación inicial de claves SSH
                   hasta la configuración avanzada de seguridad, Nginx, MySQL y
                   certificados SSL, pasando por administración de usuarios,
-                  firewall, Fail2Ban, y optimizaciones de rendimiento y
-                  seguridad.
+                  firewall, Fail2Ban, optimizaciones de rendimiento, seguridad y
+                  ahora transferencia de archivos con SCP.
                 </p>
               </div>
             </div>
@@ -1234,33 +1787,45 @@
       <!-- Footer -->
       <footer class="footer">
         <div class="container">
-          <div class="row">
-            <div class="col-md-6">
-              <h5>
-                <i class="bi bi-server me-2"></i>Documentación Completa VPS
-              </h5>
-              <p>
+          <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+              <div class="footer-brand">
+                <i class="bi bi-server me-2"></i>
+                <h5 class="d-inline-block">
+                  Portal VPS - Documentación Completa
+                </h5>
+              </div>
+              <p class="mt-2 mb-1">
                 Guía exhaustiva de configuración y administración de servidores
               </p>
-              <p class="small mb-0">
-                Contiene todos los pasos sin omisiones ni abreviaciones
+              <p class="small text-light mb-0">
+                <i class="bi bi-check-circle me-1"></i>Contiene todos los pasos
+                sin omisiones ni abreviaciones
               </p>
             </div>
-            <div class="col-md-6 text-md-end">
-              <p class="mb-1">Navegación rápida:</p>
-              <a href="index.html" class="btn btn-outline-light btn-sm me-2">
-                <i class="bi bi-house-door me-1"></i>Inicio
-              </a>
-              <a href="#ssh-key" class="btn btn-outline-light btn-sm me-2">
-                <i class="bi bi-key me-1"></i>SSH
-              </a>
-              <a href="#nginx" class="btn btn-outline-light btn-sm">
-                <i class="bi bi-hdd-stack me-1"></i>Nginx
-              </a>
-              <p class="mt-3 small">
-                Documentación completa • Última actualización:
-                <span id="current-date"></span>
-              </p>
+            <div class="col-md-6">
+              <div
+                class="d-flex flex-column align-items-start align-items-md-end"
+              >
+                <p class="mb-2 fw-semibold">Navegación rápida:</p>
+                <div
+                  class="d-flex flex-wrap gap-2 justify-content-start justify-content-md-end"
+                >
+                  <a href="index.html" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-house-door me-1"></i>Inicio
+                  </a>
+                  <a href="#nginx" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-hdd-stack me-1"></i>Nginx
+                  </a>
+                  <a href="#scp-transfer" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-arrow-left-right me-1"></i>SCP
+                  </a>
+                </div>
+                <p class="mt-3 small mb-0">
+                  <i class="bi bi-clock-history me-1"></i>Última actualización:
+                  <span id="current-date" class="fw-semibold text-light"></span>
+                </p>
+              </div>
             </div>
           </div>
         </div>
