@@ -486,6 +486,11 @@
                 <i class="bi bi-git me-1"></i> Git
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#php-fpm">
+                <i class="bi bi-code me-1"></i> PHP-FPM
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -526,14 +531,15 @@
         <li><a href="#ssh-tunnel">17. Túneles SSH para MySQL</a></li>
         <li><a href="#nginx-security">18. Seguridad Nginx</a></li>
         <li><a href="#nginx-compression">19. Compresión Nginx</a></li>
+        <li><a href="#php-fpm">20. Instalación PHP-FPM y Composer</a></li>
       </ul>
 
       <h5><i class="bi bi-lightning-charge me-2"></i>Optimización</h5>
       <ul>
-        <li><a href="#dos-protection">20. Protección DDoS</a></li>
-        <li><a href="#nginx-hijacking">21. Evitar Secuestro Nginx</a></li>
-        <li><a href="#letsencrypt">22. Let's Encrypt</a></li>
-        <li><a href="#cloudflare">23. Cloudflare</a></li>
+        <li><a href="#dos-protection">21. Protección DDoS</a></li>
+        <li><a href="#nginx-hijacking">22. Evitar Secuestro Nginx</a></li>
+        <li><a href="#letsencrypt">23. Let's Encrypt</a></li>
+        <li><a href="#cloudflare">24. Cloudflare</a></li>
       </ul>
 
       <!-- NUEVA SECCIÓN SCP -->
@@ -542,7 +548,7 @@
       </h5>
       <ul>
         <li>
-          <a href="#scp-transfer">24. Transferencia de Archivos con SCP</a>
+          <a href="#scp-transfer">25. Transferencia de Archivos con SCP</a>
         </li>
       </ul>
 
@@ -550,7 +556,7 @@
       <h5><i class="bi bi-git me-2"></i>Control de Versiones</h5>
       <ul>
         <li>
-          <a href="#git-clone">25. Clonar Proyectos de GitHub</a>
+          <a href="#git-clone">26. Clonar Proyectos de GitHub</a>
         </li>
       </ul>
     </div>
@@ -1152,10 +1158,551 @@
                 </div>
               </section>
 
+              <!-- NUEVA SECCIÓN PHP-FPM -->
+              <section id="php-fpm" class="mt-5">
+                <h2>
+                  <i class="bi bi-php me-2"></i>20. Instalación PHP-FPM y
+                  Composer
+                </h2>
+
+                <div class="alert alert-custom">
+                  <strong
+                    ><i class="bi bi-info-circle me-2"></i>¿Qué es
+                    PHP-FPM?</strong
+                  >
+                  <p class="mb-0">
+                    PHP-FPM (FastCGI Process Manager) es una implementación
+                    alternativa del PHP FastCGI con características adicionales
+                    útiles para sitios de cualquier tamaño, especialmente para
+                    sitios de gran carga. Es más rápido y consume menos memoria
+                    que el módulo tradicional de Apache.
+                  </p>
+                </div>
+
+                <!-- INSTALACIÓN PHP-FPM -->
+                <div class="card card-custom mb-4">
+                  <div class="card-header card-header-custom">
+                    <i class="bi bi-download me-2"></i>PARTE 1: Instalación de
+                    PHP-FPM (Fast Processing Module)
+                  </div>
+                  <div class="card-body">
+                    <div class="step">
+                      <h3>Paso 1: Agregar repositorio de PHP</h3>
+                      <p>
+                        Agregamos el repositorio de Ondřej Surý que contiene
+                        versiones actualizadas de PHP:
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >sudo add-apt-repository ppa:ondrej/php</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 2: Actualizar lista de paquetes</h3>
+                      <div class="code-block">
+                        <span class="command">sudo apt update</span>
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 3: Actualizar paquetes existentes</h3>
+                      <div class="code-block">
+                        <span class="command">sudo apt upgrade</span>
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 4: Instalar PHP-FPM (versión 8.4)</h3>
+                      <p>
+                        Instalamos PHP-FPM específicamente para la versión 8.4:
+                      </p>
+                      <div class="code-block">
+                        <span class="command">sudo apt install php8.4-fpm</span>
+                      </div>
+                      <p>O si prefieres la última versión disponible:</p>
+                      <div class="code-block">
+                        <span class="command">sudo apt install php-fpm</span>
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 5: Verificar la instalación</h3>
+                      <p>
+                        Verifica que PHP-FPM se haya instalado correctamente:
+                      </p>
+                      <div class="code-block">
+                        <span class="command">php-fpm8.4 --version</span>
+                      </div>
+                      <p>O para la versión general:</p>
+                      <div class="code-block">
+                        <span class="command">php-fpm --version</span>
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 6: Verificar que el servicio está activo</h3>
+                      <div class="code-block">
+                        <span class="command"
+                          >sudo systemctl status php8.4-fpm</span
+                        >
+                      </div>
+                      <p>Deberías ver un estado "active (running)".</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CONFIGURACIÓN php.ini -->
+                <div class="card card-custom mb-4">
+                  <div class="card-header card-header-custom">
+                    <i class="bi bi-gear me-2"></i>PARTE 2: Configuración del
+                    archivo php.ini para PHP-FPM
+                  </div>
+                  <div class="card-body">
+                    <div class="step">
+                      <h3>
+                        Paso 1: Identificar la ruta del archivo php.ini para
+                        PHP-FPM
+                      </h3>
+                      <p>
+                        El archivo de configuración de PHP 8.4 para el servicio
+                        PHP-FPM se encuentra en:
+                      </p>
+                      <div class="code-block">
+                        <span class="command">/etc/php/8.4/fpm/php.ini</span>
+                      </div>
+                      <p>Para confirmar la ruta exacta:</p>
+                      <div class="code-block">
+                        <span class="command"
+                          >php-fpm8.4 -i | grep "Loaded Configuration
+                          File"</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>
+                        Paso 2: Editar el archivo php.ini asociado a PHP-FPM
+                      </h3>
+                      <p>
+                        Para editar el archivo de configuración, usa nano con
+                        privilegios de administrador:
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >sudo nano /etc/php/8.4/fpm/php.ini</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>
+                        Paso 3: Aplicar el cambio de seguridad en
+                        cgi.fix_pathinfo
+                      </h3>
+                      <p>
+                        Esta es una configuración de seguridad importante para
+                        prevenir ataques:
+                      </p>
+                      <p>Dentro del archivo php.ini, localiza el parámetro:</p>
+                      <div class="code-block">cgi.fix_pathinfo=1</div>
+                      <p>Luego, modifícalo a:</p>
+                      <div class="code-block">cgi.fix_pathinfo=0</div>
+                      <p>
+                        Posteriormente, guarda el archivo y cierra el editor:
+                      </p>
+                      <ul>
+                        <li>
+                          En nano: <strong>CTRL+O</strong> (Guardar),
+                          <strong>ENTER</strong>,
+                          <strong>CTRL+X</strong> (Salir)
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div class="step">
+                      <h3>
+                        Paso 4: Aplicar los cambios sin reiniciar el servicio
+                        (solo recarga)
+                      </h3>
+                      <p>
+                        Para que PHP-FPM relea la configuración sin cortar
+                        procesos en ejecución, recarga el servicio:
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >sudo systemctl reload php8.4-fpm</span
+                        >
+                      </div>
+                      <div class="alert alert-custom mt-2">
+                        <strong
+                          ><i class="bi bi-lightbulb me-2"></i>Nota:</strong
+                        >
+                        Este método es adecuado para cambios en parámetros del
+                        archivo php.ini. La recarga (reload) es más segura que
+                        un reinicio completo porque no interrumpe las conexiones
+                        activas.
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>
+                        Paso 5: Verificar que PHP-FPM está cargando el php.ini
+                        correcto
+                      </h3>
+                      <p>
+                        Para confirmar que PHP-FPM utiliza el archivo de
+                        configuración de FPM (y no el de CLI):
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >php-fpm8.4 -i | grep "Loaded Configuration
+                          File"</span
+                        >
+                      </div>
+                      <p>La salida esperada debe indicar:</p>
+                      <div class="code-block">
+                        Loaded Configuration File => /etc/php/8.4/fpm/php.ini
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>
+                        Paso 6: Consideración adicional sobre cuándo usar
+                        restart
+                      </h3>
+                      <p>
+                        Si los cambios realizados no son parámetros de php.ini
+                        sino modificaciones relacionadas con extensiones, pools
+                        o archivos de configuración del servicio, reinicia
+                        completamente PHP-FPM:
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >sudo systemctl restart php8.4-fpm</span
+                        >
+                      </div>
+                      <div class="alert alert-custom warning-custom mt-2">
+                        <strong
+                          ><i class="bi bi-exclamation-triangle me-2"></i
+                          >Importante:</strong
+                        >
+                        Para cambios exclusivos en php.ini, la recarga (reload)
+                        suele ser suficiente. Usa restart solo cuando sea
+                        estrictamente necesario.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- VISUALIZACIÓN DE LOGS -->
+                <div class="card card-custom mb-4">
+                  <div class="card-header card-header-custom">
+                    <i class="bi bi-file-text me-2"></i>PARTE 3: Visualización
+                    de Logs de PHP-FPM
+                  </div>
+                  <div class="card-body">
+                    <div class="step">
+                      <h3>Paso 1: Navegar al directorio de logs</h3>
+                      <div class="code-block">
+                        <span class="command">cd /var/log</span>
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 2: Ver logs de PHP-FPM específicos</h3>
+                      <p>Los logs de PHP-FPM generalmente se encuentran en:</p>
+                      <div class="code-block">
+                        <span class="command"
+                          >sudo nano /var/log/php8.4-fpm.log</span
+                        >
+                      </div>
+                      <p>O para ver logs en tiempo real:</p>
+                      <div class="code-block">
+                        <span class="command"
+                          >sudo tail -f /var/log/php8.4-fpm.log</span
+                        >
+                      </div>
+                      <p>Para ver logs de errores:</p>
+                      <div class="code-block">
+                        <span class="command"
+                          >sudo nano /var/log/php8.4-fpm-error.log</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 3: Ver todos los logs disponibles</h3>
+                      <p>Para ver qué logs están disponibles:</p>
+                      <div class="code-block">
+                        <span class="command">ls -la | grep php</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- INSTALACIÓN DE COMPOSER -->
+                <div class="card card-custom mb-4">
+                  <div class="card-header card-header-custom">
+                    <i class="bi bi-box me-2"></i>PARTE 4: Instalación de
+                    Composer para Laravel/Proyectos PHP
+                  </div>
+                  <div class="card-body">
+                    <div class="step">
+                      <h3>Paso 1: Descargar e instalar Composer globalmente</h3>
+                      <p>
+                        Descargamos Composer directamente y lo instalamos en
+                        <code>/usr/local/bin/</code>
+                        para poder usarlo de manera global con el nombre
+                        "composer":
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >sudo curl -sS https://getcomposer.org/installer |
+                          sudo php -- --install-dir=/usr/local/bin
+                          --filename=composer</span
+                        >
+                      </div>
+                      <div class="alert alert-custom mt-2">
+                        <strong
+                          ><i class="bi bi-lightbulb me-2"></i
+                          >Explicación:</strong
+                        >
+                        <ul class="mb-0 mt-1">
+                          <li>
+                            <code>--install-dir=/usr/local/bin</code>: Instala
+                            Composer en el directorio de binarios globales
+                          </li>
+                          <li>
+                            <code>--filename=composer</code>: Lo renombra
+                            simplemente a "composer" en lugar de "composer.phar"
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 2: Verificar la instalación de Composer</h3>
+                      <div class="code-block">
+                        <span class="command">composer --version</span>
+                      </div>
+                      <p>
+                        Deberías ver algo como:
+                        <code>Composer version 2.x.x</code>
+                      </p>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 3: Actualizar Composer</h3>
+                      <p>Para actualizar Composer a la última versión:</p>
+                      <div class="code-block">
+                        <span class="command">composer self-update</span>
+                      </div>
+                      <p>O con sudo si es necesario:</p>
+                      <div class="code-block">
+                        <span class="command">sudo composer self-update</span>
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 4: Verificar la ubicación de Composer</h3>
+                      <p>
+                        Para confirmar que Composer está en el PATH correcto:
+                      </p>
+                      <div class="code-block">
+                        <span class="command">which composer</span>
+                      </div>
+                      <p>
+                        Debería mostrar: <code>/usr/local/bin/composer</code>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CONFIGURACIÓN DE NGINX PARA PHP-FPM -->
+                <div class="card card-custom">
+                  <div class="card-header card-header-custom">
+                    <i class="bi bi-hdd-network me-2"></i>PARTE 5: Configurar
+                    Nginx para usar PHP-FPM
+                  </div>
+                  <div class="card-body">
+                    <div class="step">
+                      <h3>Paso 1: Configurar un sitio en Nginx para PHP</h3>
+                      <p>
+                        Crear o editar un archivo de configuración de sitio en
+                        Nginx:
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >sudo nano /etc/nginx/sites-available/tu-sitio</span
+                        >
+                      </div>
+                      <p>Agrega la siguiente configuración básica para PHP:</p>
+                      <div class="code-block">
+                        server { listen 80; server_name tu-dominio.com; root
+                        /var/www/tu-proyecto/public; index index.php index.html
+                        index.htm; location / { try_files $uri $uri/
+                        /index.php?$query_string; } location ~ \.php$ { include
+                        snippets/fastcgi-php.conf; fastcgi_pass
+                        unix:/var/run/php/php8.4-fpm.sock; fastcgi_param
+                        SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                        include fastcgi_params; } location ~ /\.ht { deny all; }
+                        }
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 2: Habilitar el sitio</h3>
+                      <div class="code-block">
+                        <span class="command"
+                          >sudo ln -s /etc/nginx/sites-available/tu-sitio
+                          /etc/nginx/sites-enabled/</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 3: Probar la configuración de Nginx</h3>
+                      <div class="code-block">
+                        <span class="command">sudo nginx -t</span>
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 4: Recargar Nginx</h3>
+                      <div class="code-block">
+                        <span class="command">sudo systemctl reload nginx</span>
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 5: Crear un archivo de prueba PHP</h3>
+                      <p>
+                        Crea un archivo info.php para verificar que PHP
+                        funciona:
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >sudo nano /var/www/tu-proyecto/public/info.php</span
+                        >
+                      </div>
+                      <p>Agrega este contenido:</p>
+                      <div class="code-block">&lt;?php phpinfo(); ?></div>
+                      <p>
+                        Luego accede a:
+                        <code>http://tu-dominio.com/info.php</code>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- TABLA RESUMEN PHP-FPM -->
+                <div class="card card-custom mt-4">
+                  <div class="card-header card-header-custom">
+                    <i class="bi bi-card-checklist me-2"></i>Resumen Rápido de
+                    Comandos PHP-FPM
+                  </div>
+                  <div class="card-body">
+                    <table class="table table-hover">
+                      <thead class="table-dark">
+                        <tr>
+                          <th>Acción</th>
+                          <th>Comando</th>
+                          <th>Propósito</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Instalar PHP-FPM</td>
+                          <td><code>sudo apt install php8.4-fpm</code></td>
+                          <td>Instalar PHP FastCGI Process Manager</td>
+                        </tr>
+                        <tr>
+                          <td>Editar php.ini</td>
+                          <td>
+                            <code>sudo nano /etc/php/8.4/fpm/php.ini</code>
+                          </td>
+                          <td>Configurar PHP para FPM</td>
+                        </tr>
+                        <tr>
+                          <td>Cambiar cgi.fix_pathinfo</td>
+                          <td><code>cgi.fix_pathinfo=0</code></td>
+                          <td>Mejorar seguridad</td>
+                        </tr>
+                        <tr>
+                          <td>Recargar PHP-FPM</td>
+                          <td><code>sudo systemctl reload php8.4-fpm</code></td>
+                          <td>Aplicar cambios sin reinicio completo</td>
+                        </tr>
+                        <tr>
+                          <td>Reiniciar PHP-FPM</td>
+                          <td>
+                            <code>sudo systemctl restart php8.4-fpm</code>
+                          </td>
+                          <td>Reinicio completo del servicio</td>
+                        </tr>
+                        <tr>
+                          <td>Ver estado</td>
+                          <td><code>sudo systemctl status php8.4-fpm</code></td>
+                          <td>Verificar que el servicio está activo</td>
+                        </tr>
+                        <tr>
+                          <td>Ver logs</td>
+                          <td>
+                            <code>sudo tail -f /var/log/php8.4-fpm.log</code>
+                          </td>
+                          <td>Monitorear logs en tiempo real</td>
+                        </tr>
+                        <tr>
+                          <td>Instalar Composer</td>
+                          <td>
+                            <code
+                              >sudo curl -sS https://getcomposer.org/installer |
+                              sudo php -- --install-dir=/usr/local/bin
+                              --filename=composer</code
+                            >
+                          </td>
+                          <td>Instalar gestor de dependencias PHP</td>
+                        </tr>
+                        <tr>
+                          <td>Actualizar Composer</td>
+                          <td><code>composer self-update</code></td>
+                          <td>Actualizar a la última versión</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- CONSEJOS FINALES -->
+                <div class="alert alert-custom mt-4">
+                  <h4>
+                    <i class="bi bi-lightbulb-fill me-2"></i>Consejos Finales
+                    para PHP-FPM
+                  </h4>
+                  <p>
+                    <strong>Optimización de PHP-FPM:</strong> Ajusta los
+                    parámetros de pool según tus necesidades:
+                  </p>
+                  <div class="code-block">
+                    ; /etc/php/8.4/fpm/pool.d/www.conf pm = dynamic
+                    pm.max_children = 50 pm.start_servers = 5
+                    pm.min_spare_servers = 5 pm.max_spare_servers = 35
+                    pm.max_requests = 500
+                  </div>
+                  <p class="mb-0 mt-2">
+                    <strong>Seguridad:</strong> Siempre establece
+                    <code>cgi.fix_pathinfo=0</code> y configura correctamente
+                    los permisos de archivos en proyectos PHP.
+                  </p>
+                </div>
+              </section>
+
               <!-- DDoS Protection Section -->
               <section id="dos-protection" class="mt-5">
                 <h2>
-                  <i class="bi bi-shield-exclamation me-2"></i>20. Protección
+                  <i class="bi bi-shield-exclamation me-2"></i>21. Protección
                   DDoS
                 </h2>
 
@@ -1177,7 +1724,7 @@
               <!-- Nginx Hijacking Protection -->
               <section id="nginx-hijacking" class="mt-5">
                 <h2>
-                  <i class="bi bi-shield-slash me-2"></i>21. Evitar Secuestro
+                  <i class="bi bi-shield-slash me-2"></i>22. Evitar Secuestro
                   Nginx
                 </h2>
 
@@ -1193,7 +1740,7 @@
 
               <!-- Let's Encrypt Section -->
               <section id="letsencrypt" class="mt-5">
-                <h2><i class="bi bi-lock me-2"></i>22. Let's Encrypt</h2>
+                <h2><i class="bi bi-lock me-2"></i>23. Let's Encrypt</h2>
 
                 <div class="step">
                   <h3>Instalar Certbot</h3>
@@ -1232,7 +1779,7 @@
 
               <!-- Cloudflare Section -->
               <section id="cloudflare" class="mt-5">
-                <h2><i class="bi bi-cloud me-2"></i>23. Cloudflare</h2>
+                <h2><i class="bi bi-cloud me-2"></i>24. Cloudflare</h2>
                 <div class="alert alert-custom">
                   <strong><i class="bi bi-info-circle me-2"></i>Nota:</strong>
                   La integración con Cloudflare implica cambiar nameservers,
@@ -1244,7 +1791,7 @@
               <!-- NUEVA SECCIÓN SCP -->
               <section id="scp-transfer" class="mt-5">
                 <h2>
-                  <i class="bi bi-arrow-left-right me-2"></i>24. Transferencia
+                  <i class="bi bi-arrow-left-right me-2"></i>25. Transferencia
                   de Archivos con SCP
                 </h2>
 
@@ -1773,7 +2320,7 @@
               <!-- NUEVA SECCIÓN GIT -->
               <section id="git-clone" class="mt-5">
                 <h2>
-                  <i class="bi bi-git me-2"></i>25. Clonar Proyectos de GitHub
+                  <i class="bi bi-git me-2"></i>26. Clonar Proyectos de GitHub
                 </h2>
 
                 <div class="alert alert-custom">
@@ -2099,8 +2646,8 @@
                   hasta la configuración avanzada de seguridad, Nginx, MySQL y
                   certificados SSL, pasando por administración de usuarios,
                   firewall, Fail2Ban, optimizaciones de rendimiento, seguridad,
-                  transferencia de archivos con SCP y ahora control de versiones
-                  con Git.
+                  transferencia de archivos con SCP, control de versiones con
+                  Git y ahora <strong>PHP-FPM con Composer</strong>.
                 </p>
               </div>
             </div>
@@ -2146,6 +2693,9 @@
                   </a>
                   <a href="#git-clone" class="btn btn-outline-light btn-sm">
                     <i class="bi bi-git me-1"></i>Git
+                  </a>
+                  <a href="#php-fpm" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-code me-1"></i>PHP-FPM
                   </a>
                 </div>
                 <p class="mt-3 small mb-0">
