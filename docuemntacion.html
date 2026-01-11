@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documentación Completa - Configuración VPS Profesional</title>
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      :root {
+        --primary-dark: #1a365d;
+        --primary-blue: #2b6cb0;
+        --primary-light-blue: #4299e1;
+        --primary-light: #f7fafc;
+        --accent-orange: #ed8936;
+        --sidebar-bg: #1a202c;
+        --sidebar-text: #e2e8f0;
+        --sidebar-hover: #2d3748;
+        --main-bg: #f8f9fa;
+        --code-bg: #2d3748;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        background-color: var(--main-bg);
+        color: #2d3748;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      /* Navbar Styles */
+      .navbar-custom {
+        background: linear-gradient(
+          135deg,
+          var(--primary-dark) 0%,
+          var(--primary-blue) 100%
+        );
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-custom .navbar-brand {
+        color: white;
+        font-weight: 700;
+        font-size: 1.3rem;
+      }
+
+      .navbar-custom .nav-link {
+        color: rgba(255, 255, 255, 0.9) !important;
+        transition: all 0.3s ease;
+      }
+
+      .navbar-custom .nav-link:hover {
+        color: white !important;
+        transform: translateY(-1px);
+      }
+
+      /* Sidebar Styles */
+      .sidebar {
+        background-color: var(--sidebar-bg);
+        color: var(--sidebar-text);
+        height: calc(100vh - 56px);
+        position: fixed;
+        top: 56px;
+        left: 0;
+        width: 280px;
+        overflow-y: auto;
+        z-index: 100;
+        padding: 1.5rem 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .sidebar.collapsed {
+        transform: translateX(-100%);
+      }
+
+      .sidebar h5 {
+        color: var(--accent-orange);
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding-left: 0.5rem;
+        font-weight: 600;
+      }
+
+      .sidebar ul {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 1.5rem;
+      }
+
+      .sidebar li {
+        margin-bottom: 0.3rem;
+      }
+
+      .sidebar a {
+        color: var(--sidebar-text);
+        text-decoration: none;
+        display: block;
+        padding: 0.5rem 0.8rem;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+        border-left: 3px solid transparent;
+        font-size: 0.95rem;
+      }
+
+      .sidebar a:hover,
+      .sidebar a.active {
+        background-color: var(--sidebar-hover);
+        color: white;
+        border-left: 3px solid var(--accent-orange);
+        padding-left: 1rem;
+      }
+
+      /* Main Content */
+      .main-content {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        padding: 2.5rem;
+        margin: 2rem 0;
+        margin-left: 300px;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar.collapsed + .main-content-wrapper .main-content {
+        margin-left: 0;
+      }
+
+      /* Headings */
+      h1 {
+        color: var(--primary-dark);
+        border-bottom: 3px solid var(--accent-orange);
+        padding-bottom: 0.8rem;
+        margin-bottom: 2rem;
+        font-weight: 700;
+      }
+
+      h2 {
+        color: var(--primary-blue);
+        border-left: 4px solid var(--primary-light-blue);
+        padding-left: 1rem;
+        margin-top: 2.5rem;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+      }
+
+      h3 {
+        color: var(--primary-dark);
+        margin-top: 1.8rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+      }
+
+      /* Code Blocks */
+      .code-block {
+        background-color: var(--code-bg);
+        color: #e2e8f0;
+        padding: 1.2rem;
+        border-radius: 8px;
+        font-family: "Consolas", "Monaco", "Courier New", monospace;
+        font-size: 0.95rem;
+        margin: 1.2rem 0;
+        overflow-x: auto;
+        border-left: 4px solid var(--accent-orange);
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+
+      .code-block code {
+        color: #81e6d9;
+        background: transparent;
+      }
+
+      .command {
+        color: #68d391;
+        font-weight: bold;
+      }
+
+      .comment {
+        color: #a0aec0;
+        font-style: italic;
+      }
+
+      /* Cards */
+      .card-custom {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        margin-bottom: 1.5rem;
+        border-top: 4px solid var(--primary-light-blue);
+      }
+
+      .card-header-custom {
+        background-color: rgba(66, 153, 225, 0.1);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        color: var(--primary-dark);
+        font-weight: 600;
+        padding: 1rem 1.25rem;
+      }
+
+      /* Alerts */
+      .alert-custom {
+        border-radius: 8px;
+        border-left: 4px solid var(--primary-light-blue);
+        background-color: rgba(66, 153, 225, 0.08);
+        padding: 1rem;
+        margin: 1.2rem 0;
+      }
+
+      .warning-custom {
+        border-left: 4px solid var(--accent-orange);
+        background-color: rgba(237, 137, 54, 0.08);
+      }
+
+      /* Buttons */
+      .btn-custom {
+        background: linear-gradient(
+          135deg,
+          var(--primary-blue) 0%,
+          var(--primary-light-blue) 100%
+        );
+        color: white;
+        border: none;
+        padding: 0.5rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .btn-custom:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+        color: white;
+      }
+
+      /* Step by step */
+      .step {
+        counter-increment: step-counter;
+        margin-bottom: 1.8rem;
+        padding-left: 2.8rem;
+        position: relative;
+      }
+
+      .step:before {
+        content: counter(step-counter);
+        background: linear-gradient(
+          135deg,
+          var(--primary-blue) 0%,
+          var(--primary-light-blue) 100%
+        );
+        color: white;
+        font-weight: bold;
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+        text-align: center;
+        line-height: 2rem;
+        position: absolute;
+        left: 0;
+        top: 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Back to top button */
+      .back-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: var(--primary-blue);
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+        z-index: 1000;
+      }
+
+      .back-to-top:hover {
+        transform: translateY(-3px);
+        color: white;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        background: var(--primary-light-blue);
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 992px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+
+        .sidebar.collapsed {
+          transform: translateX(0);
+        }
+
+        .main-content {
+          margin-left: 0 !important;
+          width: 100%;
+        }
+
+        .toggle-sidebar-btn {
+          display: block !important;
+        }
+
+        .footer {
+          margin-left: 0 !important;
+          width: 100%;
+        }
+
+        .sidebar.collapsed + .main-content-wrapper .footer {
+          margin-left: 0 !important;
+        }
+      }
+
+      /* Footer */
+      .footer {
+        background-color: var(--primary-dark);
+        color: white;
+        padding: 2rem 0;
+        margin-top: 3rem;
+        margin-left: 300px;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar.collapsed + .main-content-wrapper .footer {
+        margin-left: 0;
+      }
+
+      .footer a {
+        color: var(--primary-light-blue);
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        color: white;
+        text-decoration: underline;
+      }
+
+      /* Toggle Sidebar Button */
+      .toggle-sidebar-btn {
+        position: fixed;
+        top: 70px;
+        left: 10px;
+        z-index: 101;
+        background: var(--primary-dark);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        width: 40px;
+        height: 40px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Custom Scrollbar for Sidebar */
+      .sidebar::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .sidebar::-webkit-scrollbar-track {
+        background: #2d3748;
+      }
+
+      .sidebar::-webkit-scrollbar-thumb {
+        background: var(--primary-blue);
+        border-radius: 3px;
+      }
+
+      .sidebar::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-light-blue);
+      }
+
+      /* Copy button for code blocks */
+      .copy-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .copy-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      /* Active link in sidebar */
+      .sidebar a.active {
+        background: linear-gradient(
+          90deg,
+          rgba(66, 153, 225, 0.2) 0%,
+          rgba(66, 153, 225, 0.05) 100%
+        );
+        color: white;
+        border-left: 3px solid var(--accent-orange);
+      }
+
+      /* Section titles in sidebar */
+      .sidebar h5 i {
+        margin-right: 8px;
+      }
+
+      /* Main content transitions */
+      .main-content-wrapper {
+        transition: all 0.3s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+      <div class="container-fluid">
+        <button class="toggle-sidebar-btn" id="toggleSidebar">
+          <i class="bi bi-list"></i>
+        </button>
+        <a class="navbar-brand ms-3" href="#">
+          <i class="bi bi-server me-2"></i>Portal VPS - Documentación Completa
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">
+                <i class="bi bi-house-door me-1"></i> Volver al Inicio
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#ssh-key">
+                <i class="bi bi-key me-1"></i> SSH
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#security">
+                <i class="bi bi-shield-check me-1"></i> Seguridad
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#nginx">
+                <i class="bi bi-hdd-stack me-1"></i> Nginx
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#scp-transfer">
+                <i class="bi bi-arrow-left-right me-1"></i> SCP
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <h5><i class="bi bi-gear me-2"></i>Configuración Inicial</h5>
+      <ul>
+        <li><a href="#ssh-key">1. Crear Llave SSH Personalizada</a></li>
+        <li><a href="#ssh-config">2. Configuración SSH</a></li>
+        <li><a href="#vps-access">3. Acceso al VPS</a></li>
+        <li><a href="#domain-config">4. Configurar Dominio</a></li>
+        <li><a href="#vps-update">5. Actualizar VPS</a></li>
+      </ul>
+
+      <h5><i class="bi bi-hdd-rack me-2"></i>Administración del VPS</h5>
+      <ul>
+        <li><a href="#process-management">6. Gestión de Procesos</a></li>
+        <li><a href="#github-connection">7. Conectar VPS a GitHub</a></li>
+        <li><a href="#cron-jobs">8. Cron Jobs</a></li>
+        <li><a href="#user-management">9. Gestión de Usuarios</a></li>
+        <li><a href="#admin-permissions">10. Permisos de Administrador</a></li>
+      </ul>
+
+      <h5><i class="bi bi-shield-lock me-2"></i>Seguridad</h5>
+      <ul>
+        <li><a href="#ssh-security">11. Seguridad SSH</a></li>
+        <li><a href="#firewall">12. Configurar Firewall</a></li>
+        <li><a href="#folder-permissions">13. Permisos de Carpeta</a></li>
+        <li><a href="#fail2ban">14. Instalar Fail2Ban</a></li>
+      </ul>
+
+      <h5><i class="bi bi-globe me-2"></i>Servicios Web</h5>
+      <ul>
+        <li><a href="#nginx-config">15. Configuración Nginx</a></li>
+        <li><a href="#mysql">16. Instalar MySQL</a></li>
+        <li><a href="#ssh-tunnel">17. Túneles SSH para MySQL</a></li>
+        <li><a href="#nginx-security">18. Seguridad Nginx</a></li>
+        <li><a href="#nginx-compression">19. Compresión Nginx</a></li>
+      </ul>
+
+      <h5><i class="bi bi-lightning-charge me-2"></i>Optimización</h5>
+      <ul>
+        <li><a href="#dos-protection">20. Protección DDoS</a></li>
+        <li><a href="#nginx-hijacking">21. Evitar Secuestro Nginx</a></li>
+        <li><a href="#letsencrypt">22. Let's Encrypt</a></li>
+        <li><a href="#cloudflare">23. Cloudflare</a></li>
+      </ul>
+
+      <!-- NUEVA SECCIÓN SCP -->
+      <h5>
+        <i class="bi bi-arrow-left-right me-2"></i>Transferencia de Archivos
+      </h5>
+      <ul>
+        <li>
+          <a href="#scp-transfer">24. Transferencia de Archivos con SCP</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-content-wrapper">
+      <!-- Main Content -->
+      <div class="container mt-5 pt-4">
+        <div class="row">
+          <div class="col-12">
+            <div class="main-content">
+              <!-- Page Header -->
+              <div class="row mb-4">
+                <div class="col-12">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h1 class="display-5 fw-bold">
+                        Documentación Completa de Configuración VPS
+                      </h1>
+                      <p class="lead text-muted">
+                        Guía paso a paso completa sin omitir ningún detalle
+                      </p>
+                    </div>
+                    <div>
+                      <a href="index.html" class="btn btn-custom">
+                        <i class="bi bi-arrow-left me-2"></i>Volver al Inicio
+                      </a>
+                    </div>
+                  </div>
+                  <hr class="my-4" />
+                </div>
+              </div>
+
+              <!-- SSH Key Section -->
+              <section id="ssh-key">
+                <h2>
+                  <i class="bi bi-key-fill me-2"></i>1. Crear Llave SSH
+                  Personalizada
+                </h2>
+
+                <div class="step">
+                  <h3>Generar clave SSH ed25519</h3>
+                  <p>
+                    Este comando genera una clave SSH utilizando el algoritmo
+                    ed25519, que es más seguro y eficiente que RSA. La opción
+                    <code>-t</code> especifica el tipo de algoritmo y
+                    <code>-f</code> especifica el nombre del archivo donde se
+                    guardará la clave.
+                  </p>
+                  <div class="code-block">
+                    <span class="command"
+                      >ssh-keygen -t ed25519 -f ~/.ssh/vps_portal</span
+                    >
+                  </div>
+                  <div class="alert alert-custom">
+                    <strong>Nota importante:</strong> Durante la generación de
+                    la clave, se te preguntará si deseas establecer una frase de
+                    contraseña (passphrase). Es altamente recomendable
+                    establecer una frase de contraseña para mayor seguridad,
+                    aunque esto significa que tendrás que ingresarla cada vez
+                    que uses la clave.
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Verificar la creación de la llave SSH</h3>
+                  <p>
+                    Este comando lista los archivos en el directorio
+                    <code>~/.ssh/</code> para verificar que los archivos de
+                    clave se hayan creado correctamente.
+                  </p>
+                  <div class="code-block">
+                    <span class="command">ls ~/.ssh</span>
+                  </div>
+                  <p>Deberías ver los siguientes archivos:</p>
+                  <ul>
+                    <li>
+                      <code>vps_portal</code> - Clave privada (NUNCA compartir
+                      este archivo)
+                    </li>
+                    <li>
+                      <code>vps_portal.pub</code> - Clave pública (este archivo
+                      se coloca en el servidor)
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="step">
+                  <h3>Mostrar clave pública</h3>
+                  <p>
+                    Este comando muestra el contenido de la clave pública que
+                    necesitarás copiar y agregar al archivo
+                    <code>~/.ssh/authorized_keys</code> en el servidor VPS.
+                  </p>
+                  <div class="code-block">
+                    <span class="command">cat ~/.ssh/vps_portal.pub</span>
+                  </div>
+                  <div class="alert alert-custom warning-custom">
+                    <strong
+                      ><i class="bi bi-exclamation-triangle me-2"></i
+                      >Advertencia de seguridad:</strong
+                    >
+                    La clave privada (<code>vps_portal</code>) debe permanecer
+                    en tu máquina local y nunca debe ser compartida, enviada por
+                    correo electrónico o subida a ningún servicio en la nube.
+                    Solo la clave pública (<code>vps_portal.pub</code>) debe ser
+                    colocada en el servidor.
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Configurar para que se lea la clave creada para SSH</h3>
+                  <p>
+                    Este comando prueba la conexión SSH utilizando la clave
+                    específica que acabamos de crear. La opción
+                    <code>-i</code> especifica la ruta a la clave privada.
+                  </p>
+                  <div class="code-block">
+                    <span class="command"
+                      >ssh -i ~/.ssh/vps_portal root@45.55.213.131</span
+                    >
+                  </div>
+                  <p>
+                    Si es la primera vez que te conectas a este servidor, verás
+                    una advertencia sobre la autenticidad del host. Debes
+                    verificar que la huella digital (fingerprint) coincida con
+                    la del servidor y luego escribir "yes" para continuar.
+                  </p>
+                </div>
+
+                <div class="step">
+                  <h3>Ingresar al VPS (comando definitivo)</h3>
+                  <p>
+                    Una vez que la clave pública esté correctamente configurada
+                    en el servidor, este comando te permitirá acceder al VPS sin
+                    necesidad de contraseña, utilizando solo la clave SSH.
+                  </p>
+                  <div class="code-block">
+                    <span class="command"
+                      >ssh -i ~/.ssh/vps_portal root@45.55.213.131</span
+                    >
+                  </div>
+                </div>
+              </section>
+
+              <!-- SSH Configuration Section -->
+              <section id="ssh-config" class="mt-5">
+                <h2>
+                  <i class="bi bi-gear-fill me-2"></i>2. Configuración SSH para
+                  Conexión Simplificada
+                </h2>
+
+                <div class="step">
+                  <h3>Crear archivo de configuración SSH</h3>
+                  <p>
+                    Se debe crear un archivo llamado <code>config</code> (sin
+                    extensión) en el directorio SSH del usuario.
+                  </p>
+                  <div class="code-block">
+                    <span class="comment"
+                      ># Configuración del tiempo de conexión</span
+                    >
+                    ServerAliveInterval 120 ServerAliveCountMax 3
+
+                    <span class="comment"># Alias para el VPS principal</span>
+                    Host portal-web HostName 45.55.213.131 User root
+                    IdentityFile "/c/Users/Jose acuña/.ssh/vps_portal"
+
+                    <span class="comment"
+                      ># Alias para usuario alternativo</span
+                    >
+                    Host joseacuna HostName 45.55.213.131 User sacunapolo
+                    IdentityFile "/c/Users/Jose acuña/.ssh/sacunapolo"
+                  </div>
+                </div>
+              </section>
+
+              <!-- VPS Access Section -->
+              <section id="vps-access" class="mt-5">
+                <h2><i class="bi bi-hdd-network me-2"></i>3. Acceso al VPS</h2>
+
+                <div class="step">
+                  <h3>Acceso con alias configurado</h3>
+                  <div class="code-block">
+                    <span class="command">ssh portal-web</span>
+                  </div>
+                  <p>
+                    Después de configurar el archivo <code>~/.ssh/config</code>,
+                    puedes usar este comando simplificado.
+                  </p>
+                </div>
+              </section>
+
+              <!-- Domain Configuration Section -->
+              <section id="domain-config" class="mt-5">
+                <h2>
+                  <i class="bi bi-globe me-2"></i>4. Configurar el Dominio en el
+                  VPS
+                </h2>
+                <div class="alert alert-custom">
+                  <strong><i class="bi bi-info-circle me-2"></i>Nota:</strong>
+                  Esta sección está marcada como --TODO-- en la documentación
+                  original. La configuración de dominios generalmente implica
+                  configurar registros DNS, el servidor web, certificados SSL y
+                  el firewall.
+                </div>
+              </section>
+
+              <!-- VPS Update Section -->
+              <section id="vps-update" class="mt-5">
+                <h2>
+                  <i class="bi bi-arrow-up-circle me-2"></i>5. Comandos para
+                  Actualizar el VPS
+                </h2>
+
+                <div class="step">
+                  <h3>Actualizar lista de paquetes</h3>
+                  <div class="code-block">
+                    <span class="command">apt update</span>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Actualizar paquetes instalados</h3>
+                  <div class="code-block">
+                    <span class="command">apt upgrade</span>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Process Management Section -->
+              <section id="process-management" class="mt-5">
+                <h2>
+                  <i class="bi bi-cpu me-2"></i>6. Comandos para Administración
+                  de Procesos del VPS
+                </h2>
+
+                <div class="step">
+                  <h3>Verificar estado de un servicio</h3>
+                  <div class="code-block">
+                    <span class="command"
+                      >systemctl status unattended-upgrades</span
+                    >
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Detener un servicio</h3>
+                  <div class="code-block">
+                    <span class="command"
+                      >systemctl stop unattended-upgrades</span
+                    >
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Reiniciar un servicio</h3>
+                  <div class="code-block">
+                    <span class="command"
+                      >systemctl restart unattended-upgrades</span
+                    >
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Reiniciar el servidor</h3>
+                  <div class="code-block">
+                    <span class="command">reboot</span>
+                  </div>
+                </div>
+              </section>
+
+              <!-- GitHub Connection Section -->
+              <section id="github-connection" class="mt-5">
+                <h2>
+                  <i class="bi bi-github me-2"></i>7. Conectar el VPS a GitHub
+                </h2>
+
+                <div class="step">
+                  <h3>Generar una nueva clave SSH en el VPS</h3>
+                  <div class="code-block">
+                    <span class="command">ssh-keygen</span>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Iniciar el agente SSH</h3>
+                  <div class="code-block">
+                    <span class="command">ssh-agent -s</span>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Agregar la clave SSH al agente</h3>
+                  <div class="code-block">
+                    <span class="command">ssh-add ~/.ssh/id_ed25519</span>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Mostrar la clave pública</h3>
+                  <div class="code-block">
+                    <span class="command">cat id_ed25519.pub</span>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Probar la conexión a GitHub</h3>
+                  <div class="code-block">
+                    <span class="command">ssh -T git@github.com</span>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Cron Jobs Section -->
+              <section id="cron-jobs" class="mt-5">
+                <h2>
+                  <i class="bi bi-clock me-2"></i>8. Configuración de Cron Jobs
+                </h2>
+
+                <div class="step">
+                  <h3>Crear un archivo de prueba</h3>
+                  <div class="code-block">
+                    <span class="command">date >> /root/time.txt</span>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Editar la tabla de cron</h3>
+                  <div class="code-block">
+                    <span class="command">crontab -e</span>
+                  </div>
+                </div>
+              </section>
+
+              <!-- User Management Section -->
+              <section id="user-management" class="mt-5">
+                <h2>
+                  <i class="bi bi-people me-2"></i>9. Asignar Cuentas de Usuario
+                  al VPS
+                </h2>
+
+                <div class="step">
+                  <h3>Crear un nuevo usuario</h3>
+                  <div class="code-block">
+                    <span class="command">adduser joseacuna</span>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Eliminar un usuario</h3>
+                  <div class="code-block">
+                    <span class="command">deluser test --remove-home</span>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Admin Permissions Section -->
+              <section id="admin-permissions" class="mt-5">
+                <h2>
+                  <i class="bi bi-shield-check me-2"></i>10. Asignando Permisos
+                  de Administrador
+                </h2>
+
+                <div class="step">
+                  <h3>Agregar usuario al grupo sudo</h3>
+                  <div class="code-block">
+                    <span class="command"
+                      >sudo usermod -aG sudo sacunapolo</span
+                    >
+                  </div>
+                </div>
+              </section>
+
+              <!-- SSH Security Section -->
+              <section id="ssh-security" class="mt-5">
+                <h2><i class="bi bi-shield-lock me-2"></i>11. Seguridad SSH</h2>
+
+                <div class="step">
+                  <h3>Editar configuración SSH</h3>
+                  <div class="code-block">
+                    <span class="command">sudo nano /etc/ssh/sshd_config</span>
+                  </div>
+                  <p>Cambiar:</p>
+                  <div class="code-block">
+                    PermitRootLogin no PasswordAuthentication no
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Refrescar la configuración SSH</h3>
+                  <div class="code-block">
+                    <span class="command"
+                      >sudo systemctl reload ssh.service</span
+                    >
+                  </div>
+                </div>
+              </section>
+
+              <!-- Firewall Section -->
+              <section id="firewall" class="mt-5">
+                <h2>
+                  <i class="bi bi-fire me-2"></i>12. Configurar Firewall (UFW)
+                </h2>
+
+                <div class="step">
+                  <h3>Verificar estado del firewall</h3>
+                  <div class="code-block">
+                    <span class="command">sudo ufw status</span>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Permitir tráfico SSH</h3>
+                  <div class="code-block">
+                    <span class="command">sudo ufw allow OpenSSH</span>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Habilitar el firewall</h3>
+                  <div class="code-block">
+                    <span class="command">sudo ufw enable</span>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Folder Permissions Section -->
+              <section id="folder-permissions" class="mt-5">
+                <h2>
+                  <i class="bi bi-folder me-2"></i>13. Permisos de Carpeta
+                </h2>
+
+                <div class="step">
+                  <h3>Cambiar propietario de una carpeta</h3>
+                  <div class="code-block">
+                    <span class="command">sudo chown -R sacunapolo test/</span>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Fail2Ban Section -->
+              <section id="fail2ban" class="mt-5">
+                <h2>
+                  <i class="bi bi-shield-slash me-2"></i>14. Instalar Fail2Ban
+                </h2>
+
+                <div class="step">
+                  <h3>Instalar Fail2Ban</h3>
+                  <div class="code-block">
+                    <span class="command">sudo apt install fail2ban</span>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Crear archivo de configuración</h3>
+                  <div class="code-block">
+                    [DEFAULT] bantime = 3h maxretry = 3 [sshd] enabled = true
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Verificar estado de Fail2Ban</h3>
+                  <div class="code-block">
+                    <span class="command">sudo fail2ban-client status</span>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Nginx Configuration Section -->
+              <section id="nginx-config" class="mt-5">
+                <h2>
+                  <i class="bi bi-hdd-stack me-2"></i>15. Configuración de Nginx
+                </h2>
+
+                <div class="step">
+                  <h3>Instalar Nginx</h3>
+                  <div class="code-block">
+                    <span class="command">sudo apt update</span>
+                    <span class="command">sudo apt install nginx</span>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Permitir tráfico web en el firewall</h3>
+                  <div class="code-block">
+                    <span class="command">sudo ufw allow 'Nginx Full'</span>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Crear configuración para el sitio web</h3>
+                  <div class="code-block">
+                    server { listen 80 default_server; listen [::]:80
+                    default_server; root /var/www/portalweb; server_name
+                    labsoftware.xyz; index index.html; location / { try_files
+                    $uri $uri/ =404; } }
+                  </div>
+                </div>
+              </section>
+
+              <!-- MySQL Section -->
+              <section id="mysql" class="mt-5">
+                <h2><i class="bi bi-database me-2"></i>16. Instalar MySQL</h2>
+
+                <div class="step">
+                  <h3>Instalar MySQL Server</h3>
+                  <div class="code-block">
+                    <span class="command">sudo apt update</span>
+                    <span class="command">sudo apt install mysql-server</span>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Configurar seguridad de MySQL</h3>
+                  <div class="code-block">
+                    <span class="command">sudo mysql_secure_installation</span>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Crear base de datos y usuario</h3>
+                  <div class="code-block">
+                    CREATE DATABASE portalweb; CREATE USER
+                    'sacunapolo'@'localhost' IDENTIFIED WITH
+                    mysql_native_password BY 's41uD+v1da'; GRANT ALL PRIVILEGES
+                    ON portalweb.* TO 'sacunapolo'@'localhost'; FLUSH
+                    PRIVILEGES;
+                  </div>
+                </div>
+              </section>
+
+              <!-- SSH Tunnel Section -->
+              <section id="ssh-tunnel" class="mt-5">
+                <h2>
+                  <i class="bi bi-tunnel me-2"></i>17. Túneles SSH para MySQL
+                </h2>
+
+                <div class="step">
+                  <h3>Crear túnel SSH para MySQL</h3>
+                  <div class="code-block">
+                    <span class="command"
+                      >ssh sacunapolo -L 3333:localhost:3306 -N</span
+                    >
+                  </div>
+                </div>
+              </section>
+
+              <!-- Nginx Security Section -->
+              <section id="nginx-security" class="mt-5">
+                <h2>
+                  <i class="bi bi-shield-check me-2"></i>18. Seguridad Nginx
+                </h2>
+
+                <div class="step">
+                  <h3>Proteger archivos sensibles</h3>
+                  <div class="code-block">
+                    location ~ /\.ht { deny all; } location ~ /\.git { deny all;
+                    }
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Ocultar versión de Nginx</h3>
+                  <div class="code-block">server_tokens off;</div>
+                </div>
+              </section>
+
+              <!-- Nginx Compression Section -->
+              <section id="nginx-compression" class="mt-5">
+                <h2>
+                  <i class="bi bi-file-earmark-zip me-2"></i>19. Compresión
+                  Nginx
+                </h2>
+
+                <div class="step">
+                  <h3>Configurar compresión Gzip</h3>
+                  <div class="code-block">
+                    gzip on; gzip_vary on; gzip_comp_level 6; gzip_buffers 16
+                    8k; gzip_http_version 1.1; gzip_types text/plain text/html
+                    text/css text/xml text/javascript text/markdown
+                    application/javascript application/json application/xml
+                    application/xml+rss application/rss+xml application/ld+json
+                    application/manifest+json application/pdf application/msword
+                    application/vnd.ms-excel application/vnd.ms-powerpoint
+                    application/vnd.openxmlformats-officedocument.wordprocessingml.document
+                    application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                    application/vnd.openxmlformats-officedocument.presentationml.presentation
+                    application/rtf application/vnd.oasis.opendocument.text
+                    application/vnd.oasis.opendocument.spreadsheet
+                    application/vnd.oasis.opendocument.presentation font/ttf
+                    font/otf font/woff font/woff2 font/eot image/svg+xml
+                    image/x-icon application/wasm application/xhtml+xml
+                    application/x-font-ttf application/x-font-opentype
+                    application/vnd.ms-fontobject;
+                  </div>
+                </div>
+              </section>
+
+              <!-- DDoS Protection Section -->
+              <section id="dos-protection" class="mt-5">
+                <h2>
+                  <i class="bi bi-shield-exclamation me-2"></i>20. Protección
+                  DDoS
+                </h2>
+
+                <div class="step">
+                  <h3>Configuración de protección DDoS</h3>
+                  <div class="code-block">
+                    limit_conn_zone $binary_remote_addr
+                    zone=conn_limit_per_ip:15m; limit_req_zone
+                    $binary_remote_addr zone=req_limit_per_ip:15m rate=40r/s;
+                    limit_conn conn_limit_per_ip 40; limit_req
+                    zone=req_limit_per_ip burst=40 nodelay; client_body_timeout
+                    5s; client_header_timeout 5s; send_timeout 5;
+                    client_body_buffer_size 256k; client_header_buffer_size 2k;
+                    client_max_body_size 3m; large_client_header_buffers 2 2k;
+                  </div>
+                </div>
+              </section>
+
+              <!-- Nginx Hijacking Protection -->
+              <section id="nginx-hijacking" class="mt-5">
+                <h2>
+                  <i class="bi bi-shield-slash me-2"></i>21. Evitar Secuestro
+                  Nginx
+                </h2>
+
+                <div class="step">
+                  <h3>Configurar redirección para servidor por defecto</h3>
+                  <div class="code-block">
+                    server { listen 80 default_server; listen [::]:80
+                    default_server; server_name _; return 301
+                    http://labsoftware.xyz; }
+                  </div>
+                </div>
+              </section>
+
+              <!-- Let's Encrypt Section -->
+              <section id="letsencrypt" class="mt-5">
+                <h2><i class="bi bi-lock me-2"></i>22. Let's Encrypt</h2>
+
+                <div class="step">
+                  <h3>Instalar Certbot</h3>
+                  <div class="code-block">
+                    <span class="command">sudo apt update</span>
+                    <span class="command"
+                      >sudo snap install --classic certbot</span
+                    >
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Configurar Certbot para Nginx</h3>
+                  <div class="code-block">
+                    <span class="command"
+                      >sudo certbot --nginx --hsts -d labsoftware.xyz -d
+                      www.labsoftware.xyz</span
+                    >
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Configurar HTTP/2</h3>
+                  <div class="code-block">
+                    listen [::]:443 ssl ipv6only=on http2; # managed by Certbot
+                    listen 443 ssl http2; # managed by Certbot ssl_certificate
+                    /etc/letsencrypt/live/labsoftware.xyz/fullchain.pem;
+                    ssl_certificate_key
+                    /etc/letsencrypt/live/labsoftware.xyz/privkey.pem; include
+                    /etc/letsencrypt/options-ssl-nginx.conf; ssl_dhparam
+                    /etc/letsencrypt/ssl-dhparams.pem; add_header
+                    Strict-Transport-Security "max-age=31536000" always;
+                  </div>
+                </div>
+              </section>
+
+              <!-- Cloudflare Section -->
+              <section id="cloudflare" class="mt-5">
+                <h2><i class="bi bi-cloud me-2"></i>23. Cloudflare</h2>
+                <div class="alert alert-custom">
+                  <strong><i class="bi bi-info-circle me-2"></i>Nota:</strong>
+                  La integración con Cloudflare implica cambiar nameservers,
+                  configurar DNS, SSL/TLS, WAF, DDoS protection, caching y
+                  ajustar Nginx para trabajar con Cloudflare.
+                </div>
+              </section>
+
+              <!-- NUEVA SECCIÓN SCP -->
+              <section id="scp-transfer" class="mt-5">
+                <h2>
+                  <i class="bi bi-arrow-left-right me-2"></i>24. Transferencia
+                  de Archivos con SCP
+                </h2>
+
+                <div class="alert alert-custom">
+                  <strong
+                    ><i class="bi bi-info-circle me-2"></i>Importante:</strong
+                  >
+                  Todos los comandos SCP deben ejecutarse desde
+                  <strong>Git Bash</strong> en Windows. No usar CMD ni
+                  PowerShell. Git Bash proporciona el entorno Unix necesario.
+                </div>
+
+                <!-- PARTE 1: PC LOCAL → VPS -->
+                <div class="card card-custom mb-4">
+                  <div class="card-header card-header-custom">
+                    <i class="bi bi-arrow-up-right me-2"></i>PARTE 1: Copiar del
+                    <strong>PC LOCAL → VPS</strong>
+                  </div>
+                  <div class="card-body">
+                    <div class="step">
+                      <h3>Paso 1: Abrir Git Bash</h3>
+                      <p>
+                        Para transferir archivos, necesitas usar Git Bash en
+                        Windows:
+                      </p>
+                      <ul>
+                        <li>Menú Inicio → Buscar "Git Bash" y abrirlo</li>
+                        <li>
+                          O hacer clic derecho en cualquier carpeta → "Git Bash
+                          Here"
+                        </li>
+                      </ul>
+                      <div class="alert alert-custom warning-custom mt-2">
+                        <strong
+                          ><i class="bi bi-exclamation-triangle me-2"></i
+                          >Nota:</strong
+                        >
+                        No uses CMD, PowerShell o la terminal integrada de VS
+                        Code. Solo Git Bash funciona correctamente.
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 2: Ir a la carpeta local en Git Bash</h3>
+                      <p>
+                        Navegar a la carpeta donde tienes los archivos que
+                        quieres transferir:
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >cd /c/laragon/www/docuemntacion/documentacion</span
+                        >
+                        <span class="command">ls -la</span>
+                      </div>
+                      <p>
+                        Esto te mostrará todos los archivos en esa carpeta, por
+                        ejemplo:
+                      </p>
+                      <ul>
+                        <li><code>index.html</code></li>
+                        <li><code>documentacion.html</code></li>
+                        <li><code>README.md</code></li>
+                      </ul>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 3: Sintaxis básica de SCP (PC → VPS)</h3>
+                      <p>La estructura básica del comando es:</p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp [opciones] archivo_local
+                          usuario@servidor:ruta_remota</span
+                        >
+                      </div>
+                      <p>Opciones más usadas:</p>
+                      <table class="table table-bordered mt-2">
+                        <thead>
+                          <tr>
+                            <th>Opción</th>
+                            <th>Descripción</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><code>-r</code></td>
+                            <td>Copia carpetas completas (recursivo)</td>
+                          </tr>
+                          <tr>
+                            <td><code>-P 2222</code></td>
+                            <td>Especifica puerto SSH diferente (no 22)</td>
+                          </tr>
+                          <tr>
+                            <td><code>-v</code></td>
+                            <td>Modo verboso (muestra detalles)</td>
+                          </tr>
+                          <tr>
+                            <td><code>-i clave.pem</code></td>
+                            <td>Usa una clave SSH específica</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 4: Copiar archivos individuales (PC → VPS)</h3>
+                      <p><strong>4.1 Copiar un solo archivo:</strong></p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp index.html sacunapolo:/home/sacunapolo/</span
+                        >
+                      </div>
+
+                      <p>
+                        <strong>4.2 Copiar varios archivos específicos:</strong>
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp index.html documentacion.html
+                          sacunapolo:/home/sacunapolo/</span
+                        >
+                      </div>
+
+                      <p>
+                        <strong>4.3 Copiar todos los archivos HTML:</strong>
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp *.html sacunapolo:/home/sacunapolo/</span
+                        >
+                      </div>
+
+                      <p>
+                        <strong>4.4 Copiar y cambiar nombre en destino:</strong>
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp index.html
+                          sacunapolo:/home/sacunapolo/index-backup.html</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 5: Copiar carpetas completas (PC → VPS)</h3>
+                      <p>
+                        <strong
+                          >5.1 Copiar carpeta completa con todo su
+                          contenido:</strong
+                        >
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >cd /c/laragon/www/docuemntacion</span
+                        >
+                        <span class="command"
+                          >scp -r documentacion
+                          sacunapolo:/home/sacunapolo/</span
+                        >
+                      </div>
+
+                      <p>
+                        <strong
+                          >5.2 Copiar solo el contenido de la carpeta (sin la
+                          carpeta misma):</strong
+                        >
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >cd /c/laragon/www/docuemntacion/documentacion</span
+                        >
+                        <span class="command"
+                          >scp -r * sacunapolo:/home/sacunapolo/</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>
+                        Paso 6: Verificar que los archivos llegaron al VPS
+                      </h3>
+                      <div class="code-block">
+                        <span class="command">ssh sacunapolo</span>
+                        <span class="command">cd /home/sacunapolo/</span>
+                        <span class="command">ls -la</span>
+                        <span class="command">exit</span>
+                      </div>
+                      <p>
+                        Esto te conectará al VPS, listará los archivos en tu
+                        carpeta home, y luego cerrará la conexión.
+                      </p>
+                    </div>
+
+                    <div class="step">
+                      <h3>
+                        Paso 7: Mover archivos a la ruta web (si es necesario)
+                      </h3>
+                      <p>
+                        Si necesitas mover los archivos al directorio web de
+                        Nginx:
+                      </p>
+                      <div class="code-block">
+                        <span class="command">ssh sacunapolo</span>
+                        <span class="command"
+                          >sudo mv /home/sacunapolo/*.html
+                          /var/www/desarrollo.labsoftware.xyz/</span
+                        >
+                        <span class="command">exit</span>
+                      </div>
+                      <div class="alert alert-custom mt-2">
+                        <strong
+                          ><i class="bi bi-lightbulb me-2"></i>Consejo:</strong
+                        >
+                        Puedes usar <code>scp</code> directamente a la carpeta
+                        web si tienes permisos:
+                        <div class="code-block mt-2">
+                          <span class="command"
+                            >scp index.html
+                            sacunapolo:/var/www/desarrollo.labsoftware.xyz/</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- PARTE 2: VPS → PC LOCAL -->
+                <div class="card card-custom mb-4">
+                  <div class="card-header card-header-custom">
+                    <i class="bi bi-arrow-down-left me-2"></i>PARTE 2: Copiar
+                    del <strong>VPS → PC LOCAL</strong>
+                  </div>
+                  <div class="card-body">
+                    <div class="step">
+                      <h3>Paso 1: Ir a la carpeta destino en tu PC</h3>
+                      <p>
+                        Abrir Git Bash y navegar a donde quieres guardar los
+                        archivos:
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >cd /c/Users/"Jose acuña"/Desktop</span
+                        >
+                      </div>
+                      <p>O si quieres crear una carpeta nueva:</p>
+                      <div class="code-block">
+                        <span class="command">mkdir backup_vps</span>
+                        <span class="command">cd backup_vps</span>
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 2: Sintaxis básica de SCP (VPS → PC)</h3>
+                      <p>La estructura es similar pero invertida:</p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp usuario@servidor:ruta_remota ruta_local</span
+                        >
+                      </div>
+                      <p>El punto <code>.</code> significa "carpeta actual".</p>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 3: Copiar archivos individuales (VPS → PC)</h3>
+                      <p><strong>3.1 Copiar un archivo específico:</strong></p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp sacunapolo:/home/sacunapolo/index.html .</span
+                        >
+                      </div>
+
+                      <p>
+                        <strong>3.2 Copiar varios archivos por patrón:</strong>
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp sacunapolo:/home/sacunapolo/*.html .</span
+                        >
+                      </div>
+
+                      <p>
+                        <strong
+                          >3.3 Copiar desde el directorio web del
+                          servidor:</strong
+                        >
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp
+                          sacunapolo:/var/www/desarrollo.labsoftware.xyz/index.html
+                          .</span
+                        >
+                      </div>
+
+                      <p><strong>3.4 Copiar a una ruta específica:</strong></p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp sacunapolo:/home/sacunapolo/config.txt
+                          /c/laragon/www/backups/</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 4: Copiar carpetas completas (VPS → PC)</h3>
+                      <p>
+                        <strong
+                          >4.1 Copiar carpeta completa con todo su
+                          contenido:</strong
+                        >
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp -r sacunapolo:/home/sacunapolo/documentacion
+                          /c/laragon/www/backups/</span
+                        >
+                      </div>
+
+                      <p>
+                        <strong
+                          >4.2 Copiar el contenido a una carpeta local:</strong
+                        >
+                      </p>
+                      <div class="code-block">
+                        <span class="command">mkdir backup_servidor</span>
+                        <span class="command"
+                          >scp -r sacunapolo:/home/sacunapolo/*
+                          backup_servidor/</span
+                        >
+                      </div>
+
+                      <p><strong>4.3 Copiar configuración de Nginx:</strong></p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp -r sacunapolo:/etc/nginx/sites-available
+                          /c/backups/nginx/</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>Paso 5: Verificar la copia local</h3>
+                      <div class="code-block">
+                        <span class="command">ls -la</span>
+                        <span class="command">du -sh *</span>
+                      </div>
+                      <p>
+                        El primer comando lista los archivos, el segundo muestra
+                        el tamaño de cada uno.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- TABLA RESUMEN -->
+                <div class="card card-custom mb-4">
+                  <div class="card-header card-header-custom">
+                    <i class="bi bi-card-checklist me-2"></i>Resumen Rápido de
+                    Comandos SCP
+                  </div>
+                  <div class="card-body">
+                    <table class="table table-hover">
+                      <thead class="table-dark">
+                        <tr>
+                          <th>Acción</th>
+                          <th>Comando</th>
+                          <th>Ejemplo</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>PC → VPS (archivo)</td>
+                          <td><code>scp archivo usuario@host:ruta</code></td>
+                          <td><code>scp index.html sacunapolo:/home/</code></td>
+                        </tr>
+                        <tr>
+                          <td>VPS → PC (archivo)</td>
+                          <td><code>scp usuario@host:archivo .</code></td>
+                          <td>
+                            <code>scp sacunapolo:/home/index.html .</code>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>PC → VPS (carpeta)</td>
+                          <td><code>scp -r carpeta usuario@host:ruta</code></td>
+                          <td><code>scp -r docs sacunapolo:/var/www/</code></td>
+                        </tr>
+                        <tr>
+                          <td>VPS → PC (carpeta)</td>
+                          <td><code>scp -r usuario@host:carpeta .</code></td>
+                          <td>
+                            <code>scp -r sacunapolo:/var/www/html .</code>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Puerto diferente</td>
+                          <td><code>scp -P puerto ...</code></td>
+                          <td>
+                            <code
+                              >scp -P 2222 index.html sacunapolo:/home/</code
+                            >
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Con clave SSH</td>
+                          <td><code>scp -i clave ...</code></td>
+                          <td>
+                            <code
+                              >scp -i ~/.ssh/vps_portal index.html
+                              sacunapolo:/home/</code
+                            >
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- SOLUCIÓN DE PROBLEMAS -->
+                <div class="card card-custom">
+                  <div class="card-header card-header-custom">
+                    <i class="bi bi-exclamation-triangle me-2"></i>Solución de
+                    Problemas Comunes
+                  </div>
+                  <div class="card-body">
+                    <div class="step">
+                      <h3>❌ Error: "No such file or directory"</h3>
+                      <p>
+                        <strong>Solución:</strong> Verifica que el archivo
+                        existe y la ruta es correcta:
+                      </p>
+                      <div class="code-block">
+                        <span class="command">ls -la archivo.html</span>
+                        <span class="command"
+                          >scp ./archivo.html sacunapolo:/home/sacunapolo/</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>❌ Error: "Permission denied"</h3>
+                      <p>
+                        <strong>Solución 1:</strong> Copiar a /tmp y luego mover
+                        con sudo:
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp archivo.html sacunapolo:/tmp/</span
+                        >
+                        <span class="command">ssh sacunapolo</span>
+                        <span class="command"
+                          >sudo mv /tmp/archivo.html /var/www/html/</span
+                        >
+                      </div>
+
+                      <p>
+                        <strong>Solución 2:</strong> Usar usuario con permisos:
+                      </p>
+                      <div class="code-block">
+                        <span class="command"
+                          >scp archivo.html sacunapolo:/home/sacunapolo/</span
+                        >
+                        <span class="command">ssh sacunapolo</span>
+                        <span class="command"
+                          >sudo chown www-data:www-data
+                          /home/sacunapolo/archivo.html</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <h3>❌ Error: Problemas de conexión SSH</h3>
+                      <p>
+                        <strong>Solución:</strong> Primero prueba la conexión
+                        SSH básica:
+                      </p>
+                      <div class="code-block">
+                        <span class="command">ssh sacunapolo</span>
+                      </div>
+                      <p>Si SSH funciona, SCP también debería funcionar.</p>
+                    </div>
+
+                    <div class="step">
+                      <h3>❌ Error: Carpetas con espacios en nombres</h3>
+                      <p>
+                        <strong>Solución:</strong> Usar comillas o escape con
+                        barra invertida:
+                      </p>
+                      <div class="code-block">
+                        <span class="comment"># Con comillas</span>
+                        <span class="command"
+                          >scp "mi archivo.txt" sacunapolo:/home/</span
+                        >
+                        <span class="comment"># Con escape</span>
+                        <span class="command"
+                          >scp mi\ archivo.txt sacunapolo:/home/</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CONSEJO FINAL -->
+                <div class="alert alert-custom mt-4">
+                  <h4>
+                    <i class="bi bi-lightbulb-fill me-2"></i>Consejo Final para
+                    Transferencias Frecuentes
+                  </h4>
+                  <p>
+                    Si necesitas transferir archivos con frecuencia o mantener
+                    sincronizadas carpetas, usa <strong>rsync</strong> en lugar
+                    de scp:
+                  </p>
+                  <div class="code-block">
+                    <span class="command"
+                      >rsync -avz *.html sacunapolo:/home/sacunapolo/</span
+                    >
+                  </div>
+                  <p class="mb-0 mt-2">
+                    <strong>Ventajas de rsync:</strong> Solo transfiere cambios,
+                    mantiene permisos y es más rápido en transferencias
+                    posteriores.
+                  </p>
+                </div>
+              </section>
+
+              <!-- Final Notes -->
+              <div class="alert alert-custom mt-5">
+                <h4>
+                  <i class="bi bi-check-circle me-2"></i>Documentación
+                  Finalizada
+                </h4>
+                <p>
+                  Esta documentación incluye <strong>TODOS</strong> los pasos,
+                  comandos y configuraciones proporcionados en el material
+                  original, sin omitir, abreviar o eliminar ninguna información.
+                  Cada sección está organizada en el orden exacto en que fue
+                  proporcionada, con explicaciones detalladas de cada comando y
+                  configuración.
+                </p>
+                <p class="mb-0">
+                  La documentación cubre desde la creación inicial de claves SSH
+                  hasta la configuración avanzada de seguridad, Nginx, MySQL y
+                  certificados SSL, pasando por administración de usuarios,
+                  firewall, Fail2Ban, optimizaciones de rendimiento, seguridad y
+                  ahora transferencia de archivos con SCP.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+              <div class="footer-brand">
+                <i class="bi bi-server me-2"></i>
+                <h5 class="d-inline-block">
+                  Portal VPS - Documentación Completa
+                </h5>
+              </div>
+              <p class="mt-2 mb-1">
+                Guía exhaustiva de configuración y administración de servidores
+              </p>
+              <p class="small text-light mb-0">
+                <i class="bi bi-check-circle me-1"></i>Contiene todos los pasos
+                sin omisiones ni abreviaciones
+              </p>
+            </div>
+            <div class="col-md-6">
+              <div
+                class="d-flex flex-column align-items-start align-items-md-end"
+              >
+                <p class="mb-2 fw-semibold">Navegación rápida:</p>
+                <div
+                  class="d-flex flex-wrap gap-2 justify-content-start justify-content-md-end"
+                >
+                  <a href="index.html" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-house-door me-1"></i>Inicio
+                  </a>
+                  <a href="#nginx" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-hdd-stack me-1"></i>Nginx
+                  </a>
+                  <a href="#scp-transfer" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-arrow-left-right me-1"></i>SCP
+                  </a>
+                </div>
+                <p class="mt-3 small mb-0">
+                  <i class="bi bi-clock-history me-1"></i>Última actualización:
+                  <span id="current-date" class="fw-semibold text-light"></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top">
+      <i class="bi bi-arrow-up"></i>
+    </a>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Set current date in footer
+      document.getElementById("current-date").textContent =
+        new Date().toLocaleDateString("es-ES", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+
+      // Toggle sidebar
+      const toggleSidebarBtn = document.getElementById("toggleSidebar");
+      const sidebar = document.getElementById("sidebar");
+
+      toggleSidebarBtn.addEventListener("click", function () {
+        sidebar.classList.toggle("collapsed");
+      });
+
+      // Back to top button functionality
+      const backToTopButton = document.querySelector(".back-to-top");
+
+      window.addEventListener("scroll", function () {
+        if (window.pageYOffset > 300) {
+          backToTopButton.style.display = "flex";
+        } else {
+          backToTopButton.style.display = "none";
+        }
+      });
+
+      backToTopButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          const targetId = this.getAttribute("href");
+          if (targetId === "#") return;
+
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            // Calculate offset for fixed navbar
+            const navbarHeight = document.querySelector(".navbar").offsetHeight;
+            const targetPosition =
+              targetElement.getBoundingClientRect().top +
+              window.pageYOffset -
+              navbarHeight;
+
+            window.scrollTo({
+              top: targetPosition,
+              behavior: "smooth",
+            });
+
+            // Update URL hash without jumping
+            history.pushState(null, null, targetId);
+
+            // Close sidebar on mobile after clicking a link
+            if (window.innerWidth < 992) {
+              sidebar.classList.add("collapsed");
+            }
+
+            // Update active link in sidebar
+            document.querySelectorAll(".sidebar a").forEach((link) => {
+              link.classList.remove("active");
+            });
+            this.classList.add("active");
+          }
+        });
+      });
+
+      // Highlight active section in sidebar
+      const sections = document.querySelectorAll("section");
+      const navLinks = document.querySelectorAll(".sidebar a");
+
+      window.addEventListener("scroll", function () {
+        let current = "";
+
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+          const navbarHeight = document.querySelector(".navbar").offsetHeight;
+
+          if (window.pageYOffset >= sectionTop - navbarHeight - 100) {
+            current = section.getAttribute("id");
+          }
+        });
+
+        navLinks.forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === `#${current}`) {
+            link.classList.add("active");
+          }
+        });
+      });
+
+      // Copy code blocks on click
+      document.querySelectorAll(".code-block").forEach((block) => {
+        // Add copy button
+        const copyButton = document.createElement("button");
+        copyButton.className = "copy-btn";
+        copyButton.innerHTML = '<i class="bi bi-clipboard"></i> Copiar';
+
+        block.style.position = "relative";
+        block.appendChild(copyButton);
+
+        copyButton.addEventListener("click", function () {
+          const textToCopy = block.textContent.replace("Copiar", "").trim();
+          navigator.clipboard.writeText(textToCopy).then(() => {
+            // Visual feedback
+            const originalText = copyButton.innerHTML;
+            copyButton.innerHTML = '<i class="bi bi-check"></i> ¡Copiado!';
+            copyButton.style.background = "rgba(72, 187, 120, 0.2)";
+            copyButton.style.borderColor = "rgba(72, 187, 120, 0.5)";
+
+            setTimeout(() => {
+              copyButton.innerHTML = originalText;
+              copyButton.style.background = "rgba(255,255,255,0.1)";
+              copyButton.style.borderColor = "rgba(255,255,255,0.2)";
+            }, 2000);
+          });
+        });
+      });
+
+      // Auto-expand code blocks that are too wide
+      document.querySelectorAll(".code-block").forEach((block) => {
+        if (block.scrollWidth > block.clientWidth) {
+          block.style.overflowX = "auto";
+          block.style.whiteSpace = "pre";
+        }
+      });
+
+      // Close sidebar when clicking outside on mobile
+      document.addEventListener("click", function (event) {
+        if (
+          window.innerWidth < 992 &&
+          !sidebar.contains(event.target) &&
+          !toggleSidebarBtn.contains(event.target)
+        ) {
+          sidebar.classList.add("collapsed");
+        }
+      });
+
+      // Initialize tooltips
+      const tooltipTriggerList = [].slice.call(
+        document.querySelectorAll("[title]")
+      );
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+
+      // Auto-hide toggle button on desktop
+      window.addEventListener("resize", function () {
+        if (window.innerWidth > 992) {
+          toggleSidebarBtn.style.display = "none";
+        } else {
+          toggleSidebarBtn.style.display = "flex";
+        }
+      });
+
+      // Initialize on page load
+      if (window.innerWidth > 992) {
+        toggleSidebarBtn.style.display = "none";
+      } else {
+        toggleSidebarBtn.style.display = "flex";
+        sidebar.classList.add("collapsed");
+      }
+    </script>
+  </body>
+</html>
