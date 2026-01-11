@@ -481,6 +481,11 @@
                 <i class="bi bi-arrow-left-right me-1"></i> SCP
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#git-clone">
+                <i class="bi bi-git me-1"></i> Git
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -538,6 +543,14 @@
       <ul>
         <li>
           <a href="#scp-transfer">24. Transferencia de Archivos con SCP</a>
+        </li>
+      </ul>
+
+      <!-- NUEVA SECCIÓN GIT -->
+      <h5><i class="bi bi-git me-2"></i>Control de Versiones</h5>
+      <ul>
+        <li>
+          <a href="#git-clone">25. Clonar Proyectos de GitHub</a>
         </li>
       </ul>
     </div>
@@ -1757,10 +1770,320 @@
                 </div>
               </section>
 
+              <!-- NUEVA SECCIÓN GIT -->
+              <section id="git-clone" class="mt-5">
+                <h2>
+                  <i class="bi bi-git me-2"></i>25. Clonar Proyectos de GitHub
+                </h2>
+
+                <div class="alert alert-custom">
+                  <strong
+                    ><i class="bi bi-info-circle me-2"></i>¿Para qué
+                    sirve?</strong
+                  >
+                  <p class="mb-0">
+                    Clonar proyectos de GitHub permite descargar repositorios
+                    completos directamente en tu VPS. Esto es esencial para:
+                  </p>
+                  <ul class="mt-2 mb-0">
+                    <li>
+                      Desplegar aplicaciones web directamente desde repositorios
+                      Git
+                    </li>
+                    <li>
+                      Mantener sincronizado el código entre desarrollo y
+                      producción
+                    </li>
+                    <li>Colaborar en proyectos usando control de versiones</li>
+                    <li>Automatizar despliegues continuos (CI/CD)</li>
+                  </ul>
+                </div>
+
+                <div class="step">
+                  <h3>Paso 1: Verificar que Git está instalado</h3>
+                  <p>
+                    Antes de clonar cualquier repositorio, asegúrate de que Git
+                    esté instalado en tu VPS:
+                  </p>
+                  <div class="code-block">
+                    <span class="command">git --version</span>
+                  </div>
+                  <p>Si no está instalado, instálalo con:</p>
+                  <div class="code-block">
+                    <span class="command">sudo apt update</span>
+                    <span class="command">sudo apt install git</span>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Paso 2: Navegar al directorio donde clonar</h3>
+                  <p>
+                    Decide dónde quieres clonar el repositorio. Normalmente se
+                    clona en el directorio web:
+                  </p>
+                  <div class="code-block">
+                    <span class="command">cd /var/www</span>
+                  </div>
+                  <p>O en tu carpeta home si es para desarrollo:</p>
+                  <div class="code-block">
+                    <span class="command">cd /home/sacunapolo</span>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Paso 3: Clonar un repositorio por primera vez</h3>
+                  <p>
+                    Para clonar un repositorio, necesitas la URL del repositorio
+                    de GitHub:
+                  </p>
+                  <div class="code-block">
+                    <span class="command"
+                      >git clone
+                      https://github.com/usuario/repositorio.git</span
+                    >
+                  </div>
+                  <p>Ejemplo práctico:</p>
+                  <div class="code-block">
+                    <span class="command"
+                      >git clone
+                      https://github.com/sacunapolo/documentacion.git</span
+                    >
+                  </div>
+                  <p>
+                    Esto creará una carpeta llamada
+                    <code>documentacion</code> con todo el contenido del
+                    repositorio.
+                  </p>
+                </div>
+
+                <div class="step">
+                  <h3>Paso 4: Caso especial - Si ya existe el directorio</h3>
+                  <p>
+                    <strong>IMPORTANTE:</strong> Si ya existe un directorio con
+                    el mismo nombre que el repositorio, Git mostrará un error.
+                    En ese caso, debes eliminar primero el directorio existente:
+                  </p>
+                  <div class="code-block">
+                    <span class="command">sudo rm -r documentacion</span>
+                  </div>
+                  <div class="alert alert-custom warning-custom mt-2">
+                    <strong
+                      ><i class="bi bi-exclamation-triangle me-2"></i
+                      >¡Precaución!</strong
+                    >
+                    El comando <code>rm -r</code> elimina permanentemente la
+                    carpeta y todo su contenido. Asegúrate de que no hay
+                    archivos importantes antes de ejecutarlo.
+                  </div>
+                  <p>
+                    Después de eliminar el directorio, puedes clonar
+                    normalmente:
+                  </p>
+                  <div class="code-block">
+                    <span class="command"
+                      >git clone
+                      https://github.com/sacunapolo/documentacion.git</span
+                    >
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>
+                    Paso 5: Sincronizar un proyecto existente (actualizar)
+                  </h3>
+                  <p>
+                    Si ya tienes un repositorio clonado y quieres actualizarlo
+                    con los últimos cambios de GitHub:
+                  </p>
+                  <div class="code-block">
+                    <span class="command">cd /var/www/documentacion</span>
+                    <span class="command">sudo git pull</span>
+                  </div>
+                  <p>O si estás en otra ruta:</p>
+                  <div class="code-block">
+                    <span class="command">cd /home/sacunapolo/proyecto</span>
+                    <span class="command">git pull</span>
+                  </div>
+                  <div class="alert alert-custom mt-2">
+                    <strong><i class="bi bi-lightbulb me-2"></i>Nota:</strong>
+                    Si tienes conflictos entre tu versión local y la remota, Git
+                    te pedirá que los resuelvas antes de poder hacer pull. En
+                    ese caso, puedes usar <code>git stash</code> para guardar
+                    tus cambios temporales, hacer pull, y luego aplicar tus
+                    cambios con <code>git stash pop</code>.
+                  </div>
+                </div>
+
+                <div class="step">
+                  <h3>Paso 6: Verificar el estado del repositorio</h3>
+                  <p>
+                    Después de clonar o actualizar, puedes verificar el estado
+                    del repositorio:
+                  </p>
+                  <div class="code-block">
+                    <span class="command">git status</span>
+                  </div>
+                  <p>Para ver el historial de commits:</p>
+                  <div class="code-block">
+                    <span class="command">git log --oneline</span>
+                  </div>
+                  <p>Para ver las ramas disponibles:</p>
+                  <div class="code-block">
+                    <span class="command">git branch -a</span>
+                  </div>
+                </div>
+
+                <!-- TABLA RESUMEN GIT -->
+                <div class="card card-custom mb-4">
+                  <div class="card-header card-header-custom">
+                    <i class="bi bi-card-checklist me-2"></i>Resumen Rápido de
+                    Comandos Git
+                  </div>
+                  <div class="card-body">
+                    <table class="table table-hover">
+                      <thead class="table-dark">
+                        <tr>
+                          <th>Acción</th>
+                          <th>Comando</th>
+                          <th>Ejemplo</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Clonar repositorio</td>
+                          <td><code>git clone URL</code></td>
+                          <td>
+                            <code
+                              >git clone
+                              https://github.com/usuario/repo.git</code
+                            >
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Actualizar repositorio</td>
+                          <td><code>git pull</code></td>
+                          <td><code>cd /var/www/proyecto && git pull</code></td>
+                        </tr>
+                        <tr>
+                          <td>Eliminar directorio existente</td>
+                          <td><code>rm -r nombre_carpeta</code></td>
+                          <td><code>sudo rm -r documentacion</code></td>
+                        </tr>
+                        <tr>
+                          <td>Verificar estado</td>
+                          <td><code>git status</code></td>
+                          <td><code>git status</code></td>
+                        </tr>
+                        <tr>
+                          <td>Ver historial</td>
+                          <td><code>git log --oneline</code></td>
+                          <td><code>git log --oneline</code></td>
+                        </tr>
+                        <tr>
+                          <td>Ver ramas</td>
+                          <td><code>git branch -a</code></td>
+                          <td><code>git branch -a</code></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- FLUJO DE TRABAJO TÍPICO -->
+                <div class="card card-custom">
+                  <div class="card-header card-header-custom">
+                    <i class="bi bi-diagram-3 me-2"></i>Flujo de Trabajo Típico
+                    con Git en VPS
+                  </div>
+                  <div class="card-body">
+                    <div class="step">
+                      <h3>
+                        Escenario: Desplegar actualizaciones de una aplicación
+                        web
+                      </h3>
+                      <p><strong>1. Conectar al VPS:</strong></p>
+                      <div class="code-block">
+                        <span class="command">ssh sacunapolo</span>
+                      </div>
+
+                      <p><strong>2. Ir al directorio del proyecto:</strong></p>
+                      <div class="code-block">
+                        <span class="command">cd /var/www/miaplicacion</span>
+                      </div>
+
+                      <p><strong>3. Actualizar desde GitHub:</strong></p>
+                      <div class="code-block">
+                        <span class="command">sudo git pull</span>
+                      </div>
+
+                      <p>
+                        <strong
+                          >4. Verificar que los cambios se aplicaron:</strong
+                        >
+                      </p>
+                      <div class="code-block">
+                        <span class="command">git status</span>
+                        <span class="command">git log --oneline -5</span>
+                      </div>
+
+                      <p><strong>5. Si hay conflictos (resolución):</strong></p>
+                      <div class="code-block">
+                        <span class="comment"
+                          ># Guardar cambios locales temporalmente</span
+                        >
+                        <span class="command">git stash</span>
+                        <span class="comment"># Actualizar desde remoto</span>
+                        <span class="command">git pull</span>
+                        <span class="comment"
+                          ># Aplicar cambios locales nuevamente</span
+                        >
+                        <span class="command">git stash pop</span>
+                      </div>
+
+                      <p>
+                        <strong>6. Si necesitas reclonar completamente:</strong>
+                      </p>
+                      <div class="code-block">
+                        <span class="command">cd /var/www</span>
+                        <span class="command">sudo rm -r miaplicacion</span>
+                        <span class="command"
+                          >git clone
+                          https://github.com/usuario/miaplicacion.git</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="alert alert-custom mt-4">
+                  <h4>
+                    <i class="bi bi-shield-check me-2"></i>Consideraciones de
+                    Seguridad
+                  </h4>
+                  <p>
+                    <strong>Permisos adecuados:</strong> Asegúrate de que los
+                    archivos clonados tengan los permisos correctos para el
+                    servidor web:
+                  </p>
+                  <div class="code-block">
+                    <span class="command"
+                      >sudo chown -R www-data:www-data
+                      /var/www/documentacion</span
+                    >
+                  </div>
+                  <p class="mb-0 mt-2">
+                    <strong>Archivos sensibles:</strong> No subas contraseñas,
+                    claves SSH o configuraciones sensibles a GitHub. Usa
+                    archivos <code>.env</code> o variables de entorno y
+                    agrégalos al <code>.gitignore</code>.
+                  </p>
+                </div>
+              </section>
+
               <!-- Final Notes -->
               <div class="alert alert-custom mt-5">
                 <h4>
-                  <i class="bi bi-check-circle me-2"></i>Documentación 
+                  <i class="bi bi-check-circle me-2"></i>Documentación
                   Finalizada
                 </h4>
                 <p>
@@ -1775,8 +2098,9 @@
                   La documentación cubre desde la creación inicial de claves SSH
                   hasta la configuración avanzada de seguridad, Nginx, MySQL y
                   certificados SSL, pasando por administración de usuarios,
-                  firewall, Fail2Ban, optimizaciones de rendimiento, seguridad y
-                  ahora transferencia de archivos con SCP.
+                  firewall, Fail2Ban, optimizaciones de rendimiento, seguridad,
+                  transferencia de archivos con SCP y ahora control de versiones
+                  con Git.
                 </p>
               </div>
             </div>
@@ -1819,6 +2143,9 @@
                   </a>
                   <a href="#scp-transfer" class="btn btn-outline-light btn-sm">
                     <i class="bi bi-arrow-left-right me-1"></i>SCP
+                  </a>
+                  <a href="#git-clone" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-git me-1"></i>Git
                   </a>
                 </div>
                 <p class="mt-3 small mb-0">
