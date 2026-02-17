@@ -1,3 +1,431 @@
-# documentacion
+# Portal de Configuración VPS - Documentación del Proyecto
 
-#Se clono desde github
+Portal web full-stack de documentación y gestión centralizada para administradores de sistemas que trabajan con servidores VPS.
+
+## 🏗️ Stack Tecnológico
+
+### Backend
+- **Framework:** Laravel 12 (PHP 8.3.1+)
+- **Base de Datos:** MySQL 8.0+ (InnoDB, utf8mb4)
+- **Autenticación:** Laravel Sanctum (cookies HTTP-Only)
+- **Autorización:** Spatie Permission (RBAC dinámico)
+- **Almacenamiento:** DigitalOcean Spaces (S3-compatible)
+- **Caché:** Redis (sesiones, queries, queue)
+
+### Frontend
+- **Framework:** Vue.js 3 (Composition API)
+- **Lenguaje:** TypeScript (strict mode)
+- **Cliente HTTP:** Axios (withCredentials)
+- **Estado:** Pinia (stores modulares)
+- **Queries:** Vue Query (@tanstack/vue-query)
+- **Validación:** VeeValidate 4 + Yup
+- **Enrutamiento:** Vue Router 4 (mode history)
+- **UI:** Bootstrap 5 + SASS
+- **Iconos:** FontAwesome 6 (FREE)
+- **Notificaciones:** Vue Toastification
+
+### Infraestructura
+- **Cloud:** DigitalOcean
+- **OS:** Ubuntu 24.04 LTS
+- **Contenedores:** Docker + Docker Compose
+- **Servidor Web:** Nginx (reverse proxy)
+- **CI/CD:** GitHub Actions
+- **Monitoreo:** Laravel Pulse + DigitalOcean Monitoring
+
+## 📋 Descripción
+
+Aplicación web full-stack SPA que centraliza la documentación técnica de configuración VPS. Plataforma dinámica con gestión de contenido, sistema de autenticación, roles de usuario y búsqueda avanzada.
+
+### Características Principales
+
+- ✅ **Autenticación Completa:** Registro, login, recuperación de contraseña
+- ✅ **Sistema RBAC:** 4 roles (SuperAdmin, Admin, Editor, Viewer)
+- ✅ **CRUD de Documentación:** Editor markdown con preview en tiempo real
+- ✅ **Búsqueda Avanzada:** Full-text search con filtros y autocompletado
+- ✅ **Sistema de Favoritos:** Marcar documentos con sincronización backend
+- ✅ **Upload de Archivos:** Gestión de imágenes y archivos en S3
+- ✅ **Dashboard Personalizado:** Estadísticas según rol de usuario
+- ✅ **Versionamiento:** Historial completo de cambios en documentos
+- ✅ **Panel de Administración:** Gestión de usuarios, roles y contenido con Vuestic UI
+- ✅ **Vista Pública:** Diseño Gov.co (Gobierno de Colombia) accesible y estandarizado
+- ✅ **Responsive Design:** Optimizado para móvil, tablet y desktop
+- ✅ **API RESTful:** Endpoints documentados y versionados
+
+## 📁 Estructura del Proyecto
+
+```
+documentacion/
+├── backend/                    # Laravel 12 API
+│   ├── app/
+│   │   ├── Http/              # Controllers, Requests, Resources
+│   │   ├── Models/            # Eloquent Models
+│   │   ├── Policies/          # Authorization Policies
+│   │   └── Services/          # Business Logic
+│   ├── config/                # Configuración
+│   ├── database/
+│   │   ├── migrations/        # Database migrations
+│   │   └── seeders/           # Database seeders
+│   ├── routes/
+│   │   ├── api.php           # API routes
+│   │   └── web.php           # Web routes
+│   └── tests/                # PHPUnit tests
+│
+├── frontend/                  # Vue.js 3 + TypeScript
+│   ├── src/
+│   │   ├── components/       # Vue components
+│   │   ├── composables/      # Vue composables
+│   │   ├── router/           # Vue Router config
+│   │   ├── stores/           # Pinia stores
+│   │   ├── services/         # API services
+│   │   ├── types/            # TypeScript types
+│   │   └── views/            # Page views
+│   └── tests/                # Vitest tests
+│
+├── docker/                    # Docker configuration
+│   ├── nginx/
+│   ├── php/
+│   └── mysql/
+│
+├── .github/workflows/         # CI/CD pipelines
+│   ├── test.yml
+│   ├── build.yml
+│   └── deploy.yml
+│
+├── deployment/                # Deployment configs
+│   └── digitalocean/
+│       ├── app.yaml          # DO App Platform
+│       └── setup.sh          # Droplet setup script
+│
+├── docs/                      # Documentación del proyecto
+│   ├── README.md             # Este archivo
+│   ├── user-stories.md       # 20 historias de usuario
+│   ├── tasks.md              # 40 tareas del proyecto
+│   ├── business-rules.md     # 30 reglas de negocio
+│   ├── project-specs.md      # Especificaciones técnicas
+│   ├── DOCUMENTATION_SUMMARY.md
+│   └── DOCUMENTATION_INDEX.md
+│
+├── docker-compose.yml         # Desarrollo local
+└── README.md                 # Este archivo
+```
+
+## 📚 Documentación del Proyecto
+
+### Documentos Principales
+
+#### [README.md](README.md) - Este archivo
+Guía principal con:
+- Stack tecnológico completo
+- Características del proyecto
+- Instrucciones de instalación
+- Guías de testing y deployment
+
+#### [Especificaciones del Proyecto](project-specs.md)
+Documento técnico completo con:
+- Arquitectura Laravel + Vue.js detallada
+- **Diseños UI Duales:** Vuestic (admin) + Gov.co (público)
+- Estructura de carpetas
+- Tecnologías y dependencias
+- Diseño y UX (paleta de colores, componentes)
+- 10 Requisitos funcionales
+- 8 Requisitos no funcionales
+- Plan de implementación en 7 fases
+- Guía de deployment en DigitalOcean
+- Setup Ubuntu 24.04 paso a paso
+- Costos estimados
+
+#### [Historias de Usuario](user-stories.md)
+20 historias de usuario completas con criterios de aceptación:
+- **Alta prioridad (12):** Autenticación, CRUD, búsqueda, navegación
+- **Media prioridad (6):** Perfil, favoritos, uploads, recovery
+- **Baja prioridad (4):** Versionamiento, analytics, logs
+
+**Estimación total:** 238 horas
+
+#### [Tareas del Proyecto](tasks.md)
+40 tareas técnicas organizadas en 7 fases (18 sprints):
+1. **Configuración del Entorno** (5 tareas)
+2. **Backend Core** (7 tareas)
+3. **Frontend Core** (7 tareas)
+4. **Funcionalidades Principales** (6 tareas)
+5. **Panel de Administración** (4 tareas)
+6. **Testing y QA** (5 tareas)
+7. **Deployment** (6 tareas)
+
+**Estimación total:** 482 horas (~12 semanas)
+
+#### [Reglas de Negocio](business-rules.md)
+30 reglas de negocio en 10 categorías:
+- Autenticación y Sesiones
+- Autorización y Permisos
+- Contenido y Documentación
+- Almacenamiento y Uploads
+- Búsqueda y Filtrado
+- Performance y Cache
+- Seguridad
+- API y Comunicación
+- Frontend
+- Testing
+
+**Impacto:** 7 Críticas, 15 Altas, 7 Medias, 1 Baja
+
+---
+
+### Documentos Técnicos Detallados
+
+#### [API Documentation](API_DOCUMENTATION.md)
+Especificación completa de API REST:
+- 9 módulos documentados (Auth, Documents, Categories, Search, etc.)
+- 40+ endpoints con ejemplos request/response
+- Rate limiting especificado
+- Códigos de estado HTTP
+- Manejo de errores estándar
+- Versionamiento de API
+
+#### [Database Schema](DATABASE_SCHEMA.md)
+Esquema de base de datos completo:
+- Diagrama ERD con 15 tablas
+- Definiciones SQL detalladas
+- Índices y optimizaciones
+- Foreign keys y constraints
+- Seeders de ejemplo
+- Queries comunes optimizadas
+- Estrategia de backups
+
+#### [Deployment Guide](DEPLOYMENT_GUIDE.md)
+Guía paso a paso para deployment:
+- 2 opciones: App Platform vs Droplets
+- Setup completo Ubuntu 24.04
+- Stack LEMP (Linux, Nginx, MySQL, PHP)
+- SSL con Let's Encrypt
+- CI/CD con GitHub Actions
+- Monitoreo y logging
+- Troubleshooting detallado
+
+#### [Testing Strategy](TESTING_STRATEGY.md)
+Estrategia completa de testing:
+- Tests Unitarios (PHPUnit + Vitest)
+- Tests de Integración (Feature Tests)
+- Tests de Componentes Vue
+- Tests E2E (Cypress)
+- Tests de Performance (k6)
+- Tests de Seguridad (OWASP ZAP)
+- CI/CD Integration
+- Coverage mínimo 70%
+
+#### [Security Guide](SECURITY_GUIDE.md)
+Guía de seguridad y compliance:
+- Autenticación y Autorización segura
+- Protección SQL Injection, XSS, CSRF
+- Rate Limiting y validación
+- File upload security
+- Headers de seguridad
+- Infrastructure hardening
+- Compliance GDPR
+- Incident Response Plan
+
+#### [Contribution Guide](CONTRIBUTION_GUIDE.md)
+Guía para contribuidores:
+- Código de conducta
+- Setup del entorno
+- Workflow de desarrollo (Git flow)
+- Estándares de código (PSR-12, ESLint)
+- Testing requirements
+- Pull request process
+- Good first issues
+
+#### [Architecture Decisions](ARCHITECTURE_DECISIONS.md)
+Registro de decisiones arquitectónicas:
+- 10 ADRs documentados
+- Laravel 12, Vue 3, MySQL, Redis
+- Sanctum + Spatie RBAC
+- DigitalOcean deployment
+- Vuestic + Gov.co UI
+- Alternativas consideradas
+- Consecuencias (pros/cons)
+
+#### [UI Implementation Guide](UI_IMPLEMENTATION_GUIDE.md) ✨ NEW
+Guía de implementación de diseños duales:
+- **Vuestic UI** para panel administrativo
+- **Gov.co Design System** para vista pública
+- Router configuration
+- Layouts y componentes
+- Ejemplos de código completos
+- Package.json updates
+
+---
+
+### Documentos de Índice
+
+#### [Documentation Summary](DOCUMENTATION_SUMMARY.md)
+Resumen ejecutivo con estadísticas
+
+#### [Documentation Index](DOCUMENTATION_INDEX.md)
+Índice completo de toda la documentación
+
+## 🚀 Instalación y Configuración
+
+### Prerrequisitos
+- Docker Desktop instalado
+- Git instalado
+- Node.js 20+ (para desarrollo frontend)
+- PHP 8.3+ (para desarrollo backend)
+- Composer 2+
+
+### 1. Clonar el Repositorio
+```bash
+git clone https://github.com/SantanderAcuna/documentacion.git
+cd documentacion
+```
+
+### 2. Setup con Docker Compose
+```bash
+# Copiar archivos de configuración
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+
+# Iniciar contenedores
+docker-compose up -d
+
+# Instalar dependencias backend
+docker-compose exec php composer install
+
+# Generar key de Laravel
+docker-compose exec php php artisan key:generate
+
+# Ejecutar migraciones
+docker-compose exec php php artisan migrate --seed
+
+# Instalar dependencias frontend
+docker-compose exec node npm install
+
+# Iniciar dev server frontend
+docker-compose exec node npm run dev
+```
+
+### 3. Acceder a la Aplicación
+- **Frontend:** http://localhost:5173
+- **Backend API:** http://localhost:8000/api
+- **phpMyAdmin:** http://localhost:8080
+
+### Credenciales por Defecto
+- **SuperAdmin:** admin@example.com / password
+- **Editor:** editor@example.com / password
+- **Viewer:** viewer@example.com / password
+
+## 🧪 Testing
+
+### Backend Tests (PHPUnit)
+```bash
+docker-compose exec php php artisan test
+docker-compose exec php php artisan test --coverage
+```
+
+### Frontend Tests (Vitest)
+```bash
+docker-compose exec node npm run test
+docker-compose exec node npm run test:coverage
+```
+
+### E2E Tests (Cypress)
+```bash
+docker-compose exec node npm run test:e2e
+```
+
+## 📦 Deployment en DigitalOcean
+
+### Opción 1: App Platform (Recomendado)
+```bash
+# Deploy automático desde GitHub
+doctl apps create --spec deployment/digitalocean/app.yaml
+```
+
+### Opción 2: Droplets Ubuntu 24.04
+```bash
+# Configurar droplet
+ssh root@your-droplet-ip
+bash deployment/digitalocean/setup.sh
+
+# Deploy con GitHub Actions (automático)
+git push origin main
+```
+
+Ver [project-specs.md - Deployment](project-specs.md#deployment-en-digitalocean) para guía completa.
+
+## 🎨 Paleta de Colores
+
+```css
+--primary-dark: #1a365d      /* Azul oscuro principal */
+--primary-blue: #2b6cb0      /* Azul principal */
+--primary-light-blue: #4299e1 /* Azul claro */
+--accent-orange: #ed8936     /* Color de acento */
+--sidebar-bg: #1a202c        /* Fondo del sidebar */
+```
+
+## 📱 Responsive Breakpoints
+
+- **Desktop:** > 992px (sidebar visible)
+- **Tablet:** 768px - 992px (sidebar colapsable)
+- **Mobile:** < 768px (sidebar oculto, menú hamburguesa)
+- **Small Mobile:** < 480px
+
+## 🔐 Seguridad
+
+- ✅ HTTPS obligatorio en producción
+- ✅ CSRF protection habilitado
+- ✅ XSS prevention con sanitización
+- ✅ SQL Injection prevention (Eloquent ORM)
+- ✅ Rate limiting en API
+- ✅ Cookies HTTP-Only y Secure
+- ✅ Headers de seguridad (HSTS, CSP)
+- ✅ Validación dual frontend/backend
+- ✅ Tests de seguridad en CI
+
+## 📊 Estado del Proyecto
+
+### Fase Actual: Planificación y Documentación ✅
+- [x] Arquitectura definida
+- [x] Stack tecnológico seleccionado
+- [x] Documentación completa generada
+- [ ] Setup inicial del proyecto
+- [ ] Desarrollo backend core
+- [ ] Desarrollo frontend core
+- [ ] Testing
+- [ ] Deployment
+
+### Próximos Pasos
+1. Setup repositorio y Docker Compose
+2. Inicializar Laravel 12 backend
+3. Inicializar Vue 3 + TypeScript frontend
+4. Implementar autenticación con Sanctum
+5. Desarrollar API CRUD documentación
+6. Desarrollar interfaces Vue.js
+
+## 🤝 Contribuciones
+
+### Workflow
+1. Fork del repositorio
+2. Crear branch: `feature/nombre-feature`
+3. Commits con mensajes descriptivos
+4. Push a tu fork
+5. Crear Pull Request
+
+### Code Standards
+- **Backend:** PSR-12 coding standards
+- **Frontend:** ESLint + Prettier
+- **Tests:** Coverage mínimo 70%
+- **Commits:** Conventional Commits
+
+## 📄 Licencia
+
+Todos los derechos reservados © 2023
+
+## 📞 Contacto y Soporte
+
+Para preguntas o soporte, consulta la documentación o abre un issue en GitHub.
+
+---
+
+**Versión:** 2.0.0  
+**Última actualización:** 2026-02-17  
+**Stack:** Laravel 12 + Vue.js 3 + TypeScript + DigitalOcean Ubuntu 24.04
