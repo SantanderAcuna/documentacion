@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\Storage;
 use App\Traits\OptimizableQuery;
 
 /**
@@ -129,11 +130,11 @@ class Medio extends Model
     /**
      * Obtener URL completa del archivo
      *
-     * @return string
+     * @return string|null
      */
-    public function getUrlAttribute(): string
+    public function getUrlAttribute(): ?string
     {
-        return storage_path('app/' . $this->ruta);
+        return $this->ruta ? Storage::disk($this->disco ?? 'public')->url($this->ruta) : null;
     }
 
     /**
@@ -144,7 +145,7 @@ class Medio extends Model
     public function getUrlMiniaturaAttribute(): ?string
     {
         return $this->ruta_miniatura 
-            ? storage_path('app/' . $this->ruta_miniatura)
+            ? Storage::disk($this->disco ?? 'public')->url($this->ruta_miniatura)
             : null;
     }
 }

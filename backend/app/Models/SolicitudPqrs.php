@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Crypt;
 use App\Traits\OptimizableQuery;
 use App\Traits\Cacheable;
 
@@ -62,14 +63,7 @@ class SolicitudPqrs extends Model
         'eliminado_en' => 'datetime',
     ];
 
-    /**
-     * Atributos que deben ser encriptados
-     *
-     * @var array<string>
-     */
-    protected $encrypted = [
-        'numero_identificacion_ciudadano',
-    ];
+
 
     /**
      * Relación con dependencia
@@ -145,5 +139,27 @@ class SolicitudPqrs extends Model
     public function scopePorPrioridad($query, string $prioridad)
     {
         return $query->where('prioridad', $prioridad);
+    }
+
+    /**
+     * Encriptar número de identificación del ciudadano
+     *
+     * @param string|null $value
+     * @return void
+     */
+    public function setNumeroIdentificacionCiudadanoAttribute($value): void
+    {
+        $this->attributes['numero_identificacion_ciudadano'] = $value ? Crypt::encryptString($value) : null;
+    }
+
+    /**
+     * Desencriptar número de identificación del ciudadano
+     *
+     * @param string|null $value
+     * @return string|null
+     */
+    public function getNumeroIdentificacionCiudadanoAttribute($value): ?string
+    {
+        return $value ? Crypt::decryptString($value) : null;
     }
 }
