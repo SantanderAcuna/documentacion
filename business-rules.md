@@ -1,321 +1,525 @@
 # Reglas de Negocio - Portal de Configuración VPS
 
 ## Introducción
-Este documento define las reglas de negocio que rigen el funcionamiento del Portal de Configuración VPS. Estas reglas aseguran que el portal cumpla con los requisitos técnicos, de seguridad y de usabilidad necesarios.
+Este documento define las reglas de negocio que rigen el funcionamiento del Portal de Configuración VPS v2.0 (Laravel 12 + Vue.js 3). Estas reglas aseguran que la aplicación cumpla con los requisitos técnicos, de seguridad, usabilidad y escalabilidad necesarios.
 
 ---
 
-## 1. Reglas de Acceso y Navegación
+## 1. Reglas de Autenticación y Sesiones
 
-### RN-001: Estructura de Navegación
-**Regla:** El portal debe mantener una estructura de navegación consistente en todas las páginas.
+### RN-001: Autenticación Obligatoria
+**Regla:** Todos los endpoints de la API (excepto login, register, password reset) requieren autenticación válida.
 
 **Descripción:**
-- Todas las páginas deben incluir el mismo menú lateral (sidebar)
-- El sidebar debe estar visible en todo momento (excepto en dispositivos móviles)
-- La navegación debe ser jerárquica y organizada por categorías
+- Laravel Sanctum con cookies HTTP-Only
+- CSRF protection habilitado
+- Token debe ser válido y no expirado
+- Sesión debe estar activa
 
 **Impacto:** Crítico  
-**Justificación:** Garantiza una experiencia de usuario coherente y facilita la navegación
+**Justificación:** Protege datos sensibles y garantiza que solo usuarios autenticados accedan al sistema
 
 ---
 
-### RN-002: Responsive Design Obligatorio
-**Regla:** El portal debe ser totalmente funcional en dispositivos móviles, tablets y desktop.
+### RN-002: Política de Contraseñas
+**Regla:** Las contraseñas deben cumplir requisitos mínimos de seguridad.
 
 **Descripción:**
-- El diseño debe adaptarse automáticamente a diferentes tamaños de pantalla
-- En dispositivos móviles (< 992px), el sidebar debe ocultarse por defecto
-- Debe existir un botón toggle para mostrar/ocultar el sidebar en móviles
-- El contenido debe ser legible sin zoom horizontal
-
-**Impacto:** Alto  
-**Justificación:** Los administradores necesitan acceso desde cualquier dispositivo
-
----
-
-### RN-003: Accesibilidad del Contenido
-**Regla:** Todo el contenido debe ser accesible mediante navegación estándar.
-
-**Descripción:**
-- No se requiere autenticación para acceder al portal
-- Los enlaces deben funcionar correctamente
-- No debe haber contenido oculto sin razón funcional
-- El portal debe ser indexable por buscadores
-
-**Impacto:** Medio  
-**Justificación:** Facilita el acceso rápido a la información
-
----
-
-## 2. Reglas de Contenido y Documentación
-
-### RN-004: Calidad de Documentación
-**Regla:** Toda la documentación debe ser precisa, actualizada y verificable.
-
-**Descripción:**
-- Los comandos documentados deben ser funcionales
-- Se debe indicar la versión de software cuando sea relevante
-- Las instrucciones deben ser paso a paso
-- Se deben incluir ejemplos prácticos
+- Mínimo 8 caracteres
+- Al menos 1 letra mayúscula
+- Al menos 1 letra minúscula
+- Al menos 1 número
+- Caracteres especiales recomendados
+- No puede ser igual a contraseñas anteriores (últimas 3)
+- Hash con bcrypt (Laravel default)
 
 **Impacto:** Crítico  
-**Justificación:** Información incorrecta puede causar fallos en producción
+**Justificación:** Previene accesos no autorizados y ataques de fuerza bruta
 
 ---
 
-### RN-005: Organización del Contenido
-**Regla:** El contenido debe organizarse en categorías lógicas y coherentes.
+### RN-003: Expiración de Sesiones
+**Regla:** Las sesiones de usuario deben expirar después de un período de inactividad.
 
 **Descripción:**
-- Las secciones principales son: SSH, Seguridad, Servicios Web
-- Cada sección debe tener subsecciones cuando sea necesario
-- Los temas relacionados deben estar agrupados
-- Debe existir una tabla de contenidos en páginas extensas
+- Tiempo de inactividad: 120 minutos (configurable)
+- Warning al usuario 5 minutos antes de expirar
+- Logout automático tras expiración
+- Opción "Recordarme" extiende a 30 días
 
 **Impacto:** Alto  
-**Justificación:** Facilita la búsqueda y comprensión de la información
+**Justificación:** Balance entre seguridad y experiencia de usuario
 
 ---
 
-### RN-006: Idioma del Portal
-**Regla:** El portal debe estar completamente en español.
+### RN-004: Rate Limiting
+**Regla:** Se debe limitar la cantidad de requests para prevenir abusos.
 
 **Descripción:**
-- Toda la interfaz debe estar en español
-- La documentación debe estar en español
-- Los ejemplos de código pueden incluir comandos en inglés (estándar técnico)
-- Los comentarios en código deben estar en español
+- Login: 5 intentos por minuto por IP
+- API general: 60 requests por minuto por usuario
+- Búsqueda: 20 requests por minuto por usuario
+- Uploads: 10 archivos por hora por usuario
+- Respuesta HTTP 429 cuando se excede
 
-**Impacto:** Medio  
-**Justificación:** Facilita la comprensión para usuarios hispanohablantes
+**Impacto:** Alto  
+**Justificación:** Previene ataques DoS y abuso de recursos
 
 ---
 
-## 3. Reglas de Diseño y UI/UX
+## 2. Reglas de Autorización y Permisos
 
-### RN-007: Consistencia Visual
-**Regla:** El portal debe mantener un diseño visual consistente.
-
-**Descripción:**
-- Se debe usar la paleta de colores definida en variables CSS
-- Colores principales: #1a365d (dark), #2b6cb0 (blue), #ed8936 (orange)
-- Tipografía: "Segoe UI" o fuentes del sistema
-- Los iconos deben ser de Bootstrap Icons
-
-**Impacto:** Medio  
-**Justificación:** Mejora la profesionalidad y usabilidad
-
----
-
-### RN-008: Interactividad y Feedback
-**Regla:** Los elementos interactivos deben proporcionar feedback visual.
+### RN-005: Sistema RBAC Obligatorio
+**Regla:** Todas las acciones deben validar roles y permisos mediante Spatie Permission.
 
 **Descripción:**
-- Los enlaces y botones deben cambiar de apariencia al hacer hover
-- Las transiciones deben ser suaves (0.2-0.3s)
-- El enlace activo debe estar claramente identificado
-- Los elementos clickeables deben tener cursor pointer
-
-**Impacto:** Medio  
-**Justificación:** Mejora la experiencia de usuario y claridad de la interfaz
-
----
-
-### RN-009: Jerarquía Visual
-**Regla:** El contenido debe tener una jerarquía visual clara.
-
-**Descripción:**
-- Los títulos principales deben ser más grandes que los subtítulos
-- Se deben usar diferentes tamaños de fuente para establecer jerarquía
-- Los elementos importantes deben destacarse visualmente
-- El espacio en blanco debe usarse para separar secciones
-
-**Impacto:** Medio  
-**Justificación:** Facilita la lectura y comprensión del contenido
-
----
-
-## 4. Reglas de Seguridad y Buenas Prácticas
-
-### RN-010: Seguridad en Ejemplos
-**Regla:** Los ejemplos de código no deben incluir credenciales reales o información sensible.
-
-**Descripción:**
-- Usar placeholders para contraseñas (ej: "your_password")
-- Usar IPs de ejemplo (ej: 192.0.2.1)
-- No incluir claves privadas reales
-- Advertir sobre riesgos de seguridad cuando sea relevante
+- Roles definidos: SuperAdmin, Admin, Editor, Viewer
+- Permisos granulares por recurso y acción
+- Validación en middleware de Laravel
+- Validación adicional en frontend (UI)
+- SuperAdmin tiene todos los permisos
 
 **Impacto:** Crítico  
-**Justificación:** Previene fugas de información sensible
+**Justificación:** Control de acceso preciso y seguridad por capas
 
 ---
 
-### RN-011: Recomendaciones de Seguridad
-**Regla:** El portal debe promover prácticas de seguridad sólidas.
+### RN-006: Jerarquía de Roles
+**Regla:** Los roles tienen una jerarquía que determina sus capacidades.
 
 **Descripción:**
-- Recomendar autenticación con claves SSH sobre contraseñas
-- Sugerir uso de firewall siempre
-- Promover actualizaciones regulares
-- Advertir sobre comandos peligrosos
+- SuperAdmin > Admin > Editor > Viewer
+- Solo SuperAdmin puede crear/modificar roles
+- Solo Admin+ puede gestionar usuarios
+- Solo Editor+ puede crear/editar documentación
+- Viewer solo puede leer documentación
 
 **Impacto:** Alto  
-**Justificación:** Protege los sistemas de los usuarios
+**Justificación:** Organización clara de responsabilidades
 
 ---
 
-### RN-012: Versionado de Información
-**Regla:** Se debe indicar claramente la versión del portal y fecha de actualización.
+### RN-007: Ownership de Recursos
+**Regla:** Los Editores solo pueden modificar/eliminar sus propios recursos.
 
 **Descripción:**
-- El footer debe mostrar la versión actual (ej: v1.0.0)
-- Se debe actualizar el año en el copyright automáticamente
-- Las actualizaciones importantes deben documentarse
-- Debe existir un changelog o historial de cambios
+- Editor puede editar sus propios documentos
+- Editor NO puede editar documentos de otros
+- Admin puede editar todos los documentos
+- Validación en Policy de Laravel
+- UI oculta opciones no permitidas
+
+**Impacto:** Alto  
+**Justificación:** Previene modificación no autorizada de contenido
+
+---
+
+## 3. Reglas de Contenido y Documentación
+
+### RN-008: Validación de Contenido
+**Regla:** Todo contenido debe ser validado antes de ser guardado.
+
+**Descripción:**
+- Título: requerido, máximo 255 caracteres, único
+- Slug: generado automáticamente, único, URL-friendly
+- Contenido: requerido, mínimo 50 caracteres, markdown válido
+- Categoría: requerida, debe existir en BD
+- Tags: opcional, máximo 10 tags por documento
+- Estado: draft o published
+
+**Impacto:** Alto  
+**Justificación:** Mantiene calidad y consistencia del contenido
+
+---
+
+### RN-009: Sanitización de HTML
+**Regla:** El contenido HTML generado desde markdown debe ser sanitizado.
+
+**Descripción:**
+- Usar librería de sanitización (DOMPurify en frontend)
+- Permitir solo tags seguros
+- Remover scripts maliciosos
+- Escape de entidades HTML
+- No permitir iframes sin whitelist
+
+**Impacto:** Crítico  
+**Justificación:** Previene ataques XSS
+
+---
+
+### RN-010: Versionamiento Automático
+**Regla:** Cada modificación de un documento debe crear una nueva versión.
+
+**Descripción:**
+- Guardar copia completa en tabla document_versions
+- Registrar: user_id, contenido, timestamp
+- Retener últimas 50 versiones por documento
+- Versiones más antiguas se archivan/eliminan
+- Solo Admin+ puede restaurar versiones
+
+**Impacto:** Medio  
+**Justificación:** Permite rastrear cambios y recuperar contenido
+
+---
+
+### RN-011: Categorías Obligatorias
+**Regla:** Todo documento debe pertenecer a exactamente una categoría.
+
+**Descripción:**
+- Categoría es campo requerido
+- No se puede eliminar categoría con documentos
+- Debe reasignar documentos antes de eliminar
+- Categorías predefinidas: SSH, Seguridad, Web, Linux
+
+**Impacto:** Medio  
+**Justificación:** Mantiene organización y navegación clara
+
+---
+
+## 4. Reglas de Almacenamiento y Uploads
+
+### RN-012: Validación de Archivos
+**Regla:** Los archivos subidos deben cumplir requisitos de seguridad.
+
+**Descripción:**
+- Tipos permitidos: jpg, jpeg, png, gif, pdf
+- Tamaño máximo: 5MB por archivo
+- Validar MIME type real (no solo extensión)
+- Escanear archivos con antivirus (opcional)
+- Renombrar con UUID para evitar conflictos
+- Almacenar metadata en base de datos
+
+**Impacto:** Alto  
+**Justificación:** Previene malware y abuso de almacenamiento
+
+---
+
+### RN-013: Almacenamiento en S3/Spaces
+**Regla:** Los archivos de producción deben almacenarse en DigitalOcean Spaces.
+
+**Descripción:**
+- Desarrollo: almacenamiento local
+- Producción: DigitalOcean Spaces
+- Configurar disco dinámico en Laravel
+- URLs públicas para archivos aprobados
+- Bucket privado, acceso controlado
+- CDN habilitado para performance
+
+**Impacto:** Medio  
+**Justificación:** Escalabilidad y disponibilidad de archivos
+
+---
+
+### RN-014: Limpieza de Archivos Huérfanos
+**Regla:** Los archivos no referenciados deben ser eliminados periódicamente.
+
+**Descripción:**
+- Job programado diariamente
+- Identificar archivos sin referencias en BD
+- Retener 7 días antes de eliminar
+- Log de archivos eliminados
+- Notificar a admins de limpieza
 
 **Impacto:** Bajo  
-**Justificación:** Permite rastrear cambios y mantener documentación actualizada
+**Justificación:** Optimiza uso de almacenamiento
 
 ---
 
-## 5. Reglas Técnicas
+## 5. Reglas de Búsqueda y Filtrado
 
-### RN-013: Compatibilidad de Navegadores
-**Regla:** El portal debe funcionar en navegadores modernos.
+### RN-015: Búsqueda Full-Text
+**Regla:** La búsqueda debe implementarse con full-text search de MySQL.
 
 **Descripción:**
-- Soporte para Chrome, Firefox, Safari, Edge (últimas 2 versiones)
-- Uso de Bootstrap 5 para garantizar compatibilidad
-- No se requiere soporte para Internet Explorer
-- Debe funcionar con JavaScript habilitado
+- Índice FULLTEXT en columnas: title, content
+- Búsqueda en modo NATURAL LANGUAGE
+- Mínimo 3 caracteres para buscar
+- Resultados ordenados por relevancia
+- Paginación: 20 resultados por página
 
 **Impacto:** Alto  
-**Justificación:** Cubre la mayoría de usuarios actuales
+**Justificación:** Performance y relevancia en búsquedas
 
 ---
 
-### RN-014: Rendimiento y Optimización
-**Regla:** El portal debe cargar rápidamente y ser eficiente.
+### RN-016: Filtros Acumulativos
+**Regla:** Los filtros de búsqueda deben ser acumulativos (AND).
 
 **Descripción:**
-- El tiempo de carga inicial debe ser < 3 segundos
-- Las imágenes deben estar optimizadas
-- CSS/JS debe estar minificado en producción
-- Usar CDN para librerías externas (Bootstrap, Icons)
+- Filtro por categoría + tags + fecha = AND
+- UI debe mostrar filtros activos
+- Opción de limpiar todos los filtros
+- Filtros persisten en URL (query params)
+- Sincronización con Vue Router
 
 **Impacto:** Medio  
-**Justificación:** Mejora la experiencia de usuario
+**Justificación:** Búsquedas más precisas y navegación compartible
 
 ---
 
-### RN-015: Dependencias Externas
-**Regla:** Las dependencias externas deben ser mínimas y confiables.
+## 6. Reglas de Performance y Cache
+
+### RN-017: Cache de Queries Frecuentes
+**Regla:** Las queries frecuentes deben cachearse en Redis.
 
 **Descripción:**
-- Usar CDN oficiales (Bootstrap, Font Awesome)
-- Preferir CSS/JS vanilla sobre frameworks pesados
-- Documentar todas las dependencias
-- Tener plan de contingencia si un CDN falla
-
-**Impacto:** Medio  
-**Justificación:** Reduce riesgos y mejora mantenibilidad
-
----
-
-## 6. Reglas de Mantenimiento
-
-### RN-016: Actualización de Contenido
-**Regla:** El contenido debe revisarse y actualizarse periódicamente.
-
-**Descripción:**
-- Revisar documentación cada 6 meses
-- Actualizar versiones de software mencionadas
-- Verificar que comandos sigan funcionando
-- Incorporar nuevas mejores prácticas
+- Cache de listados: 5 minutos
+- Cache de documentos individuales: 15 minutos
+- Cache de categorías: 1 hora
+- Invalidar cache al modificar datos
+- Usar cache tags para invalidación selectiva
 
 **Impacto:** Alto  
-**Justificación:** Mantiene la relevancia y utilidad del portal
+**Justificación:** Reduce carga en base de datos y mejora performance
 
 ---
 
-### RN-017: Control de Cambios
-**Regla:** Los cambios al portal deben ser rastreables y documentados.
+### RN-018: Eager Loading Obligatorio
+**Regla:** Se debe usar eager loading para evitar problema N+1.
 
 **Descripción:**
-- Usar control de versiones (Git)
-- Documentar cambios significativos
-- Mantener historial de commits claro
-- Usar branches para desarrollo
-
-**Impacto:** Medio  
-**Justificación:** Facilita mantenimiento y reversión de cambios
-
----
-
-### RN-018: Testing y Validación
-**Regla:** Los cambios deben ser probados antes de publicarse.
-
-**Descripción:**
-- Validar HTML/CSS
-- Probar en diferentes navegadores
-- Verificar responsive design
-- Revisar enlaces rotos
+- Cargar relaciones con `with()` en Eloquent
+- Evitar lazy loading en loops
+- Usar query builder cuando sea más eficiente
+- Monitorear queries con Laravel Debugbar (dev)
+- Alertar si queries > 50 en una página
 
 **Impacto:** Alto  
-**Justificación:** Previene errores en producción
+**Justificación:** Performance crítica de la aplicación
 
 ---
 
-## 7. Reglas de Funcionalidades Opcionales
-
-### RN-019: Sistema de Búsqueda
-**Regla:** Si se implementa búsqueda, debe ser funcional y precisa.
+### RN-019: Paginación Obligatoria
+**Regla:** Todos los listados deben estar paginados.
 
 **Descripción:**
-- Debe indexar todo el contenido visible
-- Los resultados deben ser relevantes
-- Debe soportar búsqueda en español
-- Debe resaltar términos encontrados
+- Máximo 50 items por página
+- Default: 20 items por página
+- Usar cursor pagination para grandes datasets
+- Incluir meta information (total, pages)
+- Links de navegación en respuesta
+
+**Impacto:** Alto  
+**Justificación:** Evita sobrecarga de memoria y mejora UX
+
+---
+
+## 7. Reglas de Seguridad
+
+### RN-020: HTTPS Obligatorio en Producción
+**Regla:** Toda comunicación en producción debe ser sobre HTTPS.
+
+**Descripción:**
+- Certificados SSL/TLS válidos (Let's Encrypt)
+- HSTS header habilitado
+- Redirección automática HTTP → HTTPS
+- Cookies con flag Secure
+- Mixed content no permitido
+
+**Impacto:** Crítico  
+**Justificación:** Protege datos en tránsito
+
+---
+
+### RN-021: CORS Configurado Restrictivamente
+**Regla:** CORS debe permitir solo orígenes autorizados.
+
+**Descripción:**
+- Whitelist de dominios permitidos
+- Credentials: true (para cookies)
+- Métodos: GET, POST, PUT, DELETE, PATCH
+- Headers permitidos definidos
+- No usar wildcard (*) en producción
+
+**Impacto:** Alto  
+**Justificación:** Previene requests no autorizados
+
+---
+
+### RN-022: SQL Injection Prevention
+**Regla:** Todas las queries deben usar prepared statements.
+
+**Descripción:**
+- Usar Eloquent ORM o Query Builder
+- NUNCA concatenar SQL manualmente
+- Usar bindings para parámetros
+- Validar input antes de queries
+- Escapar output cuando necesario
+
+**Impacto:** Crítico  
+**Justificación:** Previene uno de los ataques más comunes
+
+---
+
+### RN-023: Logs de Seguridad
+**Regla:** Los eventos de seguridad deben ser registrados.
+
+**Descripción:**
+- Log de login exitoso/fallido
+- Log de cambios de permisos
+- Log de accesos denegados
+- Log de cambios en configuración
+- Incluir: user_id, IP, timestamp, acción
+- Retención: 90 días
+
+**Impacto:** Alto  
+**Justificación:** Auditoría y detección de amenazas
+
+---
+
+## 8. Reglas de API y Comunicación
+
+### RN-024: Formato de Respuestas API
+**Regla:** Todas las respuestas de API deben seguir formato estándar.
+
+**Descripción:**
+```json
+{
+  "success": true|false,
+  "data": {...} | [...],
+  "message": "string",
+  "errors": {...},
+  "meta": {
+    "total": 100,
+    "current_page": 1,
+    "per_page": 20
+  }
+}
+```
+- Status codes HTTP apropiados
+- Mensajes descriptivos
+- Estructura consistente
+
+**Impacto:** Alto  
+**Justificación:** Facilita consumo de API y debugging
+
+---
+
+### RN-025: Versionamiento de API
+**Regla:** La API debe tener versionamiento para cambios breaking.
+
+**Descripción:**
+- Versión en URL: /api/v1/
+- Mantener v1 mientras haya clientes
+- Documentar cambios en changelog
+- Deprecation notice 3 meses antes
+- Versión actual siempre: /api/
 
 **Impacto:** Medio  
-**Justificación:** Mejora significativamente la usabilidad
+**Justificación:** Permite evolución sin romper clientes
 
 ---
 
-### RN-020: Sistema de Favoritos
-**Regla:** Si se implementan favoritos, deben persistir entre sesiones.
+## 9. Reglas de Frontend
+
+### RN-026: Validación Dual (Frontend + Backend)
+**Regla:** Toda validación en frontend debe replicarse en backend.
 
 **Descripción:**
-- Usar localStorage para almacenamiento
-- Sincronizar entre páginas del portal
-- Permitir agregar y eliminar favoritos fácilmente
-- Mostrar contador de favoritos
+- Frontend: VeeValidate + Yup (UX rápida)
+- Backend: Form Requests (seguridad)
+- NUNCA confiar solo en validación frontend
+- Mensajes de error consistentes
+- Códigos de validación estandarizados
 
-**Impacto:** Bajo  
-**Justificación:** Mejora la experiencia para usuarios frecuentes
+**Impacto:** Crítico  
+**Justificación:** Frontend puede ser bypasseado
+
+---
+
+### RN-027: Loading States Obligatorios
+**Regla:** Toda operación asíncrona debe mostrar feedback visual.
+
+**Descripción:**
+- Spinners durante fetch de datos
+- Skeleton screens en cargas iniciales
+- Progress bars en uploads
+- Disable buttons durante submit
+- Mensajes de éxito/error tras completar
+
+**Impacto:** Medio  
+**Justificación:** Mejora percepción de performance y UX
+
+---
+
+### RN-028: Optimistic Updates con Rollback
+**Regla:** Updates pueden ser optimistas pero deben tener rollback.
+
+**Descripción:**
+- Actualizar UI inmediatamente (optimistic)
+- Enviar request a backend
+- Si falla, revertir cambio en UI
+- Mostrar mensaje de error
+- Reintentar automático opcional
+
+**Impacto:** Medio  
+**Justificación:** UX fluida sin sacrificar consistencia
+
+---
+
+## 10. Reglas de Testing
+
+### RN-029: Coverage Mínimo
+**Regla:** El código debe mantener coverage mínimo de tests.
+
+**Descripción:**
+- Backend: 70% coverage mínimo
+- Frontend: 70% coverage mínimo
+- Tests unitarios para lógica de negocio
+- Tests de integración para APIs
+- Tests E2E para flujos críticos
+- CI falla si coverage < 70%
+
+**Impacto:** Alto  
+**Justificación:** Garantiza calidad y previene regresiones
+
+---
+
+### RN-030: Tests Automáticos en CI
+**Regla:** Todo push debe ejecutar suite de tests automáticos.
+
+**Descripción:**
+- GitHub Actions en cada push
+- Tests de linting (PHP CS Fixer, ESLint)
+- Tests unitarios backend + frontend
+- No permitir merge si tests fallan
+- Deploy solo si tests pasan
+
+**Impacto:** Alto  
+**Justificación:** Previene bugs en producción
 
 ---
 
 ## Matriz de Impacto
 
-| Impacto | Número de Reglas | Reglas |
-|---------|------------------|--------|
-| Crítico | 3 | RN-001, RN-004, RN-010 |
-| Alto | 6 | RN-002, RN-005, RN-011, RN-013, RN-016, RN-018 |
-| Medio | 9 | RN-003, RN-006, RN-007, RN-008, RN-009, RN-014, RN-015, RN-017, RN-019 |
-| Bajo | 2 | RN-012, RN-020 |
+| Impacto | Número de Reglas | IDs |
+|---------|------------------|-----|
+| Crítico | 7 | RN-001, RN-002, RN-005, RN-009, RN-020, RN-022, RN-026 |
+| Alto | 15 | RN-003, RN-004, RN-006, RN-007, RN-008, RN-012, RN-015, RN-017, RN-018, RN-019, RN-021, RN-023, RN-024, RN-029, RN-030 |
+| Medio | 7 | RN-010, RN-011, RN-013, RN-016, RN-025, RN-027, RN-028 |
+| Bajo | 1 | RN-014 |
+
+**Total:** 30 reglas de negocio
 
 ---
 
 ## Consideraciones Especiales
 
 ### Prioridad de Implementación
-Las reglas marcadas como "Crítico" deben implementarse primero, seguidas por las de "Alto" impacto. Las reglas de "Medio" y "Bajo" impacto pueden implementarse según disponibilidad de recursos.
+Las reglas marcadas como "Crítico" son requisitos de seguridad fundamentales y deben implementarse desde el inicio. Las reglas de "Alto" impacto deben implementarse en las primeras fases del proyecto.
 
 ### Excepciones
-Cualquier excepción a estas reglas debe ser documentada y justificada. Las excepciones a reglas críticas requieren aprobación del responsable del proyecto.
+Cualquier excepción a estas reglas debe ser documentada, justificada y aprobada por el arquitecto del proyecto. Las excepciones a reglas críticas requieren aprobación adicional del líder técnico.
 
 ### Actualización de Reglas
-Este documento debe revisarse y actualizarse conforme evoluciona el proyecto. Las reglas obsoletas deben marcarse como tal pero mantenerse para referencia histórica.
+Este documento debe revisarse y actualizarse cada 3 meses o cuando haya cambios significativos en la arquitectura, requisitos de seguridad o regulaciones aplicables.
+
+### Enforcement
+- Reglas Críticas: Validadas en code review + CI/CD
+- Reglas Alto: Validadas en code review
+- Reglas Medio/Bajo: Recomendaciones fuertes
+
+---
+
+**Última actualización:** 2026-02-17  
+**Versión del documento:** 2.0
