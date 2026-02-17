@@ -57,10 +57,23 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
-            'engine' => null,
+            'engine' => env('DB_ENGINE', 'InnoDB'),
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 (PHP_VERSION_ID >= 80500 ? \Pdo\Mysql::ATTR_SSL_CA : \PDO::MYSQL_ATTR_SSL_CA) => env('MYSQL_ATTR_SSL_CA'),
+                // Optimizaciones para alta concurrencia y escalabilidad
+                \PDO::ATTR_PERSISTENT => env('DB_PERSISTENT', false), // Conexiones persistentes
+                \PDO::ATTR_EMULATE_PREPARES => false, // No emular prepared statements
+                \PDO::ATTR_STRINGIFY_FETCHES => false, // No convertir a strings
+                \PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true, // Buffered queries para mejor performance
             ]) : [],
+            // Configuración de read/write replicas para escalabilidad
+            'read' => [
+                'host' => explode(',', env('DB_READ_HOSTS', env('DB_HOST', '127.0.0.1'))),
+            ],
+            'write' => [
+                'host' => [env('DB_WRITE_HOST', env('DB_HOST', '127.0.0.1'))],
+            ],
+            'sticky' => true, // Sticky connections para consistencia
         ],
 
         'mariadb' => [
