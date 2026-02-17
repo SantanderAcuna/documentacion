@@ -31,7 +31,6 @@ return new class extends Migration
             $table->index('number');
             $table->index('issue_date');
             $table->index('status');
-            $table->fullText(['title', 'summary', 'content', 'addressees']);
         });
     }
 

@@ -34,7 +34,6 @@ return new class extends Migration
             $table->index('meeting_date');
             $table->index('meeting_type');
             $table->index('status');
-            $table->fullText(['title', 'summary', 'content']);
         });
     }
 

@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('news_tags', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('news_id')->constrained('news')->onDelete('cascade');
+            $table->string('tag_name');
             $table->timestamps();
+            
+            $table->index('news_id');
+            $table->index('tag_name');
+            $table->unique(['news_id', 'tag_name']);
         });
     }
 

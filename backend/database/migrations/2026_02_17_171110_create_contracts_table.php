@@ -37,7 +37,6 @@ return new class extends Migration
             $table->index('start_date');
             $table->index('end_date');
             $table->index('status');
-            $table->fullText(['title', 'contractor_name', 'description']);
         });
     }
 

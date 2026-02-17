@@ -13,7 +13,20 @@ return new class extends Migration
     {
         Schema::create('plan_de_desarrollos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('alcalde_id')->constrained('alcaldes')->onDelete('cascade');
+            $table->string('name');
+            $table->string('period');
+            $table->text('description')->nullable();
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
+            $table->enum('status', ['draft', 'active', 'completed', 'archived'])->default('draft');
             $table->timestamps();
+            $table->softDeletes();
+            
+            $table->index('alcalde_id');
+            $table->index('status');
+            $table->index('start_date');
+            $table->index('end_date');
         });
     }
 

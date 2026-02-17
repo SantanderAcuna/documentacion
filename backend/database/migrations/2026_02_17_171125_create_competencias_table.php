@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('competencias', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->text('legal_framework')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+            
+            $table->index('department_id');
         });
     }
 

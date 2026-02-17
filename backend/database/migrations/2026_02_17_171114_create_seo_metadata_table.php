@@ -22,8 +22,6 @@ return new class extends Migration
             $table->string('og_image')->nullable();
             $table->string('canonical_url')->nullable();
             $table->timestamps();
-            
-            $table->index(['metadatable_type', 'metadatable_id']);
         });
     }
 

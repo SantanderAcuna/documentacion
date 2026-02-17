@@ -34,7 +34,6 @@ return new class extends Migration
             $table->index('category');
             $table->index('status');
             $table->index('last_updated_at');
-            $table->fullText(['title', 'description']);
         });
     }
 

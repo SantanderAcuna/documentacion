@@ -13,7 +13,21 @@ return new class extends Migration
     {
         Schema::create('procesos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('macro_proceso_id')->constrained('macro_procesos')->onDelete('cascade');
+            $table->string('name');
+            $table->string('code')->unique();
+            $table->text('description')->nullable();
+            $table->foreignId('responsible_department_id')->nullable()->constrained('departments')->onDelete('set null');
+            $table->integer('order')->default(0);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+            $table->softDeletes();
+            
+            $table->index('macro_proceso_id');
+            $table->index('code');
+            $table->index('responsible_department_id');
+            $table->index('is_active');
+            $table->index('order');
         });
     }
 

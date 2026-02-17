@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('municipios', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('departamento_id')->constrained('departamentos')->onDelete('cascade');
+            $table->string('code')->unique();
+            $table->string('name');
             $table->timestamps();
+            
+            $table->index('departamento_id');
+            $table->index('code');
+            $table->index('name');
         });
     }
 

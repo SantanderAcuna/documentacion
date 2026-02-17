@@ -26,8 +26,6 @@ return new class extends Migration
             $table->integer('order')->default(0);
             $table->timestamps();
             $table->softDeletes();
-            
-            $table->index(['mediable_type', 'mediable_id']);
         });
     }
 

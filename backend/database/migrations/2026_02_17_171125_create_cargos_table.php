@@ -13,7 +13,20 @@ return new class extends Migration
     {
         Schema::create('cargos', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('code')->unique();
+            $table->enum('level', ['directivo', 'profesional', 'tecnico', 'asistencial']);
+            $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
+            $table->text('description')->nullable();
+            $table->text('requirements')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+            $table->softDeletes();
+            
+            $table->index('code');
+            $table->index('level');
+            $table->index('department_id');
+            $table->index('is_active');
         });
     }
 

@@ -20,7 +20,6 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->timestamps();
             
-            $table->index(['compliant_type', 'compliant_id']);
             $table->index('law_reference');
             $table->index('compliance_status');
         });

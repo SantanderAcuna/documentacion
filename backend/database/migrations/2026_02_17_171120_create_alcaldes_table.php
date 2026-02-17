@@ -13,7 +13,20 @@ return new class extends Migration
     {
         Schema::create('alcaldes', function (Blueprint $table) {
             $table->id();
+            $table->string('full_name');
+            $table->string('photo')->nullable();
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
+            $table->string('period');
+            $table->text('bio')->nullable();
+            $table->text('achievements')->nullable();
+            $table->boolean('is_current')->default(false);
             $table->timestamps();
+            $table->softDeletes();
+            
+            $table->index('is_current');
+            $table->index('start_date');
+            $table->index('end_date');
         });
     }
 

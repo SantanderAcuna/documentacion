@@ -30,7 +30,6 @@ return new class extends Migration
             $table->index('category');
             $table->index('subcategory');
             $table->index('status');
-            $table->fullText(['category', 'subcategory', 'description']);
         });
     }
 

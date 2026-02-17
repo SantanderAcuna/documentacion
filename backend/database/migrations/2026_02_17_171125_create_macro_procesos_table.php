@@ -13,7 +13,19 @@ return new class extends Migration
     {
         Schema::create('macro_procesos', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('code')->unique();
+            $table->text('description')->nullable();
+            $table->string('color')->nullable();
+            $table->string('icon')->nullable();
+            $table->integer('order')->default(0);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+            $table->softDeletes();
+            
+            $table->index('code');
+            $table->index('is_active');
+            $table->index('order');
         });
     }
 

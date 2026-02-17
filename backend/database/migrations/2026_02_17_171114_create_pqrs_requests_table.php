@@ -38,7 +38,6 @@ return new class extends Migration
             $table->index('priority');
             $table->index('filed_at');
             $table->index('citizen_email');
-            $table->fullText(['subject', 'description', 'response_text']);
         });
     }
 

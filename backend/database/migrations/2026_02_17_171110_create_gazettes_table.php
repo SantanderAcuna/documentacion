@@ -32,7 +32,6 @@ return new class extends Migration
             $table->index('issue_date');
             $table->index('publication_date');
             $table->index('status');
-            $table->fullText(['title', 'summary', 'content']);
         });
     }
 

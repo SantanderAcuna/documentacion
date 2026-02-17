@@ -39,7 +39,6 @@ return new class extends Migration
             $table->index('status');
             $table->index('published_at');
             $table->index('is_featured');
-            $table->fullText(['title', 'summary', 'body']);
         });
     }
 

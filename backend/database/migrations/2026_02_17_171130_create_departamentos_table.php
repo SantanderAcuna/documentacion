@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('departamentos', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique();
+            $table->string('name');
             $table->timestamps();
+            
+            $table->index('code');
+            $table->index('name');
         });
     }
 
