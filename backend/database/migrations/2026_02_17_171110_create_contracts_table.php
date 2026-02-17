@@ -7,44 +7,44 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('contracts', function (Blueprint $table) {
+        Schema::create('contratos', function (Blueprint $table) {
             $table->id();
-            $table->string('contract_number')->unique();
-            $table->string('title');
-            $table->string('contractor_name');
-            $table->string('contractor_id');
-            $table->string('contract_type');
-            $table->decimal('amount', 15, 2);
-            $table->date('start_date');
-            $table->date('end_date')->nullable();
-            $table->text('description')->nullable();
-            $table->enum('status', ['active', 'completed', 'terminated'])->default('active');
-            $table->string('secop_url')->nullable();
-            $table->string('file_path')->nullable();
-            $table->foreignId('department_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->json('metadata')->nullable();
+            $table->string('numero_contrato')->unique();
+            $table->string('titulo');
+            $table->string('nombre_contratista');
+            $table->string('id_contratista');
+            $table->string('tipo_contrato');
+            $table->decimal('monto', 15, 2);
+            $table->date('fecha_inicio');
+            $table->date('fecha_fin')->nullable();
+            $table->text('descripcion')->nullable();
+            $table->enum('estado', ['activo', 'completado', 'terminado'])->default('activo');
+            $table->string('url_secop')->nullable();
+            $table->string('ruta_archivo')->nullable();
+            $table->foreignId('dependencia_id')->nullable()->constrained('dependencias')->onDelete('set null');
+            $table->foreignId('usuario_id')->constrained('usuarios')->onDelete('cascade');
+            $table->json('metadatos')->nullable();
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index('contract_number');
-            $table->index('contractor_id');
-            $table->index('contract_type');
-            $table->index('start_date');
-            $table->index('end_date');
-            $table->index('status');
+            $table->index('numero_contrato');
+            $table->index('id_contratista');
+            $table->index('tipo_contrato');
+            $table->index('fecha_inicio');
+            $table->index('fecha_fin');
+            $table->index('estado');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('contracts');
+        Schema::dropIfExists('contratos');
     }
 };

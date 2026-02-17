@@ -7,41 +7,41 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('open_data', function (Blueprint $table) {
+        Schema::create('datos_abiertos', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->enum('format', ['csv', 'json', 'xml', 'xlsx', 'pdf'])->default('csv');
-            $table->string('category');
-            $table->string('file_path')->nullable();
-            $table->string('file_url')->nullable();
-            $table->integer('records_count')->default(0);
-            $table->timestamp('last_updated_at')->nullable();
-            $table->foreignId('department_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
-            $table->json('metadata')->nullable();
+            $table->string('nombre')->unique();
+            $table->string('titulo');
+            $table->text('descripcion')->nullable();
+            $table->enum('formato', ['csv', 'json', 'xml', 'xlsx', 'pdf'])->default('csv');
+            $table->string('categoria');
+            $table->string('ruta_archivo')->nullable();
+            $table->string('url_archivo')->nullable();
+            $table->integer('conteo_registros')->default(0);
+            $table->timestamp('actualizado_ultima_vez_en')->nullable();
+            $table->foreignId('dependencia_id')->nullable()->constrained('dependencias')->onDelete('set null');
+            $table->foreignId('usuario_id')->constrained('usuarios')->onDelete('cascade');
+            $table->enum('estado', ['borrador', 'publicado', 'archivado'])->default('borrador');
+            $table->json('metadatos')->nullable();
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index('name');
-            $table->index('format');
-            $table->index('category');
-            $table->index('status');
-            $table->index('last_updated_at');
+            $table->index('nombre');
+            $table->index('formato');
+            $table->index('categoria');
+            $table->index('estado');
+            $table->index('actualizado_ultima_vez_en');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('open_data');
+        Schema::dropIfExists('datos_abiertos');
     }
 };

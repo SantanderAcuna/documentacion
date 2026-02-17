@@ -7,35 +7,35 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('asignacion_funcionarios', function (Blueprint $table) {
+        Schema::create('asignaciones_funcionarios', function (Blueprint $table) {
             $table->id();
             $table->foreignId('funcionario_id')->constrained('funcionarios')->onDelete('cascade');
-            $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');
+            $table->foreignId('dependencia_id')->constrained('dependencias')->onDelete('cascade');
             $table->foreignId('cargo_id')->constrained('cargos')->onDelete('cascade');
-            $table->date('start_date');
-            $table->date('end_date')->nullable();
-            $table->boolean('is_current')->default(true);
-            $table->text('observations')->nullable();
+            $table->date('fecha_inicio');
+            $table->date('fecha_fin')->nullable();
+            $table->boolean('es_actual')->default(true);
+            $table->text('observaciones')->nullable();
             $table->timestamps();
             
             $table->index('funcionario_id');
-            $table->index('department_id');
+            $table->index('dependencia_id');
             $table->index('cargo_id');
-            $table->index('is_current');
-            $table->index('start_date');
-            $table->index('end_date');
+            $table->index('es_actual');
+            $table->index('fecha_inicio');
+            $table->index('fecha_fin');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('asignacion_funcionarios');
+        Schema::dropIfExists('asignaciones_funcionarios');
     }
 };

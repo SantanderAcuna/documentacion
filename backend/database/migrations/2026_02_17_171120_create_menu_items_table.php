@@ -7,37 +7,37 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('menu_items', function (Blueprint $table) {
+        Schema::create('items_menu', function (Blueprint $table) {
             $table->id();
             $table->foreignId('menu_id')->constrained('menus')->onDelete('cascade');
-            $table->foreignId('sub_menu_id')->nullable()->constrained('sub_menus')->onDelete('cascade');
-            $table->string('name');
+            $table->foreignId('submenu_id')->nullable()->constrained('submenus')->onDelete('cascade');
+            $table->string('nombre');
             $table->string('slug');
             $table->string('url');
-            $table->string('icon')->nullable();
-            $table->enum('target', ['_blank', '_self'])->default('_self');
-            $table->integer('order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->string('icono')->nullable();
+            $table->enum('destino', ['_blank', '_self'])->default('_self');
+            $table->integer('orden')->default(0);
+            $table->boolean('esta_activo')->default(true);
             $table->timestamps();
             $table->softDeletes();
             
             $table->index('menu_id');
-            $table->index('sub_menu_id');
+            $table->index('submenu_id');
             $table->index('slug');
-            $table->index('is_active');
-            $table->index('order');
+            $table->index('esta_activo');
+            $table->index('orden');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('menu_items');
+        Schema::dropIfExists('items_menu');
     }
 };

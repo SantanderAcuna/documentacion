@@ -7,28 +7,28 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('nombre');
             $table->string('slug')->unique();
-            $table->string('icon')->nullable();
-            $table->integer('order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->string('icono')->nullable();
+            $table->integer('orden')->default(0);
+            $table->boolean('esta_activo')->default(true);
             $table->timestamps();
             $table->softDeletes();
             
             $table->index('slug');
-            $table->index('is_active');
-            $table->index('order');
+            $table->index('esta_activo');
+            $table->index('orden');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {

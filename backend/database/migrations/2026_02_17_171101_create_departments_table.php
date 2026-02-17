@@ -7,34 +7,34 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('departments', function (Blueprint $table) {
+        Schema::create('dependencias', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('code')->unique();
-            $table->text('description')->nullable();
-            $table->foreignId('parent_id')->nullable()->constrained('departments')->onDelete('cascade');
-            $table->string('phone')->nullable();
-            $table->string('email')->nullable();
-            $table->string('location')->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->integer('order')->default(0);
+            $table->string('nombre');
+            $table->string('codigo')->unique();
+            $table->text('descripcion')->nullable();
+            $table->foreignId('padre_id')->nullable()->constrained('dependencias')->onDelete('cascade');
+            $table->string('telefono')->nullable();
+            $table->string('correo')->nullable();
+            $table->string('ubicacion')->nullable();
+            $table->boolean('esta_activo')->default(true);
+            $table->integer('orden')->default(0);
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index('parent_id');
-            $table->index('is_active');
+            $table->index('padre_id');
+            $table->index('esta_activo');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('departments');
+        Schema::dropIfExists('dependencias');
     }
 };

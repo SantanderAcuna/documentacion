@@ -7,32 +7,32 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
         Schema::create('procesos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('macro_proceso_id')->constrained('macro_procesos')->onDelete('cascade');
-            $table->string('name');
-            $table->string('code')->unique();
-            $table->text('description')->nullable();
-            $table->foreignId('responsible_department_id')->nullable()->constrained('departments')->onDelete('set null');
-            $table->integer('order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->string('nombre');
+            $table->string('codigo')->unique();
+            $table->text('descripcion')->nullable();
+            $table->foreignId('dependencia_responsable_id')->nullable()->constrained('dependencias')->onDelete('set null');
+            $table->integer('orden')->default(0);
+            $table->boolean('esta_activo')->default(true);
             $table->timestamps();
             $table->softDeletes();
             
             $table->index('macro_proceso_id');
-            $table->index('code');
-            $table->index('responsible_department_id');
-            $table->index('is_active');
-            $table->index('order');
+            $table->index('codigo');
+            $table->index('dependencia_responsable_id');
+            $table->index('esta_activo');
+            $table->index('orden');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {

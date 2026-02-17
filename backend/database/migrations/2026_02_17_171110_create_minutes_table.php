@@ -7,41 +7,41 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('minutes', function (Blueprint $table) {
+        Schema::create('actas', function (Blueprint $table) {
             $table->id();
-            $table->string('number')->unique();
-            $table->string('title');
-            $table->date('meeting_date');
-            $table->string('meeting_type');
-            $table->string('location')->nullable();
-            $table->json('attendees')->nullable();
-            $table->text('summary')->nullable();
-            $table->longText('content');
-            $table->string('file_path');
-            $table->string('file_name');
-            $table->foreignId('department_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
-            $table->json('metadata')->nullable();
+            $table->string('numero')->unique();
+            $table->string('titulo');
+            $table->date('fecha_reunion');
+            $table->string('tipo_reunion');
+            $table->string('ubicacion')->nullable();
+            $table->json('asistentes')->nullable();
+            $table->text('resumen')->nullable();
+            $table->longText('contenido');
+            $table->string('ruta_archivo');
+            $table->string('nombre_archivo');
+            $table->foreignId('dependencia_id')->nullable()->constrained('dependencias')->onDelete('set null');
+            $table->foreignId('usuario_id')->constrained('usuarios')->onDelete('cascade');
+            $table->enum('estado', ['borrador', 'publicado', 'archivado'])->default('borrador');
+            $table->json('metadatos')->nullable();
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index('number');
-            $table->index('meeting_date');
-            $table->index('meeting_type');
-            $table->index('status');
+            $table->index('numero');
+            $table->index('fecha_reunion');
+            $table->index('tipo_reunion');
+            $table->index('estado');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('minutes');
+        Schema::dropIfExists('actas');
     }
 };

@@ -7,25 +7,25 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
         Schema::create('municipios', function (Blueprint $table) {
             $table->id();
             $table->foreignId('departamento_id')->constrained('departamentos')->onDelete('cascade');
-            $table->string('code')->unique();
-            $table->string('name');
+            $table->string('codigo')->unique();
+            $table->string('nombre');
             $table->timestamps();
             
             $table->index('departamento_id');
-            $table->index('code');
-            $table->index('name');
+            $table->index('codigo');
+            $table->index('nombre');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {

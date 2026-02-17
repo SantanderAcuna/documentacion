@@ -7,25 +7,25 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
         Schema::create('competencias', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->text('legal_framework')->nullable();
+            $table->foreignId('dependencia_id')->constrained('dependencias')->onDelete('cascade');
+            $table->string('nombre');
+            $table->text('descripcion')->nullable();
+            $table->text('marco_legal')->nullable();
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index('department_id');
+            $table->index('dependencia_id');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {

@@ -7,32 +7,32 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('news_categories', function (Blueprint $table) {
+        Schema::create('categorias_noticias', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('nombre');
             $table->string('slug')->unique();
-            $table->text('description')->nullable();
+            $table->text('descripcion')->nullable();
             $table->string('color')->nullable();
-            $table->integer('order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->integer('orden')->default(0);
+            $table->boolean('esta_activo')->default(true);
             $table->timestamps();
             $table->softDeletes();
             
             $table->index('slug');
-            $table->index('is_active');
-            $table->index('order');
+            $table->index('esta_activo');
+            $table->index('orden');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('news_categories');
+        Schema::dropIfExists('categorias_noticias');
     }
 };

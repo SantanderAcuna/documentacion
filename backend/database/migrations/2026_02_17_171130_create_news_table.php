@@ -7,40 +7,40 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('news', function (Blueprint $table) {
+        Schema::create('noticias', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('news_category_id')->constrained('news_categories')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('title');
+            $table->foreignId('categoria_noticia_id')->constrained('categorias_noticias')->onDelete('cascade');
+            $table->foreignId('usuario_id')->constrained('usuarios')->onDelete('cascade');
+            $table->string('titulo');
             $table->string('slug')->unique();
-            $table->text('summary')->nullable();
-            $table->longText('content');
-            $table->string('featured_image')->nullable();
-            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
-            $table->timestamp('published_at')->nullable();
-            $table->unsignedBigInteger('views_count')->default(0);
-            $table->boolean('is_featured')->default(false);
+            $table->text('resumen')->nullable();
+            $table->longText('contenido');
+            $table->string('imagen_destacada')->nullable();
+            $table->enum('estado', ['borrador', 'publicado', 'archivado'])->default('borrador');
+            $table->timestamp('publicado_en')->nullable();
+            $table->unsignedBigInteger('conteo_vistas')->default(0);
+            $table->boolean('es_destacado')->default(false);
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index('news_category_id');
-            $table->index('user_id');
+            $table->index('categoria_noticia_id');
+            $table->index('usuario_id');
             $table->index('slug');
-            $table->index('status');
-            $table->index('published_at');
-            $table->index('is_featured');
+            $table->index('estado');
+            $table->index('publicado_en');
+            $table->index('es_destacado');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('news');
+        Schema::dropIfExists('noticias');
     }
 };

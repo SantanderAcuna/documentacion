@@ -7,29 +7,29 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('compliance_metadata', function (Blueprint $table) {
+        Schema::create('metadatos_cumplimiento', function (Blueprint $table) {
             $table->id();
-            $table->morphs('compliant');
-            $table->string('law_reference');
-            $table->enum('compliance_status', ['compliant', 'non_compliant', 'pending'])->default('pending');
-            $table->date('validation_date')->nullable();
-            $table->text('notes')->nullable();
+            $table->morphs('cumplidor');
+            $table->string('referencia_ley');
+            $table->enum('estado_cumplimiento', ['cumple', 'no_cumple', 'pendiente'])->default('pendiente');
+            $table->date('fecha_validacion')->nullable();
+            $table->text('notas')->nullable();
             $table->timestamps();
             
-            $table->index('law_reference');
-            $table->index('compliance_status');
+            $table->index('referencia_ley');
+            $table->index('estado_cumplimiento');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('compliance_metadata');
+        Schema::dropIfExists('metadatos_cumplimiento');
     }
 };

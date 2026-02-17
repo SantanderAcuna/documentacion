@@ -7,42 +7,42 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      * 
-     * Drop redundant media tables since we have a centralized polymorphic media table
-     * that handles ALL multimedia types (images, videos, audio, documents).
+     * Eliminar tablas de medios redundantes ya que tenemos una tabla de medios polimórfica centralizada
+     * que maneja TODOS los tipos multimedia (imágenes, videos, audio, documentos).
      */
     public function up(): void
     {
-        // Drop news_media table - will use polymorphic media table instead
-        Schema::dropIfExists('news_media');
+        // Eliminar tabla medios_noticias - usaremos la tabla de medios polimórfica en su lugar
+        Schema::dropIfExists('medios_noticias');
         
-        // Drop news_tags table - will use the main tags table with polymorphic relation
-        Schema::dropIfExists('news_tags');
+        // Eliminar tabla etiquetas_noticias - usaremos la tabla principal de etiquetas con relación polimórfica
+        Schema::dropIfExists('etiquetas_noticias');
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        // Recreate news_media if needed for rollback
-        Schema::create('news_media', function (Blueprint $table) {
+        // Recrear medios_noticias si es necesario para rollback
+        Schema::create('medios_noticias', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('news_id')->constrained()->onDelete('cascade');
-            $table->string('file_path');
-            $table->string('file_name');
-            $table->string('mime_type');
-            $table->string('alt_text')->nullable();
-            $table->integer('order')->default(0);
+            $table->foreignId('noticia_id')->constrained('noticias')->onDelete('cascade');
+            $table->string('ruta_archivo');
+            $table->string('nombre_archivo');
+            $table->string('tipo_mime');
+            $table->string('texto_alternativo')->nullable();
+            $table->integer('orden')->default(0);
             $table->timestamps();
         });
         
-        // Recreate news_tags if needed for rollback
-        Schema::create('news_tags', function (Blueprint $table) {
+        // Recrear etiquetas_noticias si es necesario para rollback
+        Schema::create('etiquetas_noticias', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('news_id')->constrained()->onDelete('cascade');
-            $table->string('tag_name');
+            $table->foreignId('noticia_id')->constrained('noticias')->onDelete('cascade');
+            $table->string('nombre_etiqueta');
             $table->timestamps();
         });
     }

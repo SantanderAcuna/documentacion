@@ -7,34 +7,34 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
         Schema::create('tramites', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('code')->unique();
-            $table->text('description')->nullable();
-            $table->text('requirements')->nullable();
-            $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
-            $table->integer('duration_days')->nullable();
-            $table->decimal('cost', 10, 2)->default(0);
-            $table->boolean('has_cost')->default(false);
-            $table->json('steps')->nullable();
-            $table->json('contact_info')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->string('nombre');
+            $table->string('codigo')->unique();
+            $table->text('descripcion')->nullable();
+            $table->text('requisitos')->nullable();
+            $table->foreignId('dependencia_id')->nullable()->constrained('dependencias')->onDelete('set null');
+            $table->integer('dias_duracion')->nullable();
+            $table->decimal('costo', 10, 2)->default(0);
+            $table->boolean('tiene_costo')->default(false);
+            $table->json('pasos')->nullable();
+            $table->json('info_contacto')->nullable();
+            $table->boolean('esta_activo')->default(true);
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index('code');
-            $table->index('department_id');
-            $table->index('is_active');
+            $table->index('codigo');
+            $table->index('dependencia_id');
+            $table->index('esta_activo');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {

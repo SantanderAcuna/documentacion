@@ -7,30 +7,30 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('content_types', function (Blueprint $table) {
+        Schema::create('tipos_contenido', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // posts, blogs, news, pages, events
+            $table->string('nombre'); // posts, blogs, noticias, páginas, eventos
             $table->string('slug')->unique();
-            $table->text('description')->nullable();
-            $table->string('icon')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->text('descripcion')->nullable();
+            $table->string('icono')->nullable();
+            $table->boolean('esta_activo')->default(true);
             $table->timestamps();
             $table->softDeletes();
             
             $table->index('slug');
-            $table->index('is_active');
+            $table->index('esta_activo');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('content_types');
+        Schema::dropIfExists('tipos_contenido');
     }
 };

@@ -7,28 +7,28 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('pqrs_attachments', function (Blueprint $table) {
+        Schema::create('adjuntos_pqrs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pqrs_request_id')->constrained()->onDelete('cascade');
-            $table->string('file_name');
-            $table->string('file_path');
-            $table->string('mime_type');
-            $table->unsignedBigInteger('size');
+            $table->foreignId('solicitud_pqrs_id')->constrained('solicitudes_pqrs')->onDelete('cascade');
+            $table->string('nombre_archivo');
+            $table->string('ruta_archivo');
+            $table->string('tipo_mime');
+            $table->unsignedBigInteger('tamano');
             $table->timestamps();
             
-            $table->index('pqrs_request_id');
+            $table->index('solicitud_pqrs_id');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('pqrs_attachments');
+        Schema::dropIfExists('adjuntos_pqrs');
     }
 };

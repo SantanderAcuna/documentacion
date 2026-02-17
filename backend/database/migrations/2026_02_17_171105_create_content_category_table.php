@@ -7,25 +7,25 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('content_category', function (Blueprint $table) {
+        Schema::create('contenido_categoria', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('content_id')->constrained()->onDelete('cascade');
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('contenido_id')->constrained('contenidos')->onDelete('cascade');
+            $table->foreignId('categoria_id')->constrained('categorias')->onDelete('cascade');
             $table->timestamps();
             
-            $table->unique(['content_id', 'category_id']);
+            $table->unique(['contenido_id', 'categoria_id']);
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('content_category');
+        Schema::dropIfExists('contenido_categoria');
     }
 };

@@ -7,33 +7,33 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      * 
-     * Polymorphic pivot table for tags - allows ANY entity to have tags
-     * (contents, news, decrees, gazettes, contracts, etc.)
-     * Following 4FN normalization - replaces specific pivot tables like content_tag
+     * Tabla pivote polimórfica para etiquetas - permite que CUALQUIER entidad tenga etiquetas
+     * (contenidos, noticias, decretos, gacetas, contratos, etc.)
+     * Siguiendo normalización 4FN - reemplaza tablas pivote específicas como contenido_etiqueta
      */
     public function up(): void
     {
-        Schema::create('taggables', function (Blueprint $table) {
+        Schema::create('etiquetables', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tag_id')->constrained()->onDelete('cascade');
-            $table->morphs('taggable'); // taggable_id, taggable_type (auto-creates index)
+            $table->foreignId('etiqueta_id')->constrained('etiquetas')->onDelete('cascade');
+            $table->morphs('etiquetable'); // etiquetable_id, etiquetable_tipo (auto-crea índice)
             $table->timestamps();
             
-            // Prevent duplicate tag assignments
-            $table->unique(['tag_id', 'taggable_id', 'taggable_type'], 'taggables_unique');
+            // Prevenir asignaciones de etiquetas duplicadas
+            $table->unique(['etiqueta_id', 'etiquetable_id', 'etiquetable_tipo'], 'etiquetables_unico');
             
-            // Index for tag lookups (morphs already creates index on taggable_type, taggable_id)
-            $table->index('tag_id');
+            // Índice para búsquedas de etiquetas (morphs ya crea índice en etiquetable_tipo, etiquetable_id)
+            $table->index('etiqueta_id');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('taggables');
+        Schema::dropIfExists('etiquetables');
     }
 };

@@ -7,29 +7,29 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('seo_metadata', function (Blueprint $table) {
+        Schema::create('metadatos_seo', function (Blueprint $table) {
             $table->id();
             $table->morphs('metadatable');
-            $table->string('meta_title')->nullable();
-            $table->text('meta_description')->nullable();
-            $table->text('meta_keywords')->nullable();
-            $table->string('og_title')->nullable();
-            $table->text('og_description')->nullable();
-            $table->string('og_image')->nullable();
-            $table->string('canonical_url')->nullable();
+            $table->string('titulo_meta')->nullable();
+            $table->text('descripcion_meta')->nullable();
+            $table->text('palabras_clave_meta')->nullable();
+            $table->string('titulo_og')->nullable();
+            $table->text('descripcion_og')->nullable();
+            $table->string('imagen_og')->nullable();
+            $table->string('url_canonica')->nullable();
             $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('seo_metadata');
+        Schema::dropIfExists('metadatos_seo');
     }
 };

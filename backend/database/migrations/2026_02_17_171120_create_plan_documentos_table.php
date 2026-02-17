@@ -7,33 +7,33 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('plan_documentos', function (Blueprint $table) {
+        Schema::create('documentos_plan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('plan_de_desarrollo_id')->constrained('plan_de_desarrollos')->onDelete('cascade');
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->string('file_path');
-            $table->string('file_name');
-            $table->string('document_type')->nullable();
-            $table->integer('order')->default(0);
+            $table->foreignId('plan_desarrollo_id')->constrained('planes_desarrollo')->onDelete('cascade');
+            $table->string('titulo');
+            $table->text('descripcion')->nullable();
+            $table->string('ruta_archivo');
+            $table->string('nombre_archivo');
+            $table->string('tipo_documento')->nullable();
+            $table->integer('orden')->default(0);
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index('plan_de_desarrollo_id');
-            $table->index('document_type');
-            $table->index('order');
+            $table->index('plan_desarrollo_id');
+            $table->index('tipo_documento');
+            $table->index('orden');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('plan_documentos');
+        Schema::dropIfExists('documentos_plan');
     }
 };

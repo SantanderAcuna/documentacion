@@ -7,34 +7,34 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('categorias', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('nombre');
             $table->string('slug')->unique();
-            $table->text('description')->nullable();
-            $table->foreignId('parent_id')->nullable()->constrained('categories')->onDelete('cascade');
+            $table->text('descripcion')->nullable();
+            $table->foreignId('padre_id')->nullable()->constrained('categorias')->onDelete('cascade');
             $table->string('color')->nullable();
-            $table->string('icon')->nullable();
-            $table->integer('order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->string('icono')->nullable();
+            $table->integer('orden')->default(0);
+            $table->boolean('esta_activo')->default(true);
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index('parent_id');
+            $table->index('padre_id');
             $table->index('slug');
-            $table->index('is_active');
+            $table->index('esta_activo');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('categorias');
     }
 };

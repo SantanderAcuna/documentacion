@@ -7,27 +7,27 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      * 
-     * Drop content_tag table - replaced by polymorphic taggables table
+     * Eliminar tabla contenido_etiqueta - reemplazada por tabla etiquetables polimórfica
      */
     public function up(): void
     {
-        Schema::dropIfExists('content_tag');
+        Schema::dropIfExists('contenido_etiqueta');
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::create('content_tag', function (Blueprint $table) {
+        Schema::create('contenido_etiqueta', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('content_id')->constrained()->onDelete('cascade');
-            $table->foreignId('tag_id')->constrained()->onDelete('cascade');
+            $table->foreignId('contenido_id')->constrained('contenidos')->onDelete('cascade');
+            $table->foreignId('etiqueta_id')->constrained('etiquetas')->onDelete('cascade');
             $table->timestamps();
             
-            $table->unique(['content_id', 'tag_id']);
+            $table->unique(['contenido_id', 'etiqueta_id']);
         });
     }
 };

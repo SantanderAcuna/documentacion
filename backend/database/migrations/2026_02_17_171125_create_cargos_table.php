@@ -7,31 +7,31 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
         Schema::create('cargos', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('code')->unique();
-            $table->enum('level', ['directivo', 'profesional', 'tecnico', 'asistencial']);
-            $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
-            $table->text('description')->nullable();
-            $table->text('requirements')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->string('nombre');
+            $table->string('codigo')->unique();
+            $table->enum('nivel', ['directivo', 'profesional', 'tecnico', 'asistencial']);
+            $table->foreignId('dependencia_id')->nullable()->constrained('dependencias')->onDelete('set null');
+            $table->text('descripcion')->nullable();
+            $table->text('requisitos')->nullable();
+            $table->boolean('esta_activo')->default(true);
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index('code');
-            $table->index('level');
-            $table->index('department_id');
-            $table->index('is_active');
+            $table->index('codigo');
+            $table->index('nivel');
+            $table->index('dependencia_id');
+            $table->index('esta_activo');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {

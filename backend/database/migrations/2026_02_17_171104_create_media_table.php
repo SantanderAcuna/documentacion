@@ -7,76 +7,76 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('media', function (Blueprint $table) {
+        Schema::create('medios', function (Blueprint $table) {
             $table->id();
             
-            // Polymorphic relation - can attach to ANY entity
-            $table->morphs('mediable');
+            // Relación polimórfica - puede adjuntarse a CUALQUIER entidad
+            $table->morphs('medio');
             
-            // Basic file information
-            $table->string('name'); // User-friendly name
-            $table->string('file_name'); // Original filename
-            $table->string('mime_type'); // image/jpeg, video/mp4, audio/mpeg, application/pdf
-            $table->string('disk')->default('public'); // storage disk
-            $table->string('path'); // Full path: storage/{component}/{year}/{filename}
-            $table->unsignedBigInteger('size'); // File size in bytes
+            // Información básica del archivo
+            $table->string('nombre'); // Nombre amigable
+            $table->string('nombre_archivo'); // Nombre de archivo original
+            $table->string('tipo_mime'); // image/jpeg, video/mp4, audio/mpeg, application/pdf
+            $table->string('disco')->default('public'); // disco de almacenamiento
+            $table->string('ruta'); // Ruta completa: storage/{componente}/{año}/{nombre_archivo}
+            $table->unsignedBigInteger('tamano'); // Tamaño del archivo en bytes
             
-            // Media type classification
-            $table->enum('media_type', [
-                'image',      // jpg, png, gif, webp, svg
-                'video',      // mp4, avi, mov, webm
-                'audio',      // mp3, wav, ogg
-                'document',   // pdf, doc, docx, xls, xlsx
-                'archive',    // zip, rar
-                'other'
+            // Clasificación del tipo de medio
+            $table->enum('tipo_medio', [
+                'imagen',      // jpg, png, gif, webp, svg
+                'video',       // mp4, avi, mov, webm
+                'audio',       // mp3, wav, ogg
+                'documento',   // pdf, doc, docx, xls, xlsx
+                'archivo',     // zip, rar
+                'otro'
             ]);
             
-            // Image/Video specific fields
-            $table->string('alt_text')->nullable(); // For accessibility (WCAG 2.1 AA)
-            $table->unsignedInteger('width')->nullable(); // Image/video width
-            $table->unsignedInteger('height')->nullable(); // Image/video height
-            $table->unsignedInteger('duration')->nullable(); // Video/audio duration in seconds
+            // Campos específicos para imágenes/videos
+            $table->string('texto_alternativo')->nullable(); // Para accesibilidad (WCAG 2.1 AA)
+            $table->unsignedInteger('ancho')->nullable(); // Ancho de imagen/video
+            $table->unsignedInteger('alto')->nullable(); // Alto de imagen/video
+            $table->unsignedInteger('duracion')->nullable(); // Duración de video/audio en segundos
             
-            // Thumbnails and conversions
-            $table->string('thumbnail_path')->nullable(); // Auto-generated thumbnail
-            $table->json('conversions')->nullable(); // Different sizes/formats
+            // Miniaturas y conversiones
+            $table->string('ruta_miniatura')->nullable(); // Miniatura autogenerada
+            $table->json('conversiones')->nullable(); // Diferentes tamaños/formatos
             
-            // Metadata and descriptions
-            $table->text('description')->nullable();
-            $table->text('caption')->nullable(); // For images/videos
-            $table->string('copyright')->nullable(); // Copyright info
+            // Metadatos y descripciones
+            $table->text('descripcion')->nullable();
+            $table->text('leyenda')->nullable(); // Para imágenes/videos
+            $table->string('derechos_autor')->nullable(); // Información de derechos de autor
             
-            // Organization
-            $table->string('collection')->nullable(); // Group related media
-            $table->integer('order')->default(0); // Sort order
-            $table->boolean('is_featured')->default(false);
+            // Organización
+            $table->string('coleccion')->nullable(); // Agrupar medios relacionados
+            $table->integer('orden')->default(0); // Orden de clasificación
+            $table->boolean('es_destacado')->default(false);
             
-            // Extended metadata (for videos: resolution, codec; for audio: bitrate, etc.)
-            $table->json('metadata')->nullable();
+            // Metadatos extendidos (para videos: resolución, codec; para audio: bitrate, etc.)
+            $table->json('metadatos')->nullable();
             
-            // Audit fields
-            $table->foreignId('uploaded_by')->nullable()->constrained('users')->onDelete('set null');
+            // Campos de auditoría
+            $table->foreignId('subido_por')->nullable()->constrained('usuarios')->onDelete('set null');
             $table->timestamps();
             $table->softDeletes();
             
-            // Indexes for performance (morphs() already creates index on mediable_type, mediable_id)
-            $table->index('media_type');
-            $table->index('mime_type');
-            $table->index('collection');
-            $table->index('is_featured');
-            $table->index('uploaded_by');
+            // Índices para rendimiento (morphs() ya crea índice en medio_tipo, medio_id)
+            $table->index('tipo_medio');
+            $table->index('tipo_mime');
+            $table->index('coleccion');
+            $table->index('es_destacado');
+            $table->index('subido_por');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('media');
+        Schema::dropIfExists('medios');
     }
 };

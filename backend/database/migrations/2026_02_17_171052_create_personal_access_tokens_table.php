@@ -7,27 +7,27 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('personal_access_tokens', function (Blueprint $table) {
+        Schema::create('tokens_acceso_personal', function (Blueprint $table) {
             $table->id();
             $table->morphs('tokenable');
-            $table->text('name');
+            $table->text('nombre');
             $table->string('token', 64)->unique();
-            $table->text('abilities')->nullable();
-            $table->timestamp('last_used_at')->nullable();
-            $table->timestamp('expires_at')->nullable()->index();
+            $table->text('habilidades')->nullable();
+            $table->timestamp('usado_ultima_vez_en')->nullable();
+            $table->timestamp('expira_en')->nullable()->index();
             $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('personal_access_tokens');
+        Schema::dropIfExists('tokens_acceso_personal');
     }
 };

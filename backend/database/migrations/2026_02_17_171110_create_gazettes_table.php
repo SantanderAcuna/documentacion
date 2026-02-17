@@ -7,39 +7,39 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar las migraciones.
      */
     public function up(): void
     {
-        Schema::create('gazettes', function (Blueprint $table) {
+        Schema::create('gacetas', function (Blueprint $table) {
             $table->id();
-            $table->string('number')->unique();
-            $table->string('title');
-            $table->text('summary')->nullable();
-            $table->longText('content');
-            $table->date('issue_date');
-            $table->date('publication_date')->nullable();
-            $table->foreignId('department_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('file_path');
-            $table->string('file_name');
-            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
-            $table->json('metadata')->nullable();
+            $table->string('numero')->unique();
+            $table->string('titulo');
+            $table->text('resumen')->nullable();
+            $table->longText('contenido');
+            $table->date('fecha_emision');
+            $table->date('fecha_publicacion')->nullable();
+            $table->foreignId('dependencia_id')->nullable()->constrained('dependencias')->onDelete('set null');
+            $table->foreignId('usuario_id')->constrained('usuarios')->onDelete('cascade');
+            $table->string('ruta_archivo');
+            $table->string('nombre_archivo');
+            $table->enum('estado', ['borrador', 'publicado', 'archivado'])->default('borrador');
+            $table->json('metadatos')->nullable();
             $table->timestamps();
             $table->softDeletes();
             
-            $table->index('number');
-            $table->index('issue_date');
-            $table->index('publication_date');
-            $table->index('status');
+            $table->index('numero');
+            $table->index('fecha_emision');
+            $table->index('fecha_publicacion');
+            $table->index('estado');
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir las migraciones.
      */
     public function down(): void
     {
-        Schema::dropIfExists('gazettes');
+        Schema::dropIfExists('gacetas');
     }
 };
