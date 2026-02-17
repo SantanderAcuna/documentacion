@@ -46,7 +46,8 @@ Aplicación web full-stack SPA que centraliza la documentación técnica de conf
 - ✅ **Upload de Archivos:** Gestión de imágenes y archivos en S3
 - ✅ **Dashboard Personalizado:** Estadísticas según rol de usuario
 - ✅ **Versionamiento:** Historial completo de cambios en documentos
-- ✅ **Panel de Administración:** Gestión de usuarios, roles y contenido
+- ✅ **Panel de Administración:** Gestión de usuarios, roles y contenido con Vuestic UI
+- ✅ **Vista Pública:** Diseño Gov.co (Gobierno de Colombia) accesible y estandarizado
 - ✅ **Responsive Design:** Optimizado para móvil, tablet y desktop
 - ✅ **API RESTful:** Endpoints documentados y versionados
 
@@ -110,7 +111,30 @@ documentacion/
 
 ## 📚 Documentación del Proyecto
 
-### [Historias de Usuario](user-stories.md)
+### Documentos Principales
+
+#### [README.md](README.md) - Este archivo
+Guía principal con:
+- Stack tecnológico completo
+- Características del proyecto
+- Instrucciones de instalación
+- Guías de testing y deployment
+
+#### [Especificaciones del Proyecto](project-specs.md)
+Documento técnico completo con:
+- Arquitectura Laravel + Vue.js detallada
+- **Diseños UI Duales:** Vuestic (admin) + Gov.co (público)
+- Estructura de carpetas
+- Tecnologías y dependencias
+- Diseño y UX (paleta de colores, componentes)
+- 10 Requisitos funcionales
+- 8 Requisitos no funcionales
+- Plan de implementación en 7 fases
+- Guía de deployment en DigitalOcean
+- Setup Ubuntu 24.04 paso a paso
+- Costos estimados
+
+#### [Historias de Usuario](user-stories.md)
 20 historias de usuario completas con criterios de aceptación:
 - **Alta prioridad (12):** Autenticación, CRUD, búsqueda, navegación
 - **Media prioridad (6):** Perfil, favoritos, uploads, recovery
@@ -118,7 +142,7 @@ documentacion/
 
 **Estimación total:** 238 horas
 
-### [Tareas del Proyecto](tasks.md)
+#### [Tareas del Proyecto](tasks.md)
 40 tareas técnicas organizadas en 7 fases (18 sprints):
 1. **Configuración del Entorno** (5 tareas)
 2. **Backend Core** (7 tareas)
@@ -130,7 +154,7 @@ documentacion/
 
 **Estimación total:** 482 horas (~12 semanas)
 
-### [Reglas de Negocio](business-rules.md)
+#### [Reglas de Negocio](business-rules.md)
 30 reglas de negocio en 10 categorías:
 - Autenticación y Sesiones
 - Autorización y Permisos
@@ -145,18 +169,99 @@ documentacion/
 
 **Impacto:** 7 Críticas, 15 Altas, 7 Medias, 1 Baja
 
-### [Especificaciones del Proyecto](project-specs.md)
-Documento técnico completo con:
-- Arquitectura Laravel + Vue.js detallada
-- Estructura de carpetas
-- Tecnologías y dependencias
-- Diseño y UX (paleta de colores, componentes)
-- 10 Requisitos funcionales
-- 8 Requisitos no funcionales
-- Plan de implementación en 7 fases
-- Guía de deployment en DigitalOcean
-- Setup Ubuntu 24.04 paso a paso
-- Costos estimados
+---
+
+### Documentos Técnicos Detallados
+
+#### [API Documentation](API_DOCUMENTATION.md)
+Especificación completa de API REST:
+- 9 módulos documentados (Auth, Documents, Categories, Search, etc.)
+- 40+ endpoints con ejemplos request/response
+- Rate limiting especificado
+- Códigos de estado HTTP
+- Manejo de errores estándar
+- Versionamiento de API
+
+#### [Database Schema](DATABASE_SCHEMA.md)
+Esquema de base de datos completo:
+- Diagrama ERD con 15 tablas
+- Definiciones SQL detalladas
+- Índices y optimizaciones
+- Foreign keys y constraints
+- Seeders de ejemplo
+- Queries comunes optimizadas
+- Estrategia de backups
+
+#### [Deployment Guide](DEPLOYMENT_GUIDE.md)
+Guía paso a paso para deployment:
+- 2 opciones: App Platform vs Droplets
+- Setup completo Ubuntu 24.04
+- Stack LEMP (Linux, Nginx, MySQL, PHP)
+- SSL con Let's Encrypt
+- CI/CD con GitHub Actions
+- Monitoreo y logging
+- Troubleshooting detallado
+
+#### [Testing Strategy](TESTING_STRATEGY.md)
+Estrategia completa de testing:
+- Tests Unitarios (PHPUnit + Vitest)
+- Tests de Integración (Feature Tests)
+- Tests de Componentes Vue
+- Tests E2E (Cypress)
+- Tests de Performance (k6)
+- Tests de Seguridad (OWASP ZAP)
+- CI/CD Integration
+- Coverage mínimo 70%
+
+#### [Security Guide](SECURITY_GUIDE.md)
+Guía de seguridad y compliance:
+- Autenticación y Autorización segura
+- Protección SQL Injection, XSS, CSRF
+- Rate Limiting y validación
+- File upload security
+- Headers de seguridad
+- Infrastructure hardening
+- Compliance GDPR
+- Incident Response Plan
+
+#### [Contribution Guide](CONTRIBUTION_GUIDE.md)
+Guía para contribuidores:
+- Código de conducta
+- Setup del entorno
+- Workflow de desarrollo (Git flow)
+- Estándares de código (PSR-12, ESLint)
+- Testing requirements
+- Pull request process
+- Good first issues
+
+#### [Architecture Decisions](ARCHITECTURE_DECISIONS.md)
+Registro de decisiones arquitectónicas:
+- 10 ADRs documentados
+- Laravel 12, Vue 3, MySQL, Redis
+- Sanctum + Spatie RBAC
+- DigitalOcean deployment
+- Vuestic + Gov.co UI
+- Alternativas consideradas
+- Consecuencias (pros/cons)
+
+#### [UI Implementation Guide](UI_IMPLEMENTATION_GUIDE.md) ✨ NEW
+Guía de implementación de diseños duales:
+- **Vuestic UI** para panel administrativo
+- **Gov.co Design System** para vista pública
+- Router configuration
+- Layouts y componentes
+- Ejemplos de código completos
+- Package.json updates
+
+---
+
+### Documentos de Índice
+
+#### [Documentation Summary](DOCUMENTATION_SUMMARY.md)
+Resumen ejecutivo con estadísticas
+
+#### [Documentation Index](DOCUMENTATION_INDEX.md)
+Índice completo de toda la documentación
 
 ## 🚀 Instalación y Configuración
 
