@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -31,7 +32,11 @@ return new class extends Migration
             $table->index(['status', 'published_at']);
             $table->index(['author_id', 'status']);
             $table->index('is_featured');
-            $table->fullText(['title', 'content']);
+            
+            // Fulltext index only for MySQL
+            if (DB::connection()->getDriverName() === 'mysql') {
+                $table->fullText(['title', 'content']);
+            }
         });
     }
 

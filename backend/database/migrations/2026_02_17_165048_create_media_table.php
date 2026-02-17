@@ -18,10 +18,9 @@ return new class extends Migration
             $table->string('alt_text')->nullable();
             $table->text('caption')->nullable();
             $table->foreignId('uploaded_by')->constrained('users')->onDelete('cascade');
-            $table->morphs('mediable');
+            $table->morphs('mediable'); // This already creates an index
             $table->timestamps();
             
-            $table->index(['mediable_type', 'mediable_id']);
             $table->index('mime_type');
         });
     }
