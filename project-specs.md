@@ -240,7 +240,9 @@ Nginx (Reverse Proxy)
 - Mensajes personalizados
 
 **UI/UX:**
-- Bootstrap 5.3+ (no jQuery)
+- **Panel Admin:** Vuestic UI 1.9+ (componentes admin profesionales)
+- **Vista Pública:** Gov.co Design System v5 (Ministerio TIC Colombia)
+- Bootstrap 5.3+ (base framework)
 - SASS/SCSS personalizado
 - FontAwesome 6 FREE
 - Vue Toastification (notificaciones)
@@ -381,7 +383,69 @@ documentacion/
 
 ## Diseño y UX
 
-### Paleta de Colores
+### Arquitectura de Diseños Dual
+
+El proyecto implementa **dos diseños diferenciados** según el contexto del usuario:
+
+#### 1. Vista Pública (Gov.co Design System)
+**URL:** `/`, `/documentacion`, `/buscar`  
+**Framework:** Gov.co v5 (Ministerio TIC Colombia)
+
+**Características:**
+- Diseño oficial del gobierno colombiano
+- Accesibilidad WCAG 2.1 AA compliance
+- CDN: https://cdn.www.gov.co/v5/
+- Responsive y mobile-first
+- Componentes estandarizados
+
+**Paleta de Colores Gov.co:**
+```css
+--govco-primary: #004884    /* Azul gobierno */
+--govco-secondary: #3366CC  /* Azul secundario */
+--govco-text: #333333       /* Texto principal */
+--govco-background: #F5F5F5 /* Fondo */
+--govco-white: #FFFFFF      /* Blanco */
+```
+
+**Componentes Principales:**
+- Header oficial con logo Gov.co
+- Navegación estandarizada
+- Footer con enlaces institucionales
+- Cards de documentación
+- Breadcrumbs
+- Buscador integrado
+
+#### 2. Panel Administrativo (Vuestic UI)
+**URL:** `/admin/*`  
+**Framework:** Vuestic UI 1.9+
+
+**Características:**
+- Framework moderno para admin panels
+- 40+ componentes preconstruidos
+- Theming avanzado
+- Dark mode ready
+- TypeScript first
+
+**Paleta de Colores Admin:**
+```css
+--va-primary: #2b6cb0       /* Azul principal */
+--va-secondary: #4299e1     /* Azul claro */
+--va-success: #48bb78       /* Verde éxito */
+--va-danger: #f56565        /* Rojo error */
+--va-warning: #ed8936       /* Naranja advertencia */
+--va-info: #4299e1          /* Azul info */
+```
+
+**Componentes Principales:**
+- Sidebar con navegación jerárquica
+- Dashboard con stats cards
+- Data tables con sorting/filtering
+- Forms con validación
+- Modals y dropdowns
+- Charts y analytics
+- Notificaciones toast
+
+### Responsive Breakpoints
 ```css
 --primary-dark: #1a365d      /* Azul oscuro principal */
 --primary-blue: #2b6cb0      /* Azul principal */
