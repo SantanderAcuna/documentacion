@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('tag_name');
             $table->timestamps();
             
-            $table->index('news_id');
             $table->index('tag_name');
             $table->unique(['news_id', 'tag_name']);
         });
