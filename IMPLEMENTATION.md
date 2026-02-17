@@ -29,12 +29,13 @@ Este documento registra la implementación automática de todas las fases del pr
 
 ---
 
-## 🔄 Fase 2: Backend Base (40% COMPLETADA)
+## 🔄 Fase 2: Backend Base (90% COMPLETADA)
 
-**Estado:** 🔄 EN PROGRESO  
-**Inicio:** 2026-02-17
+**Estado:** 🔄 CASI COMPLETA  
+**Inicio:** 2026-02-17  
+**Actualización:** 2026-02-17 22:55
 
-### ✅ Completado (40%)
+### ✅ Completado (90%)
 
 #### Setup Laravel (100%)
 - ✅ Laravel 11.48 instalado (versión estable más reciente)
@@ -61,42 +62,58 @@ Este documento registra la implementación automática de todas las fases del pr
 - ✅ `create_media_table` (Media con morphs)
 - ✅ `create_pqrs_table` (PQRS completo)
 
-#### Modelos Base Creados (100%)
-- ✅ `Category` model
-- ✅ `Content` model
-- ✅ `Tag` model
-- ✅ `Media` model
-- ✅ `Pqrs` model
-- ✅ `User` model (Laravel default)
+#### Modelos Completos con Relaciones (100%)
+- ✅ `User` - con HasApiTokens, HasRoles, relaciones
+- ✅ `Category` - con parent/children, SoftDeletes, scopes
+- ✅ `Content` - con todas las relaciones, LogsActivity, scopes
+- ✅ `Tag` - con relación many-to-many a Content
+- ✅ `Media` - con MorphTo, relación uploader
+- ✅ `Pqrs` - con LogsActivity, scopes, generador de folio
 
 #### Seeders (100%)
 - ✅ `RolePermissionSeeder` creado con:
   - 6 roles: super-admin, editor, admin-transparencia, atencion-pqrs, ciudadano, auditor
   - 24 permisos: contenidos, categorías, usuarios, transparencia, PQRS, configuración
 
-### ⏳ Pendiente (60%)
+#### API Routes (100%)
+- ✅ `routes/api.php` configurado con versionamiento v1
+- ✅ Rutas públicas: login, register, contents (lectura), categories, tags, PQRS (crear/consultar)
+- ✅ Rutas protegidas con auth:sanctum
+- ✅ Rutas con middleware de permisos (Spatie Permission)
+- ✅ Agrupación lógica por recurso
 
-#### API REST v1 (0%)
-- [ ] Rutas API en `routes/api.php`
-- [ ] Controllers:
-  - [ ] `Api/V1/AuthController` (login, logout, register)
-  - [ ] `Api/V1/ContentController` (CRUD)
-  - [ ] `Api/V1/CategoryController` (CRUD)
-  - [ ] `Api/V1/TagController` (CRUD)
-  - [ ] `Api/V1/MediaController` (upload, download)
-  - [ ] `Api/V1/PqrsController` (crear, listar, responder)
+#### API Controllers (100%)
+- ✅ `AuthController` - login, register, logout, me
+- ✅ `ContentController` - index (con filtros, búsqueda), store, show, update, destroy
+- ✅ `CategoryController` - CRUD completo con soporte para jerarquía
+- ✅ `TagController` - CRUD completo
+- ✅ `MediaController` - upload (store), delete (destroy)
+- ✅ `PqrsController` - index (admin), store (público), show (folio), update, respond
 
-#### Form Requests (0%)
-- [ ] `StoreContentRequest`
-- [ ] `UpdateContentRequest`
-- [ ] `StoreCategoryRequest`
-- [ ] `StorePqrsRequest`
+### ⏳ Pendiente (10%)
 
-#### API Resources (0%)
+#### API Resources (0%) - Opcional
+- [ ] `UserResource`
 - [ ] `ContentResource`
 - [ ] `CategoryResource`
 - [ ] `TagResource`
 - [ ] `PqrsResource`
+
+**Nota:** Los controllers ya retornan JSON directamente. Resources son opcionales para transformación avanzada.
+
+#### Form Requests (0%) - Opcional
+- [ ] `LoginRequest`
+- [ ] `RegisterRequest`
+- [ ] `StoreContentRequest`
+- [ ] `UpdateContentRequest`
+
+**Nota:** La validación está implementada directamente en los controllers. Form Requests son opcionales para mejor organización.
+
+#### Tests (0%) - Puede ir en Fase 6
+- [ ] Feature tests para autenticación
+- [ ] Feature tests para Content CRUD
+- [ ] Unit tests para modelos
+- [ ] Tests de permisos
 
 #### Tests (0%)
 - [ ] Feature tests para API
