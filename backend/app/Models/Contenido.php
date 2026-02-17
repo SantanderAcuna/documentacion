@@ -46,12 +46,37 @@ class Contenido extends Model
         'dependencia_id',
         'usuario_id',
         
+        // Versionado y control
+        'version',
+        'permite_revisiones',
+        'contenido_traduccion_de',
+        
+        // Multiidioma
+        'idioma',
+        
+        // Autoría flexible
+        'autor_nombre',
+        'autor_email',
+        
         // Campos comunes
         'titulo',
+        'meta_titulo',
         'slug',
+        'canonical_url',
         'resumen',
         'cuerpo',
         'imagen_destacada',
+        'plantilla',
+        'formato_visualizacion',
+        
+        // SEO avanzado
+        'meta_descripcion',
+        'meta_palabras_clave',
+        'robots_index',
+        'robots_follow',
+        'og_image',
+        'og_titulo',
+        'og_descripcion',
         
         // Campos para documentos oficiales (decretos, gacetas, etc.)
         'numero',
@@ -59,6 +84,11 @@ class Contenido extends Model
         'fecha_publicacion',
         'ruta_archivo',
         'nombre_archivo',
+        'requiere_firma_digital',
+        'firmado_digitalmente',
+        'hash_documento',
+        'fecha_vigencia_desde',
+        'fecha_vigencia_hasta',
         
         // Campos para eventos
         'fecha_inicio',
@@ -79,9 +109,24 @@ class Contenido extends Model
         // Estado y publicación
         'estado',
         'publicado_en',
-        'conteo_vistas',
+        'fecha_revision',
+        'fecha_expiracion',
+        'peso',
         'es_destacado',
         'comentarios_habilitados',
+        
+        // Métricas y engagement
+        'conteo_vistas',
+        'conteo_comentarios',
+        'conteo_likes',
+        'conteo_compartidos',
+        'puntuacion_promedio',
+        
+        // Accesibilidad WCAG 2.1
+        'nivel_accesibilidad',
+        'requiere_transcripcion',
+        'transcripcion',
+        'descripcion_audio',
         
         // Metadatos y auditoría
         'metadatos',
@@ -95,17 +140,44 @@ class Contenido extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        // Versionado
+        'version' => 'integer',
+        'permite_revisiones' => 'boolean',
+        
+        // Fechas
         'fecha_emision' => 'date',
         'fecha_publicacion' => 'date',
         'fecha_inicio' => 'datetime',
         'fecha_fin' => 'datetime',
         'publicado_en' => 'datetime',
-        'conteo_vistas' => 'integer',
+        'fecha_revision' => 'datetime',
+        'fecha_expiracion' => 'datetime',
+        'fecha_vigencia_desde' => 'date',
+        'fecha_vigencia_hasta' => 'date',
+        
+        // Booleanos
         'es_destacado' => 'boolean',
         'comentarios_habilitados' => 'boolean',
+        'robots_index' => 'boolean',
+        'robots_follow' => 'boolean',
+        'requiere_firma_digital' => 'boolean',
+        'firmado_digitalmente' => 'boolean',
+        'requiere_transcripcion' => 'boolean',
+        
+        // Numéricos
+        'conteo_vistas' => 'integer',
+        'conteo_comentarios' => 'integer',
+        'conteo_likes' => 'integer',
+        'conteo_compartidos' => 'integer',
+        'peso' => 'integer',
+        'monto' => 'decimal:2',
+        'puntuacion_promedio' => 'decimal:2',
+        
+        // Arrays/JSON
         'asistentes' => 'array',
         'metadatos' => 'array',
-        'monto' => 'decimal:2',
+        
+        // Timestamps
         'eliminado_en' => 'datetime',
     ];
 
@@ -157,6 +229,26 @@ class Contenido extends Model
     public function editor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'actualizado_por');
+    }
+
+    /**
+     * Relación con contenido original (para traducciones)
+     *
+     * @return BelongsTo
+     */
+    public function traduccionOriginal(): BelongsTo
+    {
+        return $this->belongsTo(Contenido::class, 'contenido_traduccion_de');
+    }
+
+    /**
+     * Relación con traducciones de este contenido
+     *
+     * @return HasMany
+     */
+    public function traducciones()
+    {
+        return $this->hasMany(Contenido::class, 'contenido_traduccion_de');
     }
 
     /**
