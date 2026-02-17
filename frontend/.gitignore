@@ -1,0 +1,16 @@
+# Frontend - Vue 3 + TypeScript
+
+node_modules/
+dist/
+.DS_Store
+*.log
+.env.local
+.env.*.local
+coverage/
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
