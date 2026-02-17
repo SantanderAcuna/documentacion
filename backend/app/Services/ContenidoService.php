@@ -9,6 +9,7 @@ use App\DTOs\Contenido\CreateContenidoDTO;
 use App\DTOs\Contenido\UpdateContenidoDTO;
 use App\Repositories\Contracts\ContenidoRepositoryInterface;
 use App\Services\Contracts\ContenidoServiceInterface;
+use App\Services\Contracts\SeoServiceInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,8 @@ use Illuminate\Support\Facades\Log;
 final class ContenidoService implements ContenidoServiceInterface
 {
     public function __construct(
-        private readonly ContenidoRepositoryInterface $contenidoRepository
+        private readonly ContenidoRepositoryInterface $contenidoRepository,
+        private readonly SeoServiceInterface $seoService
     ) {
     }
 
@@ -86,7 +88,19 @@ final class ContenidoService implements ContenidoServiceInterface
                 $usuarioId = Auth::id();
             }
 
-            // Crear DTO con usuario
+            // Generar metadatos SEO automáticamente
+            $metadatosSeo = $this->seoService->generarMetadatos([
+                'titulo' => $dto->titulo,
+                'resumen' => $dto->resumen,
+                'cuerpo' => $dto->cuerpo,
+                'imagen_destacada' => $dto->imagenDestacada,
+                'slug' => $dto->slug,
+            ]);
+
+            // Mezclar metadatos generados con metadatos personalizados (si existen)
+            $metadatosFinales = array_merge($metadatosSeo, $dto->metadatos ?? []);
+
+            // Crear DTO con usuario y metadatos SEO
             $dtoConUsuario = new CreateContenidoDTO(
                 tipoContenidoId: $dto->tipoContenidoId,
                 titulo: $dto->titulo,
@@ -103,16 +117,17 @@ final class ContenidoService implements ContenidoServiceInterface
                 esDestacado: $dto->esDestacado,
                 comentariosHabilitados: $dto->comentariosHabilitados,
                 idioma: $dto->idioma,
-                metadatos: $dto->metadatos,
+                metadatos: $metadatosFinales,
             );
 
             $contenido = $this->contenidoRepository->create($dtoConUsuario);
 
             // Log de auditoría
-            Log::info('Contenido creado', [
+            Log::info('Contenido creado con metadatos SEO automáticos', [
                 'contenido_id' => $contenido->id,
                 'usuario_id' => $usuarioId,
                 'tipo' => $contenido->tipo_contenido_id,
+                'seo_generado' => true,
             ]);
 
             DB::commit();
@@ -136,12 +151,58 @@ final class ContenidoService implements ContenidoServiceInterface
         try {
             DB::beginTransaction();
 
+            // Obtener contenido actual para generar metadatos
+            $contenidoActual = $this->contenidoRepository->findById($id);
+            
+            if ($contenidoActual === null) {
+                throw new \Exception("Contenido no encontrado");
+            }
+
+            // Si se actualiza título, resumen o cuerpo, regenerar metadatos SEO
+            if ($dto->titulo !== null || $dto->resumen !== null || $dto->cuerpo !== null) {
+                $datosParaSeo = [
+                    'titulo' => $dto->titulo ?? $contenidoActual->titulo,
+                    'resumen' => $dto->resumen ?? $contenidoActual->resumen,
+                    'cuerpo' => $dto->cuerpo ?? $contenidoActual->cuerpo,
+                    'imagen_destacada' => $dto->imagenDestacada ?? $contenidoActual->imagen_destacada,
+                    'slug' => $dto->slug ?? $contenidoActual->slug,
+                ];
+
+                $metadatosSeo = $this->seoService->generarMetadatos($datosParaSeo);
+                
+                // Mezclar con metadatos existentes y nuevos metadatos personalizados
+                $metadatosActuales = $contenidoActual->metadatos ?? [];
+                $metadatosNuevos = $dto->metadatos ?? [];
+                $metadatosFinales = array_merge($metadatosActuales, $metadatosSeo, $metadatosNuevos);
+
+                // Crear nuevo DTO con metadatos actualizados
+                $dto = new UpdateContenidoDTO(
+                    tipoContenidoId: $dto->tipoContenidoId,
+                    titulo: $dto->titulo,
+                    slug: $dto->slug,
+                    dependenciaId: $dto->dependenciaId,
+                    usuarioId: $dto->usuarioId,
+                    resumen: $dto->resumen,
+                    cuerpo: $dto->cuerpo,
+                    imagenDestacada: $dto->imagenDestacada,
+                    numero: $dto->numero,
+                    fechaEmision: $dto->fechaEmision,
+                    fechaPublicacion: $dto->fechaPublicacion,
+                    estado: $dto->estado,
+                    esDestacado: $dto->esDestacado,
+                    comentariosHabilitados: $dto->comentariosHabilitados,
+                    idioma: $dto->idioma,
+                    metadatos: $metadatosFinales,
+                );
+            }
+
             $contenido = $this->contenidoRepository->update($id, $dto);
 
             // Log de auditoría
-            Log::info('Contenido actualizado', [
+            Log::info('Contenido actualizado con metadatos SEO regenerados', [
                 'contenido_id' => $contenido->id,
                 'usuario_id' => Auth::id(),
+                'seo_regenerado' => true,
             ]);
 
             DB::commit();
