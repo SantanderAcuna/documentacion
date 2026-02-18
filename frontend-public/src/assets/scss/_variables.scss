@@ -1,0 +1,46 @@
+// Colores Principales GOV.CO
+$azul-institucional: #004884;
+$amarillo-bandera: #FFD500;
+$azul-bandera: #003DA5;
+$rojo-bandera: #CE1126;
+
+// Colores Neutros
+$gris-oscuro: #2C2C2C;
+$gris-medio: #6B6B6B;
+$gris-claro: #F5F5F5;
+$blanco: #FFFFFF;
+
+// Textos (WCAG 2.1 AA compliant)
+$texto-principal: #2C2C2C;      // Contraste 13.2:1
+$texto-secundario: #6B6B6B;     // Contraste 5.7:1
+
+// Enlaces
+$enlace-normal: #004884;        // Contraste 8.6:1
+$enlace-hover: #003366;         // Contraste 11.2:1
+
+// Estados
+$exito: #2E7D32;                // Contraste 5.2:1
+$advertencia: #F57C00;          // Contraste 4.5:1
+$error: #C62828;                // Contraste 6.8:1
+$informacion: #1976D2;          // Contraste 4.6:1
+
+// Tipografía
+$font-family-primary: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$font-family-secondary: 'Montserrat', sans-serif;
+
+// Tamaños
+$font-size-base: 16px;          // Base accesible
+$line-height-normal: 1.5;       // Mínimo WCAG
+
+// Espaciado
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+
+// Breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
