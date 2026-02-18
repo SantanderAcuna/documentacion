@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Contenido\StoreContenidoRequest;
 use App\Http\Requests\Contenido\UpdateContenidoRequest;
 use App\Http\Resources\ContenidoCollection;
-use App\Http\Resources/ContenidoResource;
+use App\Http\Resources\ContenidoResource;
 use App\Services\Contracts\ContenidoServiceInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -19,7 +19,7 @@ use Illuminate\Http\Response;
 
 /**
  * Controller de Contenidos API v1
- * 
+ *
  * Maneja todas las peticiones HTTP para gestión de contenidos.
  * Siguiendo REST best practices y patrón Controller delgado.
  */
@@ -128,7 +128,7 @@ final class ContenidoController extends Controller
     {
         try {
             $dto = UpdateContenidoDTO::fromRequest($request->validated());
-            
+
             if (!$dto->hasData()) {
                 return response()->json([
                     'success' => false,
