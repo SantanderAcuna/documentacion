@@ -1,0 +1,68 @@
+# General
+.DS_Store
+.idea/
+.vscode/
+*.log
+*.tmp
+*.temp
+.env
+.env.*
+!.env.example
+
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Laravel
+backend/vendor/
+backend/.env
+backend/.env.backup
+backend/storage/*.key
+backend/storage/framework/cache/**
+backend/storage/framework/sessions/**
+backend/storage/framework/testing/**
+backend/storage/framework/views/**
+backend/storage/logs/**
+backend/bootstrap/cache/*.php
+backend/public/hot
+backend/public/storage
+backend/.phpunit.result.cache
+backend/Homestead.json
+backend/Homestead.yaml
+backend/auth.json
+
+# Vue / Frontend
+frontend-admin/dist/
+frontend-admin/.nuxt/
+frontend-admin/.output/
+frontend-public/dist/
+frontend-public/.nuxt/
+frontend-public/.output/
+*.local
+.cache
+coverage/
+
+# Docker
+docker/data/
+docker/logs/
+docker/mysql/
+docker/redis/
+
+# Build artifacts
+dist/
+build/
+.output/
+*.tsbuildinfo
+
+# OS files
+Thumbs.db
+*~
+*.swp
+*.swo
+
+# Temporary files
+/tmp/
+*.pid

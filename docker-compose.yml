@@ -1,0 +1,163 @@
+version: '3.8'
+
+services:
+  # Nginx - Reverse Proxy
+  nginx:
+    image: nginx:1.24-alpine
+    container_name: cms_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/sites:/etc/nginx/conf.d:ro
+      - ./docker/nginx/ssl:/etc/nginx/ssl:ro
+      - ./backend/public:/var/www/backend/public:ro
+    depends_on:
+      - backend
+      - frontend-admin
+      - frontend-public
+    networks:
+      - cms_network
+    restart: unless-stopped
+
+  # Backend - Laravel 12 (PHP 8.3)
+  backend:
+    build:
+      context: ./docker/backend
+      dockerfile: Dockerfile
+    container_name: cms_backend
+    working_dir: /var/www/backend
+    volumes:
+      - ./backend:/var/www/backend
+      - ./docker/backend/php.ini:/usr/local/etc/php/conf.d/custom.ini:ro
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=cms_db
+      - DB_USERNAME=cms_user
+      - DB_PASSWORD=cms_password
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=null
+      - REDIS_PORT=6379
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - cms_network
+    restart: unless-stopped
+
+  # MySQL 8.0
+  mysql:
+    image: mysql:8.0
+    container_name: cms_mysql
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: cms_db
+      MYSQL_USER: cms_user
+      MYSQL_PASSWORD: cms_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/conf.d/custom.cnf:ro
+    networks:
+      - cms_network
+    restart: unless-stopped
+
+  # Redis 7.x
+  redis:
+    image: redis:7-alpine
+    container_name: cms_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - cms_network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+  # Frontend Admin - Vue 3 + Vuestic
+  frontend-admin:
+    build:
+      context: ./docker/frontend
+      dockerfile: Dockerfile
+    container_name: cms_frontend_admin
+    working_dir: /app
+    volumes:
+      - ./frontend-admin:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://localhost:8000/api/v1
+    ports:
+      - "3000:3000"
+    networks:
+      - cms_network
+    restart: unless-stopped
+    command: npm run dev
+
+  # Frontend Public - Vue 3 + GOV.CO
+  frontend-public:
+    build:
+      context: ./docker/frontend
+      dockerfile: Dockerfile
+    container_name: cms_frontend_public
+    working_dir: /app
+    volumes:
+      - ./frontend-public:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://localhost:8000/api/v1
+    ports:
+      - "3001:3000"
+    networks:
+      - cms_network
+    restart: unless-stopped
+    command: npm run dev
+
+  # PhpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: cms_phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root_password
+    depends_on:
+      - mysql
+    networks:
+      - cms_network
+    restart: unless-stopped
+
+  # Redis Commander
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: cms_redis_commander
+    ports:
+      - "8081:8081"
+    environment:
+      REDIS_HOSTS: local:redis:6379
+    depends_on:
+      - redis
+    networks:
+      - cms_network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  cms_network:
+    driver: bridge
