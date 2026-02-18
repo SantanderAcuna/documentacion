@@ -1,0 +1,75 @@
+@import 'variables';
+
+// Reset y estilos base
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  line-height: $line-height-normal;
+  color: $texto-principal;
+  background-color: $blanco;
+}
+
+// Enlaces accesibles
+a {
+  color: $enlace-normal;
+  text-decoration: underline;
+  
+  &:hover,
+  &:focus {
+    color: $enlace-hover;
+  }
+  
+  &:focus {
+    outline: 2px solid $azul-institucional;
+    outline-offset: 2px;
+  }
+}
+
+// Botones accesibles
+button {
+  font-family: $font-family-primary;
+  cursor: pointer;
+  
+  &:focus {
+    outline: 2px solid $azul-institucional;
+    outline-offset: 2px;
+  }
+}
+
+// Inputs accesibles
+input,
+textarea,
+select {
+  font-family: $font-family-primary;
+  
+  &:focus {
+    outline: 2px solid $azul-institucional;
+    outline-offset: 2px;
+  }
+}
+
+// Helpers
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+}
