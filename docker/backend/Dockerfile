@@ -27,10 +27,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/backend
 
 # Copy backend application from correct path
-COPY backend/ /var/www/backend/
-
-# Change ownership
-RUN chown -R www-data:www-data /var/www/backend
+COPY --chown=www-data:www-data backend/ /var/www/backend/
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
