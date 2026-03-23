@@ -1,4 +1,4 @@
-# CMS Gubernamental - Sistema de Gestión de Contenidos para Alcaldía
+# CMS Gubernamental - Sistema de Gestión de Contenidos para Alcaldía.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Laravel](https://img.shields.io/badge/Laravel-12-red.svg)](https://laravel.com)
